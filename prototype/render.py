@@ -64,7 +64,7 @@ def font_face(text: str) -> str:
     opts.layout_features = ["*"]
     opts.name_IDs = ["*"]
     opts.notdef_outline = True
-    font = TTFont(FONT)
+    font = TTFont(FONT, recalcTimestamp=False)  # keep output stable between builds
     sub = subset.Subsetter(opts)
     sub.populate(text=text)
     sub.subset(font)
