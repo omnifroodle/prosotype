@@ -74,6 +74,7 @@ PAGE = """<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ProsoType</title>
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
 <meta name="description" content="Speech written in IPA, with pitch, duration and loudness set into the type. Specification and prototype from the viability phase.">
 <style>
 {fontface}
@@ -87,7 +88,8 @@ PAGE = """<!doctype html>
 body{{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}}
 main{{max-width:1040px;margin:0 auto;padding:48px 16px 80px}}
 a{{color:var(--link)}}
-h1{{font-size:clamp(40px,7vw,64px);line-height:1;margin:0;letter-spacing:-0.02em}}
+h1{{margin:0;line-height:0}}
+h1 .logo{{height:clamp(56px,10vw,96px);width:auto;max-width:100%}}
 h2{{font-size:24px;margin:64px 0 12px;letter-spacing:-0.01em}}
 h3{{font-size:17px;margin:0 0 6px}}
 p{{margin:0 0 14px;max-width:68ch}}
@@ -133,7 +135,7 @@ footer{{margin-top:72px;font-size:14px;color:var(--muted);border-top:1px solid v
 <body><main>
 
 <header>
-<h1>ProsoType</h1>
+<h1><img class="logo" src="img/logo.svg" alt="ProsoType" width="{logo_w}" height="{logo_h}"></h1>
 <p class="lede">Speech written in the International Phonetic Alphabet, with how it was said (pitch, length and loudness) set into the type itself.</p>
 <span class="status">Viability phase · specification draft 0.2 · October 2026</span>
 </header>
@@ -208,7 +210,9 @@ def main() -> None:
     results = json.loads((HERE / "samples/bitrate_results.json").read_text())
     chars = {c for u in rec["utterances"] for w in u["words"] for p in w["phones"] for c in render.pack.normalise_ipa(p["ipa"])}
     levelcss, _ = render.css()
-    page = PAGE.format(fontface=render.font_face("".join(sorted(chars))), levelcss=levelcss,
+    import logo
+    vb = logo.svg(logo.WORDMARK["rise-fall"]).split('viewBox="')[1].split('"')[0].split()
+    page = PAGE.format(logo_w=round(float(vb[2]) / 10), logo_h=round(float(vb[3]) / 10), fontface=render.font_face("".join(sorted(chars))), levelcss=levelcss,
                        hero=hero(rec), sizes=size_table(results), repo=REPO)
     (DOCS / "index.html").write_text(page)
     print(f"docs/index.html: {len(page.encode()) / 1024:.0f} KB; renders: {', '.join(RENDERS)}")

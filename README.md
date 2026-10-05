@@ -1,4 +1,4 @@
-# ProsoType
+<h1><picture><source media="(prefers-color-scheme: dark)" srcset="docs/img/logo-dark.svg"><img src="docs/img/logo-light.svg" alt="ProsoType" height="72"></picture></h1>
 
 Speech written in the International Phonetic Alphabet, with how it was said (pitch, length and loudness) set into the type itself.
 
@@ -17,7 +17,7 @@ This repository holds the output of the viability phase:
 | [SPEC.md](SPEC.md) | The specification (draft 0.2), including measured findings and a go / adjust / stop call |
 | [PLAN.md](PLAN.md) | The plan and the decisions this phase worked from |
 | [prototype/](prototype) | Python prototype: `pack.py`, `render.py`, `transcribe.py`, `bitrate.py`, `site.py` |
-| [docs/](docs) | The GitHub Pages site, built by `prototype/site.py` |
+| [docs/](docs) | The GitHub Pages site, built by `prototype/site.py`; logo by `prototype/logo.py` |
 
 Status: technical viability looks good, with adjustments (SPEC.md §9.4). Fluent reading of IPA is a known limitation that is deliberately deferred.
 
