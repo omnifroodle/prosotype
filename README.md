@@ -22,3 +22,11 @@ This repository holds the output of the viability phase:
 Status: technical viability looks good, with adjustments (SPEC.md §9.4). Fluent reading of IPA is a known limitation that is deliberately deferred.
 
 The evidence comes from one speaker. Their source recordings are not published; their transcriptions (`prototype/samples/*.json`) are. The project was developed under the working name Shadowcat.
+
+## Licence
+
+- **Code** (everything under `prototype/` that is a program, including `site.py`) is under the [MIT License](LICENSE).
+- **The specification and other written and visual material** are under [Creative Commons Attribution 4.0 International](LICENSE-CC-BY-4.0.txt) (CC BY 4.0). That covers [SPEC.md](SPEC.md), [PLAN.md](PLAN.md), the READMEs, the site in `docs/` (text, screenshots and renders) and the sample data in `prototype/samples/`. Attribute it as: *ProsoType specification, Matt Overstreet, CC BY 4.0*.
+- **Third-party material:**
+  - The rendered pages embed a subset of [Noto Sans](https://fonts.google.com/noto/specimen/Noto+Sans), which is under the [SIL Open Font License 1.1](https://openfontlicense.org) and is not covered by either licence above.
+  - The CMU Pronouncing Dictionary and the models are downloaded at setup and not redistributed here.

@@ -1,6 +1,6 @@
 # ProsoType specification
 
-Draft 0.2, 2026-10-05. All sections drafted. Section 9 records what the prototype measured on the owner's recordings and a synthetic clip. Facts taken from outside the project are listed with their sources in Appendix A; anything not listed there is a design decision of this document.
+Draft 0.2, 2026-10-05. © 2026 Matt Overstreet, licensed under [CC BY 4.0](LICENSE-CC-BY-4.0.txt). All sections drafted. Section 9 records what the prototype measured on the owner's recordings and a synthetic clip. Facts taken from outside the project are listed with their sources in Appendix A; anything not listed there is a design decision of this document.
 
 ## 1. Goals, non-goals, consumers
 

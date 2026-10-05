@@ -192,7 +192,7 @@ footer{{margin-top:72px;font-size:14px;color:var(--muted);border-top:1px solid v
 
 <footer>
 <p>Fluent reading of IPA is a known limitation, deliberately left to later work. Evidence so far: one speaker, three short recorded takes and synthetic speech. Built with Whisper, wav2vec2 phoneme recognition, Praat (via parselmouth) and Noto Sans.</p>
-<p><a href="{repo}">github.com/omnifroodle/prosotype</a></p>
+<p><a href="{repo}">github.com/omnifroodle/prosotype</a> · Specification and site © 2026 Matt Overstreet, <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> · Code <a href="{repo}/blob/main/LICENSE">MIT</a> · Glyphs: Noto Sans, <a href="https://openfontlicense.org">SIL OFL 1.1</a></p>
 </footer>
 </main></body></html>
 """
