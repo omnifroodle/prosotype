@@ -171,12 +171,12 @@
     "kind": "packed",
     "name": "16a",
     "bytes": 760,
-    "zlib": 639,
+    "zlib": 640,
     "xz": 712,
     "symbols": 380,
     "bytes_per_word": 8.735632183908047,
     "bit_s": 236.59428749319014,
-    "zlib_bytes_per_word": 7.344827586206897,
+    "zlib_bytes_per_word": 7.35632183908046,
     "xz_bytes_per_word": 8.183908045977011
    },
    {

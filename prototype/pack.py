@@ -82,9 +82,16 @@ LOUD_CENTRE_LEVEL = {3: 4, 2: 2}  # level that means 0 dB
 PAUSE_MIN_MS, PAUSE_MAX_MS = 100.0, 3200.0
 
 
+def rnd(x: float) -> int:
+    """Round half away from zero (SPEC 3.10). Python's round() rounds half
+    to even, which other languages do not, so it is never used for levels."""
+    return math.floor(x + 0.5) if x >= 0 else -math.floor(-x + 0.5)
+
+
 def _nearest_log(value: float, centres: list[float]) -> int:
-    lv = math.log(max(value, 1e-6))
-    return min(range(len(centres)), key=lambda i: abs(lv - math.log(centres[i])))
+    """Nearest level on a log scale (SPEC 3.10): the number of boundaries
+    sqrt(c[k] * c[k+1]) that the value is strictly above."""
+    return sum(1 for a, b in zip(centres, centres[1:]) if value > math.sqrt(a * b))
 
 
 def q_pitch(st: float | None, voiced: bool, bits: int) -> int:
@@ -94,7 +101,7 @@ def q_pitch(st: float | None, voiced: bool, bits: int) -> int:
         return 0
     top = (1 << bits) - 1
     centre = (top + 1) // 2
-    return min(top, max(1, round(st / PITCH_STEP[bits]) + centre))
+    return min(top, max(1, rnd(st / PITCH_STEP[bits]) + centre))
 
 
 def dq_pitch(level: int, bits: int) -> float | None:
@@ -119,7 +126,7 @@ def q_loud(db: float | None, bits: int) -> int:
     if bits == 1:  # 1 = loud (more than 3 dB above mean)
         return 1 if db > 3.0 else 0
     top = (1 << bits) - 1
-    return min(top, max(0, round(db / LOUD_STEP[bits]) + LOUD_CENTRE_LEVEL[bits]))
+    return min(top, max(0, rnd(db / LOUD_STEP[bits]) + LOUD_CENTRE_LEVEL[bits]))
 
 
 def dq_loud(level: int, bits: int) -> float:
@@ -250,6 +257,12 @@ def encode(doc: dict, p: Profile) -> Encoded:
     cursor = 0.0  # time in seconds of the end of the last encoded thing
     for utt in doc["utterances"]:
         words = utt["words"]
+        if p.boundary == "b":
+            # SPEC 3.10: profiles b have no slot for a word without phones
+            words = [w for w in words if w["phones"]]
+        elif len(words) == 1 and not words[0]["phones"]:
+            # a lone empty word is indistinguishable from no words (a bare TURN)
+            words = []
         u_start = words[0]["start_s"] if words else cursor
         for lvl in pauses((u_start - cursor) * 1000):
             sym.append((PAUSE, lvl))
@@ -285,7 +298,7 @@ def encode(doc: dict, p: Profile) -> Encoded:
                 last = w["phones"][-1]
                 cursor = max(w.get("end_s", 0.0), last["start_s"] + last["dur_ms"] / 1000)
             else:
-                cursor = max(cursor, w.get("end_s", w["start_s"]))
+                cursor = w.get("end_s", w["start_s"])  # SPEC 3.10: gap runs from the previous word's end
     if len(enc.extension) > 64:
         raise ValueError("more than 64 out-of-table phones")
     return enc
@@ -305,7 +318,12 @@ def decode(enc: Encoded) -> dict:
     }
     t = 0.0
     utt = word = None
-    pending_flag_word = False
+    after_word = False  # profiles a: last WORD not yet followed by a phone
+    slot_t = 0.0  # when the current word slot opened (after TURN or a WORD's pause)
+
+    def empty_word(at: float) -> None:
+        utt["words"].append({"text": None, "start_s": round(at, 6), "phones": [], "end_s": round(at, 6)})
+
     i = 0
     syms = enc.symbols
     while i < len(syms):
@@ -317,25 +335,34 @@ def decode(enc: Encoded) -> dict:
             t += dq_pause(payload, p.payload_bits) / 1000
             continue
         if code == TURN:
+            if after_word:  # utterance ended with WORD: a trailing empty word
+                empty_word(slot_t)
+            after_word, slot_t = False, t
             utt = {"speaker": enc.speakers[payload][0], "words": []}
             doc["utterances"].append(utt)
             word = None
             continue
         if code == WORD:
+            if utt is None:
+                raise ValueError("WORD before TURN")
+            if word is None:  # no phone since TURN or the last WORD: an empty word
+                empty_word(slot_t)
             t += dq_pause(payload, p.payload_bits) / 1000
             word = None
+            after_word, slot_t = True, t
             continue
         if code == ESC:
             code, payload = syms[i]
             i += 1
             ipa, inherent = enc.extension[code], True
-        elif code >= FIRST_PHONE:
+        elif FIRST_PHONE <= code < FIRST_PHONE + len(table):
             ipa, inherent = table[code - FIRST_PHONE]
         else:
             raise ValueError(f"reserved code {code}")
         flag, pitch, dur, loud = split_payload(p, payload)
         if utt is None:
             raise ValueError("phone before TURN")
+        after_word = False
         if word is None or (p.flag and flag):
             word = {"text": None, "start_s": round(t, 6), "phones": []}
             utt["words"].append(word)
@@ -348,6 +375,8 @@ def decode(enc: Encoded) -> dict:
         word["phones"].append(ph)
         t += dur_ms / 1000
         word["end_s"] = round(t, 6)
+    if after_word:
+        empty_word(slot_t)
     return doc
 
 
@@ -383,7 +412,7 @@ def pack_header(enc: Encoded) -> bytes:
     h.append(len(enc.speakers))
     for name, f0, ld in enc.speakers:
         h += _pstr(name)
-        h += struct.pack(">Hh", round(f0 * 10), round(ld * 10))
+        h += struct.pack(">Hh", rnd(f0 * 10), rnd(ld * 10))
     h.append(len(enc.extension))
     for ipa in enc.extension:
         h += _pstr(ipa)

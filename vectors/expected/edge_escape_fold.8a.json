@@ -1,0 +1,187 @@
+{
+ "prosotype": "0.1",
+ "phone_table": "en-1",
+ "profile": "8a",
+ "speakers": {
+  "S1": {
+   "f0_median_hz": 150.0,
+   "loudness_mean_db": 65.0
+  }
+ },
+ "utterances": [
+  {
+   "speaker": "S1",
+   "words": [
+    {
+     "text": null,
+     "start_s": 0.0,
+     "phones": [
+      {
+       "ipa": "l",
+       "start_s": 0.0,
+       "dur_ms": 80.0,
+       "voiced": true,
+       "pitch_st": 0.0,
+       "loud_db": null
+      },
+      {
+       "ipa": "ɒ",
+       "start_s": 0.08,
+       "dur_ms": 80.0,
+       "voiced": true,
+       "pitch_st": 4.0,
+       "loud_db": null
+      },
+      {
+       "ipa": "x",
+       "start_s": 0.16,
+       "dur_ms": 80.0,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": null
+      }
+     ],
+     "end_s": 0.24
+    },
+    {
+     "text": null,
+     "start_s": 0.24,
+     "phones": [
+      {
+       "ipa": "b",
+       "start_s": 0.24,
+       "dur_ms": 80.0,
+       "voiced": true,
+       "pitch_st": 0.0,
+       "loud_db": null
+      },
+      {
+       "ipa": "ɑ",
+       "start_s": 0.32,
+       "dur_ms": 80.0,
+       "voiced": true,
+       "pitch_st": 0.0,
+       "loud_db": null
+      },
+      {
+       "ipa": "x",
+       "start_s": 0.4,
+       "dur_ms": 80.0,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": null
+      }
+     ],
+     "end_s": 0.48
+    },
+    {
+     "text": null,
+     "start_s": 0.48,
+     "phones": [],
+     "end_s": 0.48
+    },
+    {
+     "text": null,
+     "start_s": 0.48,
+     "phones": [
+      {
+       "ipa": "ɪ",
+       "start_s": 0.48,
+       "dur_ms": 80.0,
+       "voiced": true,
+       "pitch_st": 4.0,
+       "loud_db": null
+      },
+      {
+       "ipa": "ç",
+       "start_s": 0.56,
+       "dur_ms": 80.0,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": null
+      }
+     ],
+     "end_s": 0.64
+    },
+    {
+     "text": null,
+     "start_s": 0.64,
+     "phones": [
+      {
+       "ipa": "ɡ",
+       "start_s": 0.64,
+       "dur_ms": 80.0,
+       "voiced": true,
+       "pitch_st": 0.0,
+       "loud_db": null
+      },
+      {
+       "ipa": "ɒ",
+       "start_s": 0.72,
+       "dur_ms": 80.0,
+       "voiced": true,
+       "pitch_st": 0.0,
+       "loud_db": null
+      },
+      {
+       "ipa": "tʃ",
+       "start_s": 0.8,
+       "dur_ms": 80.0,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": null
+      },
+      {
+       "ipa": "ə",
+       "start_s": 0.88,
+       "dur_ms": 80.0,
+       "voiced": true,
+       "pitch_st": -4.0,
+       "loud_db": null
+      }
+     ],
+     "end_s": 0.96
+    },
+    {
+     "text": null,
+     "start_s": 0.96,
+     "phones": [
+      {
+       "ipa": "ɹ",
+       "start_s": 0.96,
+       "dur_ms": 80.0,
+       "voiced": true,
+       "pitch_st": 0.0,
+       "loud_db": null
+      },
+      {
+       "ipa": "æ",
+       "start_s": 1.04,
+       "dur_ms": 80.0,
+       "voiced": true,
+       "pitch_st": 0.0,
+       "loud_db": null
+      },
+      {
+       "ipa": "ð",
+       "start_s": 1.12,
+       "dur_ms": 80.0,
+       "voiced": true,
+       "pitch_st": -4.0,
+       "loud_db": null
+      },
+      {
+       "ipa": "ɚ",
+       "start_s": 1.2,
+       "dur_ms": 80.0,
+       "voiced": true,
+       "pitch_st": -4.0,
+       "loud_db": null
+      }
+     ],
+     "end_s": 1.28
+    }
+   ]
+  }
+ ]
+}

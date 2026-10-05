@@ -1,0 +1,39 @@
+{
+ "prosotype": "0.1",
+ "phone_table": "en-1",
+ "source": {"note": "Leading pause; 50 ms gap (no pause); 9 s gap (split across symbols); overlapping speakers (negative gap); three turns, two speakers; header values with tenths to round."},
+ "speakers": {
+  "A": {"f0_median_hz": 110.04, "loudness_mean_db": 60.05},
+  "B": {"f0_median_hz": 205.55, "loudness_mean_db": -3.25}
+ },
+ "utterances": [
+  {"speaker": "A", "words": [
+   {"text": "yes", "start_s": 0.5, "end_s": 0.77, "phones": [
+    {"ipa": "j", "start_s": 0.5, "dur_ms": 60, "voiced": true, "pitch_st": 1.0, "loud_db": 0.0},
+    {"ipa": "ɛ", "start_s": 0.56, "dur_ms": 120, "voiced": true, "pitch_st": 3.2, "loud_db": 4.0},
+    {"ipa": "s", "start_s": 0.68, "dur_ms": 90, "voiced": false, "pitch_st": null, "loud_db": -8.0}]},
+   {"text": "no", "start_s": 0.82, "end_s": 1.09, "phones": [
+    {"ipa": "n", "start_s": 0.82, "dur_ms": 70, "voiced": true, "pitch_st": -1.0, "loud_db": -1.0},
+    {"ipa": "oʊ", "start_s": 0.89, "dur_ms": 200, "voiced": true, "pitch_st": -4.0, "loud_db": -2.0}]},
+   {"text": "well", "start_s": 10.09, "end_s": 10.33, "phones": [
+    {"ipa": "w", "start_s": 10.09, "dur_ms": 50, "voiced": true, "pitch_st": 0.0, "loud_db": 0.0},
+    {"ipa": "ɛ", "start_s": 10.14, "dur_ms": 110, "voiced": true, "pitch_st": 5.5, "loud_db": 2.0},
+    {"ipa": "l", "start_s": 10.25, "dur_ms": 80, "voiced": true, "pitch_st": 4.0, "loud_db": 0.5}]}
+  ]},
+  {"speaker": "B", "words": [
+   {"text": "okay", "start_s": 10.3, "end_s": 10.7, "phones": [
+    {"ipa": "oʊ", "start_s": 10.3, "dur_ms": 90, "voiced": true, "pitch_st": 2.0, "loud_db": 1.0},
+    {"ipa": "k", "start_s": 10.39, "dur_ms": 60, "voiced": false, "pitch_st": null, "loud_db": -10.0},
+    {"ipa": "eɪ", "start_s": 10.45, "dur_ms": 250, "voiced": true, "pitch_st": 7.0, "loud_db": 6.0}]},
+   {"text": "then", "start_s": 11.1, "end_s": 11.32, "phones": [
+    {"ipa": "ð", "start_s": 11.1, "dur_ms": 40, "voiced": true, "pitch_st": 0.0, "loud_db": -4.0},
+    {"ipa": "ɛ", "start_s": 11.14, "dur_ms": 100, "voiced": true, "pitch_st": -2.0, "loud_db": 0.0},
+    {"ipa": "n", "start_s": 11.24, "dur_ms": 80, "voiced": true, "pitch_st": -3.0, "loud_db": -3.0}]}
+  ]},
+  {"speaker": "A", "words": [
+   {"text": "bye", "start_s": 14.62, "end_s": 14.98, "phones": [
+    {"ipa": "b", "start_s": 14.62, "dur_ms": 60, "voiced": true, "pitch_st": 0.0, "loud_db": 0.0},
+    {"ipa": "aɪ", "start_s": 14.68, "dur_ms": 300, "voiced": true, "pitch_st": -6.0, "loud_db": -5.0}]}
+  ]}
+ ]
+}

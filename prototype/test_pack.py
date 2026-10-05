@@ -32,6 +32,8 @@ def random_doc(rng: random.Random) -> dict:
                            "pitch_st": rng.uniform(-15, 15) if v and rng.random() < 0.9 else None,
                            "loud_db": rng.uniform(-20, 15)})
                 t += d / 1000
+            if rng.random() < 0.08:  # a word with no recognised phones
+                ph, t = [], ws + rng.uniform(0, 0.2)
             words.append({"text": "w", "start_s": ws, "end_s": t, "phones": ph})
             t += rng.choice([0, 0, 0, rng.uniform(0, 0.2), rng.uniform(0, 12)])
         doc["utterances"].append({"speaker": rng.choice(list(spk)), "words": words})

@@ -49,8 +49,7 @@ os.environ.setdefault("HF_HUB_CACHE", str(HERE.parent / ".hf-cache" / "hub"))
 SR = 16000
 HOP = 320  # wav2vec2 conv stride in samples
 FRAME_S = HOP / SR  # 20 ms
-PHONE_MODEL = "facebook/wav2vec2-lv-60-espeak-cv-ft"
-WORD_MODEL = "mlx-community/whisper-large-v3-turbo"
+from fetch import PHONE_MODEL, PHONE_MODEL_REV, WORD_MODEL, WORD_MODEL_REV  # pinned revisions
 CMUDICT = HERE / "data" / "cmudict.dict"
 
 PAUSE_FRAMES = 6  # 120 ms of quiet counts as a pause
@@ -88,8 +87,10 @@ def load_audio(path: str) -> np.ndarray:
 
 def whisper_words(path: str) -> list[dict]:
     import mlx_whisper
+    from huggingface_hub import snapshot_download
 
-    res = mlx_whisper.transcribe(path, path_or_hf_repo=WORD_MODEL, word_timestamps=True,
+    model_dir = snapshot_download(WORD_MODEL, revision=WORD_MODEL_REV)
+    res = mlx_whisper.transcribe(path, path_or_hf_repo=model_dir, word_timestamps=True,
                                  language="en", condition_on_previous_text=False)
     segs = []
     for seg in res["segments"]:
@@ -110,9 +111,9 @@ def ctc(audio: np.ndarray) -> tuple[np.ndarray, list[dict], int]:
     from huggingface_hub import hf_hub_download
     from transformers import Wav2Vec2FeatureExtractor, Wav2Vec2ForCTC
 
-    fe = Wav2Vec2FeatureExtractor.from_pretrained(PHONE_MODEL)
-    model = Wav2Vec2ForCTC.from_pretrained(PHONE_MODEL).eval()
-    vocab = json.loads(Path(hf_hub_download(PHONE_MODEL, "vocab.json")).read_text())
+    fe = Wav2Vec2FeatureExtractor.from_pretrained(PHONE_MODEL, revision=PHONE_MODEL_REV)
+    model = Wav2Vec2ForCTC.from_pretrained(PHONE_MODEL, revision=PHONE_MODEL_REV).eval()
+    vocab = json.loads(Path(hf_hub_download(PHONE_MODEL, "vocab.json", revision=PHONE_MODEL_REV)).read_text())
     id2tok = {i: t for t, i in vocab.items()}
     device = "mps" if torch.backends.mps.is_available() else "cpu"
     model.to(device)
@@ -381,7 +382,7 @@ def transcribe(paths: list[str], labels: list[str] | None = None) -> dict:
         "prosotype": "0.1", "language": "en", "phone_table": "en-1",
         "source": {"audio": runs[0]["path"] if single else [r["path"] for r in runs],
                    "duration_s": round(sum(r["duration_s"] for r in runs), 3),
-                   "word_model": WORD_MODEL, "phone_model": PHONE_MODEL,
+                   "word_model": f"{WORD_MODEL}@{WORD_MODEL_REV}", "phone_model": f"{PHONE_MODEL}@{PHONE_MODEL_REV}",
                    "transcript": "\n".join(" ".join(s["text"] for s in r["segs"]) for r in runs),
                    "raw_phones": "\n".join(" ".join(t["tok"] for t in r["tokens"]) for r in runs),
                    "alignment": {**dict(stats), "top_differences": dict(diffs.most_common(15))}},

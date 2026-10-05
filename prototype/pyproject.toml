@@ -1,0 +1,25 @@
+[project]
+name = "prosotype-prototype"
+version = "0.3.0"
+description = "ProsoType viability-phase prototype: pack, render, transcribe, size report, site"
+requires-python = ">=3.12,<3.13"
+license = "MIT"
+dependencies = [
+    "fonttools>=4.66",
+    "brotli>=1.2",
+]
+
+[project.optional-dependencies]
+# Transcription runs on Apple silicon (mlx-whisper); pack/render/site do not need it.
+transcribe = [
+    "praat-parselmouth>=0.4.7",
+    "torch>=2.14",
+    "transformers>=5.18",
+    "mlx-whisper>=0.4.3; sys_platform == 'darwin' and platform_machine == 'arm64'",
+    "numpy>=2.5",
+    "soundfile>=0.14",
+    "huggingface-hub>=1.33",
+]
+
+[tool.uv]
+package = false

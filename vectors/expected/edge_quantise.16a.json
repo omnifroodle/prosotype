@@ -1,0 +1,134 @@
+{
+ "prosotype": "0.1",
+ "phone_table": "en-1",
+ "profile": "16a",
+ "speakers": {
+  "S1": {
+   "f0_median_hz": 100.0,
+   "loudness_mean_db": 60.0
+  }
+ },
+ "utterances": [
+  {
+   "speaker": "S1",
+   "words": [
+    {
+     "text": null,
+     "start_s": 0.0,
+     "phones": [
+      {
+       "ipa": "a",
+       "start_s": 0.0,
+       "dur_ms": 95.0,
+       "voiced": true,
+       "pitch_st": 1.5,
+       "loud_db": 3.0
+      },
+      {
+       "ipa": "a",
+       "start_s": 0.095,
+       "dur_ms": 95.0,
+       "voiced": true,
+       "pitch_st": -1.5,
+       "loud_db": -3.0
+      },
+      {
+       "ipa": "a",
+       "start_s": 0.19,
+       "dur_ms": 95.0,
+       "voiced": true,
+       "pitch_st": 6.0,
+       "loud_db": -3.0
+      },
+      {
+       "ipa": "a",
+       "start_s": 0.285,
+       "dur_ms": 95.0,
+       "voiced": true,
+       "pitch_st": -6.0,
+       "loud_db": 3.0
+      }
+     ],
+     "end_s": 0.38
+    },
+    {
+     "text": null,
+     "start_s": 0.38,
+     "phones": [
+      {
+       "ipa": "e",
+       "start_s": 0.38,
+       "dur_ms": 95.0,
+       "voiced": true,
+       "pitch_st": 1.5,
+       "loud_db": 3.0
+      },
+      {
+       "ipa": "e",
+       "start_s": 0.475,
+       "dur_ms": 95.0,
+       "voiced": true,
+       "pitch_st": 1.5,
+       "loud_db": 3.0
+      }
+     ],
+     "end_s": 0.57
+    },
+    {
+     "text": null,
+     "start_s": 0.57,
+     "phones": [
+      {
+       "ipa": "i",
+       "start_s": 0.57,
+       "dur_ms": 450.0,
+       "voiced": true,
+       "pitch_st": 10.5,
+       "loud_db": 9.0
+      },
+      {
+       "ipa": "i",
+       "start_s": 1.02,
+       "dur_ms": 30.0,
+       "voiced": true,
+       "pitch_st": -10.5,
+       "loud_db": -12.0
+      }
+     ],
+     "end_s": 1.05
+    },
+    {
+     "text": null,
+     "start_s": 1.05,
+     "phones": [
+      {
+       "ipa": "m",
+       "start_s": 1.05,
+       "dur_ms": 95.0,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": 0.0
+      },
+      {
+       "ipa": "s",
+       "start_s": 1.145,
+       "dur_ms": 95.0,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": 0.0
+      },
+      {
+       "ipa": "t",
+       "start_s": 1.24,
+       "dur_ms": 65.0,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -9.0
+      }
+     ],
+     "end_s": 1.305
+    }
+   ]
+  }
+ ]
+}

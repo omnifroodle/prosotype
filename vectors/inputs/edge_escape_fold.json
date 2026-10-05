@@ -1,0 +1,32 @@
+{
+ "prosotype": "0.1",
+ "phone_table": "en-1",
+ "source": {"note": "Out-of-table phones via ESC (x used twice, ç once); folding of length/stress marks and alternative spellings (ɑː, ˈɪ, g, ʧ, r, ɝ); a word with no phones."},
+ "speakers": {"S1": {"f0_median_hz": 150.0, "loudness_mean_db": 65.0}},
+ "utterances": [
+  {"speaker": "S1", "words": [
+   {"text": "loch", "start_s": 0.0, "end_s": 0.3, "phones": [
+    {"ipa": "l", "start_s": 0.0, "dur_ms": 60, "voiced": true, "pitch_st": 1.0, "loud_db": 0.0},
+    {"ipa": "ɒ", "start_s": 0.06, "dur_ms": 140, "voiced": true, "pitch_st": 2.0, "loud_db": 3.0},
+    {"ipa": "x", "start_s": 0.2, "dur_ms": 100, "voiced": false, "pitch_st": null, "loud_db": -9.0}]},
+   {"text": "bach", "start_s": 0.3, "end_s": 0.62, "phones": [
+    {"ipa": "b", "start_s": 0.3, "dur_ms": 50, "voiced": true, "pitch_st": 0.0, "loud_db": -2.0},
+    {"ipa": "ɑː", "start_s": 0.35, "dur_ms": 180, "voiced": true, "pitch_st": -1.5, "loud_db": 2.0},
+    {"ipa": "x", "start_s": 0.53, "dur_ms": 90, "voiced": false, "pitch_st": null, "loud_db": -10.0}]},
+   {"text": "uh", "start_s": 0.62, "end_s": 0.7, "phones": []},
+   {"text": "ich", "start_s": 0.7, "end_s": 0.92, "phones": [
+    {"ipa": "ˈɪ", "start_s": 0.7, "dur_ms": 120, "voiced": true, "pitch_st": 4.0, "loud_db": 5.0},
+    {"ipa": "ç", "start_s": 0.82, "dur_ms": 100, "voiced": false, "pitch_st": null, "loud_db": -7.0}]},
+   {"text": "gotcha", "start_s": 0.92, "end_s": 1.27, "phones": [
+    {"ipa": "g", "start_s": 0.92, "dur_ms": 50, "voiced": true, "pitch_st": 0.0, "loud_db": 0.0},
+    {"ipa": "ɒ", "start_s": 0.97, "dur_ms": 120, "voiced": true, "pitch_st": 1.0, "loud_db": 2.0},
+    {"ipa": "ʧ", "start_s": 1.09, "dur_ms": 110, "voiced": false, "pitch_st": null, "loud_db": -6.0},
+    {"ipa": "ə", "start_s": 1.2, "dur_ms": 70, "voiced": true, "pitch_st": -2.0, "loud_db": -3.0}]},
+   {"text": "rather", "start_s": 1.27, "end_s": 1.6, "phones": [
+    {"ipa": "r", "start_s": 1.27, "dur_ms": 60, "voiced": true, "pitch_st": -1.0, "loud_db": 0.0},
+    {"ipa": "æ", "start_s": 1.33, "dur_ms": 110, "voiced": true, "pitch_st": 0.0, "loud_db": 1.0},
+    {"ipa": "ð", "start_s": 1.44, "dur_ms": 40, "voiced": true, "pitch_st": -2.0, "loud_db": -2.0},
+    {"ipa": "ɝ", "start_s": 1.48, "dur_ms": 120, "voiced": true, "pitch_st": -3.0, "loud_db": -4.0}]}
+  ]}
+ ]
+}

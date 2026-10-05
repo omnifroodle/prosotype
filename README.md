@@ -17,9 +17,11 @@ This repository holds the output of the viability phase:
 | [SPEC.md](SPEC.md) | The specification (draft 0.2), including measured findings and a go / adjust / stop call |
 | [PLAN.md](PLAN.md) | The plan and the decisions this phase worked from |
 | [prototype/](prototype) | Python prototype: `pack.py`, `render.py`, `transcribe.py`, `bitrate.py`, `site.py` |
+| [vectors/](vectors) | Conformance test vectors for the packed stream (SPEC.md §3.10) |
+| [js/](js) | An independent decoder in JavaScript, written from the spec, and its vector test |
 | [docs/](docs) | The GitHub Pages site, built by `prototype/site.py`; logo by `prototype/logo.py` |
 
-Status: technical viability looks good, with adjustments (SPEC.md §9.4). Fluent reading of IPA is a known limitation that is deliberately deferred.
+Status: technical viability looks good, with adjustments (SPEC.md §9.4). Everything reproduces with `cd prototype && uv sync && uv run reproduce.py`. Fluent reading of IPA is a known limitation that is deliberately deferred.
 
 The evidence comes from one speaker. Their source recordings are not published; their transcriptions (`prototype/samples/*.json`) are. The project was developed under the working name Shadowcat.
 

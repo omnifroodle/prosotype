@@ -13,8 +13,12 @@ __pycache__/
 
 # Generated
 *.prs
+!vectors/expected/*.prs
 prototype/samples/**/*.html
 
 # Downloaded during setup (see prototype/README.md)
 prototype/fonts/*.ttf
 prototype/data/cmudict.dict
+
+# uv cache kept on the project drive
+.uv-cache/

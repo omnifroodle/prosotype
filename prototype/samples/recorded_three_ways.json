@@ -9,8 +9,8 @@
    "samples/sarcastic.m4a"
   ],
   "duration_s": 8.397,
-  "word_model": "mlx-community/whisper-large-v3-turbo",
-  "phone_model": "facebook/wav2vec2-lv-60-espeak-cv-ft",
+  "word_model": "mlx-community/whisper-large-v3-turbo@a4aaeec0636e6fef84abdcbe3544cb2bf7e9f6fb",
+  "phone_model": "facebook/wav2vec2-lv-60-espeak-cv-ft@ae45363bf3413b374fecd9dc8bc1df0e24c3b7f4",
   "transcript": "We are going to the movie tonight.\nYou're going to the party tonight?\nYou're going to the party tonight?",
   "raw_phones": "h iː ɚ ɡ oʊ ɪ ŋ t ə ð ə m uː b eɪ t s ɪ n p\nj ɚ ɡ oʊ ɪ ŋ t ə ð ə p ɑːɹ ɾ i t ə m æ n\nj oʊ ɡ oʊ ɪ n t ə ð ə p ɑːɹ ɾ i v ə n aɪ",
   "alignment": {

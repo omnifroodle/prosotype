@@ -1,0 +1,288 @@
+{
+ "spec": "SPEC.md 3.10",
+ "container_version": 1,
+ "vectors": [
+  {
+   "input": "inputs/edge_escape_fold.json",
+   "profile": "16a",
+   "prs": "expected/edge_escape_fold.16a.prs",
+   "decoded": "expected/edge_escape_fold.16a.json",
+   "symbols": 25,
+   "header_bytes": 28,
+   "bytes": 78,
+   "sha256": "cb2ac31df9ee677e6fb34f2d9138275816e73968b2b6ab0e7f286c6dd8b47bbf",
+   "extension_phones": [
+    "x",
+    "ç"
+   ]
+  },
+  {
+   "input": "inputs/edge_escape_fold.json",
+   "profile": "16b",
+   "prs": "expected/edge_escape_fold.16b.prs",
+   "decoded": "expected/edge_escape_fold.16b.json",
+   "symbols": 21,
+   "header_bytes": 28,
+   "bytes": 70,
+   "sha256": "7f541b1c1449b9c28272f1a68fda3725d335ff82d012d5f6a81088bbd85a73c8",
+   "extension_phones": [
+    "x",
+    "ç"
+   ]
+  },
+  {
+   "input": "inputs/edge_escape_fold.json",
+   "profile": "12a",
+   "prs": "expected/edge_escape_fold.12a.prs",
+   "decoded": "expected/edge_escape_fold.12a.json",
+   "symbols": 25,
+   "header_bytes": 28,
+   "bytes": 66,
+   "sha256": "3dc50f976195ed1aa4e94f8f45252020a2da967fc7333a522feaa85153916a6d",
+   "extension_phones": [
+    "x",
+    "ç"
+   ]
+  },
+  {
+   "input": "inputs/edge_escape_fold.json",
+   "profile": "12b",
+   "prs": "expected/edge_escape_fold.12b.prs",
+   "decoded": "expected/edge_escape_fold.12b.json",
+   "symbols": 21,
+   "header_bytes": 28,
+   "bytes": 60,
+   "sha256": "362cffd6f76d8ba8ee9a3422d5b6f05f020c1c91c1080a65a7f4839648a4d90e",
+   "extension_phones": [
+    "x",
+    "ç"
+   ]
+  },
+  {
+   "input": "inputs/edge_escape_fold.json",
+   "profile": "8a",
+   "prs": "expected/edge_escape_fold.8a.prs",
+   "decoded": "expected/edge_escape_fold.8a.json",
+   "symbols": 25,
+   "header_bytes": 28,
+   "bytes": 53,
+   "sha256": "61b1fc19fc4437bc27d809ed66ec79405556d2e7d61f341f32e2ddc75659e2d1",
+   "extension_phones": [
+    "x",
+    "ç"
+   ]
+  },
+  {
+   "input": "inputs/edge_escape_fold.json",
+   "profile": "8b",
+   "prs": "expected/edge_escape_fold.8b.prs",
+   "decoded": "expected/edge_escape_fold.8b.json",
+   "symbols": 21,
+   "header_bytes": 28,
+   "bytes": 49,
+   "sha256": "bd7dcf1ca3955eea3b41a0c3cc154ddb72c3581eb16a2b3018e4f4c86bc00b3b",
+   "extension_phones": [
+    "x",
+    "ç"
+   ]
+  },
+  {
+   "input": "inputs/edge_pauses_speakers.json",
+   "profile": "16a",
+   "prs": "expected/edge_pauses_speakers.16a.prs",
+   "decoded": "expected/edge_pauses_speakers.16a.json",
+   "symbols": 27,
+   "header_bytes": 28,
+   "bytes": 82,
+   "sha256": "4297b9d1c6484daa7d64044b241c1d64bb5f6d8c59ccc79091d2a483ab576e86",
+   "extension_phones": []
+  },
+  {
+   "input": "inputs/edge_pauses_speakers.json",
+   "profile": "16b",
+   "prs": "expected/edge_pauses_speakers.16b.prs",
+   "decoded": "expected/edge_pauses_speakers.16b.json",
+   "symbols": 26,
+   "header_bytes": 28,
+   "bytes": 80,
+   "sha256": "0a282d95f9555fb6e6f8bc5d0436409b7151136deeeec9c3fe68e44c7f4dc152",
+   "extension_phones": []
+  },
+  {
+   "input": "inputs/edge_pauses_speakers.json",
+   "profile": "12a",
+   "prs": "expected/edge_pauses_speakers.12a.prs",
+   "decoded": "expected/edge_pauses_speakers.12a.json",
+   "symbols": 27,
+   "header_bytes": 28,
+   "bytes": 69,
+   "sha256": "72eba366462144b00377be48ea33370eda3499786f79dbd03bd20036eb59b9d3",
+   "extension_phones": []
+  },
+  {
+   "input": "inputs/edge_pauses_speakers.json",
+   "profile": "12b",
+   "prs": "expected/edge_pauses_speakers.12b.prs",
+   "decoded": "expected/edge_pauses_speakers.12b.json",
+   "symbols": 26,
+   "header_bytes": 28,
+   "bytes": 67,
+   "sha256": "a46af9b5df45d20a6ad532783f194d724fed13aa1f5be2e977b2ea41c7b0ed5c",
+   "extension_phones": []
+  },
+  {
+   "input": "inputs/edge_pauses_speakers.json",
+   "profile": "8a",
+   "prs": "expected/edge_pauses_speakers.8a.prs",
+   "decoded": "expected/edge_pauses_speakers.8a.json",
+   "symbols": 27,
+   "header_bytes": 28,
+   "bytes": 55,
+   "sha256": "8eb95594199ae81f22b88d66fc10644648eb8734936f6dfb249e0d9a44f7c43e",
+   "extension_phones": []
+  },
+  {
+   "input": "inputs/edge_pauses_speakers.json",
+   "profile": "8b",
+   "prs": "expected/edge_pauses_speakers.8b.prs",
+   "decoded": "expected/edge_pauses_speakers.8b.json",
+   "symbols": 26,
+   "header_bytes": 28,
+   "bytes": 54,
+   "sha256": "8a33cd71771dfbee68091fdc2995d1c70b97b18570c4ffe26779f4713633fea0",
+   "extension_phones": []
+  },
+  {
+   "input": "inputs/edge_quantise.json",
+   "profile": "16a",
+   "prs": "expected/edge_quantise.16a.prs",
+   "decoded": "expected/edge_quantise.16a.json",
+   "symbols": 15,
+   "header_bytes": 23,
+   "bytes": 53,
+   "sha256": "7a7f42b5f6d78265c556608f8e83fe52514d26cde887d5a30121753ace94a13a",
+   "extension_phones": []
+  },
+  {
+   "input": "inputs/edge_quantise.json",
+   "profile": "16b",
+   "prs": "expected/edge_quantise.16b.prs",
+   "decoded": "expected/edge_quantise.16b.json",
+   "symbols": 12,
+   "header_bytes": 23,
+   "bytes": 47,
+   "sha256": "f84c3e5d46b76a0f9aa61a41eeb8aa3071ac1871eeb781fcc756df538166d442",
+   "extension_phones": []
+  },
+  {
+   "input": "inputs/edge_quantise.json",
+   "profile": "12a",
+   "prs": "expected/edge_quantise.12a.prs",
+   "decoded": "expected/edge_quantise.12a.json",
+   "symbols": 15,
+   "header_bytes": 23,
+   "bytes": 46,
+   "sha256": "c5ed5e001b53efa289a2ab1e4825a30df26e011793cc5c8b9e9bc97754eeb0cd",
+   "extension_phones": []
+  },
+  {
+   "input": "inputs/edge_quantise.json",
+   "profile": "12b",
+   "prs": "expected/edge_quantise.12b.prs",
+   "decoded": "expected/edge_quantise.12b.json",
+   "symbols": 12,
+   "header_bytes": 23,
+   "bytes": 41,
+   "sha256": "3d05e1b64441f3895783d97773cbed5288090d4b09b857841f5777088fa8bf70",
+   "extension_phones": []
+  },
+  {
+   "input": "inputs/edge_quantise.json",
+   "profile": "8a",
+   "prs": "expected/edge_quantise.8a.prs",
+   "decoded": "expected/edge_quantise.8a.json",
+   "symbols": 15,
+   "header_bytes": 23,
+   "bytes": 38,
+   "sha256": "eaf31bb609d052c41742c15463ff83c7a5eb636561a7b726f1f58324c4d4074e",
+   "extension_phones": []
+  },
+  {
+   "input": "inputs/edge_quantise.json",
+   "profile": "8b",
+   "prs": "expected/edge_quantise.8b.prs",
+   "decoded": "expected/edge_quantise.8b.json",
+   "symbols": 12,
+   "header_bytes": 23,
+   "bytes": 35,
+   "sha256": "5aea3b89089cd2907c9ba0c1929b5d280f2e85e0a323155b6062f4ebca513ea6",
+   "extension_phones": []
+  },
+  {
+   "input": "inputs/hand_three_ways.json",
+   "profile": "16a",
+   "prs": "expected/hand_three_ways.16a.prs",
+   "decoded": "expected/hand_three_ways.16a.json",
+   "symbols": 80,
+   "header_bytes": 23,
+   "bytes": 183,
+   "sha256": "e0f67b267cf13da07edcd60a9641a9f40d915f17b2f0d6e3884912b14fff099e",
+   "extension_phones": []
+  },
+  {
+   "input": "inputs/hand_three_ways.json",
+   "profile": "16b",
+   "prs": "expected/hand_three_ways.16b.prs",
+   "decoded": "expected/hand_three_ways.16b.json",
+   "symbols": 66,
+   "header_bytes": 23,
+   "bytes": 155,
+   "sha256": "ae2dc8f7698019abcc8891bcbdafafbeb1b8fae043dd3fe680ee0e3ed302c090",
+   "extension_phones": []
+  },
+  {
+   "input": "inputs/hand_three_ways.json",
+   "profile": "12a",
+   "prs": "expected/hand_three_ways.12a.prs",
+   "decoded": "expected/hand_three_ways.12a.json",
+   "symbols": 80,
+   "header_bytes": 23,
+   "bytes": 143,
+   "sha256": "654c5132f0174b5f48b0ec32f466916e592ef5ee74b8e6f6e7af64d3a56eeab3",
+   "extension_phones": []
+  },
+  {
+   "input": "inputs/hand_three_ways.json",
+   "profile": "12b",
+   "prs": "expected/hand_three_ways.12b.prs",
+   "decoded": "expected/hand_three_ways.12b.json",
+   "symbols": 66,
+   "header_bytes": 23,
+   "bytes": 122,
+   "sha256": "32ae49a0a05098c166e01cc51afea0d34fac4deb915fbc79a3f5079cef1a2399",
+   "extension_phones": []
+  },
+  {
+   "input": "inputs/hand_three_ways.json",
+   "profile": "8a",
+   "prs": "expected/hand_three_ways.8a.prs",
+   "decoded": "expected/hand_three_ways.8a.json",
+   "symbols": 80,
+   "header_bytes": 23,
+   "bytes": 103,
+   "sha256": "afedea04740536f06f6f352ae3e86c91ae128d7bb9f98f2aeffd3e544ee0563c",
+   "extension_phones": []
+  },
+  {
+   "input": "inputs/hand_three_ways.json",
+   "profile": "8b",
+   "prs": "expected/hand_three_ways.8b.prs",
+   "decoded": "expected/hand_three_ways.8b.json",
+   "symbols": 66,
+   "header_bytes": 23,
+   "bytes": 89,
+   "sha256": "e6cc6f54310380bb029cb0e8b036d024390cf593a4f63e9ede04c74fc26a9ad0",
+   "extension_phones": []
+  }
+ ]
+}
