@@ -1,0 +1,276 @@
+{
+ "prosotype": "0.1",
+ "language": "en",
+ "phone_table": "en-1",
+ "source": {
+  "audio": "samples/smoke/say_question.wav",
+  "duration_s": 1.769,
+  "word_model": "mlx-community/whisper-large-v3-turbo",
+  "phone_model": "facebook/wav2vec2-lv-60-espeak-cv-ft",
+  "transcript": "You're going to the party tonight?",
+  "raw_phones": "j ɔːɹ ɡ oʊ ɪ ŋ t ə ð ə p ɑːɹ ɾ i t ə n aɪ t",
+  "alignment": {
+   "canonical_phones": 21,
+   "recognised_phones": 21,
+   "oov_words": 0,
+   "match": 18,
+   "sub": 3,
+   "top_differences": {
+    "t→ɾ": 1,
+    "u→ə": 1,
+    "ʊ→ɔ": 1
+   }
+  }
+ },
+ "speakers": {
+  "S1": {
+   "f0_median_hz": 184.8,
+   "loudness_mean_db": 79.2
+  }
+ },
+ "utterances": [
+  {
+   "speaker": "S1",
+   "label": "You're going to the party tonight?",
+   "words": [
+    {
+     "text": "You're",
+     "canon": "j ʊ ɹ",
+     "phones": [
+      {
+       "ipa": "j",
+       "start_s": 0.02,
+       "dur_ms": 40.0,
+       "voiced": true,
+       "pitch_st": -0.61,
+       "loud_db": 1.55,
+       "conf": 0.937
+      },
+      {
+       "ipa": "ɔ",
+       "start_s": 0.06,
+       "dur_ms": 70.0,
+       "voiced": true,
+       "pitch_st": -1.08,
+       "loud_db": 0.9,
+       "conf": 0.286
+      },
+      {
+       "ipa": "ɹ",
+       "start_s": 0.13,
+       "dur_ms": 70.0,
+       "voiced": true,
+       "pitch_st": -3.27,
+       "loud_db": -7.24,
+       "conf": 0.286
+      }
+     ],
+     "start_s": 0.02,
+     "end_s": 0.2
+    },
+    {
+     "text": "going",
+     "canon": "ɡ oʊ ɪ ŋ",
+     "phones": [
+      {
+       "ipa": "ɡ",
+       "start_s": 0.2,
+       "dur_ms": 60.0,
+       "voiced": true,
+       "pitch_st": 0.45,
+       "loud_db": -0.71,
+       "conf": 0.976
+      },
+      {
+       "ipa": "oʊ",
+       "start_s": 0.26,
+       "dur_ms": 140.0,
+       "voiced": true,
+       "pitch_st": 2.77,
+       "loud_db": 1.51,
+       "conf": 0.586
+      },
+      {
+       "ipa": "ɪ",
+       "start_s": 0.4,
+       "dur_ms": 60.0,
+       "voiced": true,
+       "pitch_st": 0.95,
+       "loud_db": 2.03,
+       "conf": 0.931
+      },
+      {
+       "ipa": "ŋ",
+       "start_s": 0.46,
+       "dur_ms": 60.0,
+       "voiced": true,
+       "pitch_st": -0.35,
+       "loud_db": -0.33,
+       "conf": 0.94
+      }
+     ],
+     "start_s": 0.2,
+     "end_s": 0.52
+    },
+    {
+     "text": "to",
+     "canon": "t u",
+     "phones": [
+      {
+       "ipa": "t",
+       "start_s": 0.52,
+       "dur_ms": 40.0,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -7.17,
+       "conf": 0.962
+      },
+      {
+       "ipa": "ə",
+       "start_s": 0.56,
+       "dur_ms": 80.0,
+       "voiced": true,
+       "pitch_st": -1.5,
+       "loud_db": -1.83,
+       "conf": 0.948
+      }
+     ],
+     "start_s": 0.52,
+     "end_s": 0.64
+    },
+    {
+     "text": "the",
+     "canon": "ð ə",
+     "phones": [
+      {
+       "ipa": "ð",
+       "start_s": 0.64,
+       "dur_ms": 40.0,
+       "voiced": true,
+       "pitch_st": -1.38,
+       "loud_db": -2.41,
+       "conf": 0.987
+      },
+      {
+       "ipa": "ə",
+       "start_s": 0.68,
+       "dur_ms": 80.0,
+       "voiced": true,
+       "pitch_st": -2.8,
+       "loud_db": -4.1,
+       "conf": 0.954
+      }
+     ],
+     "start_s": 0.64,
+     "end_s": 0.76
+    },
+    {
+     "text": "party",
+     "canon": "p ɑ ɹ t i",
+     "phones": [
+      {
+       "ipa": "p",
+       "start_s": 0.76,
+       "dur_ms": 80.0,
+       "voiced": true,
+       "pitch_st": 1.04,
+       "loud_db": -6.44,
+       "conf": 0.98
+      },
+      {
+       "ipa": "ɑ",
+       "start_s": 0.84,
+       "dur_ms": 60.0,
+       "voiced": true,
+       "pitch_st": -0.07,
+       "loud_db": 0.85,
+       "conf": 0.653
+      },
+      {
+       "ipa": "ɹ",
+       "start_s": 0.9,
+       "dur_ms": 60.0,
+       "voiced": true,
+       "pitch_st": 0.07,
+       "loud_db": -0.68,
+       "conf": 0.653
+      },
+      {
+       "ipa": "ɾ",
+       "start_s": 0.96,
+       "dur_ms": 40.0,
+       "voiced": true,
+       "pitch_st": 1.09,
+       "loud_db": -0.18,
+       "conf": 0.928
+      },
+      {
+       "ipa": "i",
+       "start_s": 1.0,
+       "dur_ms": 100.0,
+       "voiced": true,
+       "pitch_st": 0.41,
+       "loud_db": -0.06,
+       "conf": 0.977
+      }
+     ],
+     "start_s": 0.76,
+     "end_s": 1.1
+    },
+    {
+     "text": "tonight?",
+     "canon": "t ə n aɪ t",
+     "phones": [
+      {
+       "ipa": "t",
+       "start_s": 1.1,
+       "dur_ms": 60.0,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -7.54,
+       "conf": 0.957
+      },
+      {
+       "ipa": "ə",
+       "start_s": 1.16,
+       "dur_ms": 80.0,
+       "voiced": true,
+       "pitch_st": 0.26,
+       "loud_db": 1.75,
+       "conf": 0.949
+      },
+      {
+       "ipa": "n",
+       "start_s": 1.24,
+       "dur_ms": 60.0,
+       "voiced": true,
+       "pitch_st": -0.44,
+       "loud_db": 1.64,
+       "conf": 0.997
+      },
+      {
+       "ipa": "aɪ",
+       "start_s": 1.3,
+       "dur_ms": 220.0,
+       "voiced": true,
+       "pitch_st": 3.88,
+       "loud_db": -1.05,
+       "conf": 0.935
+      },
+      {
+       "ipa": "t",
+       "start_s": 1.52,
+       "dur_ms": 20.0,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -33.39,
+       "conf": 0.95
+      }
+     ],
+     "start_s": 1.1,
+     "end_s": 1.54
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,641 @@
+{
+ "prosotype": "0.1",
+ "language": "en",
+ "phone_table": "en-1",
+ "source": {
+  "kind": "hand-written",
+  "note": "One sentence, three deliveries: flat statement, rising question, sarcastic/emphatic. Values chosen by hand, not measured."
+ },
+ "speakers": {
+  "S1": {
+   "f0_median_hz": 120.0,
+   "loudness_mean_db": 62.0
+  }
+ },
+ "utterances": [
+  {
+   "speaker": "S1",
+   "label": "statement",
+   "words": [
+    {
+     "text": "you're",
+     "start_s": 0.0,
+     "phones": [
+      {
+       "ipa": "j",
+       "start_s": 0.0,
+       "dur_ms": 60,
+       "voiced": true,
+       "pitch_st": 2.0,
+       "loud_db": 0.0
+      },
+      {
+       "ipa": "ɚ",
+       "start_s": 0.06,
+       "dur_ms": 110,
+       "voiced": true,
+       "pitch_st": 2.0,
+       "loud_db": 0.0
+      }
+     ],
+     "end_s": 0.17
+    },
+    {
+     "text": "going",
+     "start_s": 0.17,
+     "phones": [
+      {
+       "ipa": "ɡ",
+       "start_s": 0.17,
+       "dur_ms": 50,
+       "voiced": true,
+       "pitch_st": 3.0,
+       "loud_db": 0.0
+      },
+      {
+       "ipa": "oʊ",
+       "start_s": 0.22,
+       "dur_ms": 120,
+       "voiced": true,
+       "pitch_st": 3.0,
+       "loud_db": 1.0
+      },
+      {
+       "ipa": "ɪ",
+       "start_s": 0.34,
+       "dur_ms": 60,
+       "voiced": true,
+       "pitch_st": 2.0,
+       "loud_db": 0.0
+      },
+      {
+       "ipa": "ŋ",
+       "start_s": 0.4,
+       "dur_ms": 70,
+       "voiced": true,
+       "pitch_st": 1.0,
+       "loud_db": -1.0
+      }
+     ],
+     "end_s": 0.47
+    },
+    {
+     "text": "to",
+     "start_s": 0.47,
+     "phones": [
+      {
+       "ipa": "t",
+       "start_s": 0.47,
+       "dur_ms": 60,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -6.0
+      },
+      {
+       "ipa": "ə",
+       "start_s": 0.53,
+       "dur_ms": 45,
+       "voiced": true,
+       "pitch_st": 0.0,
+       "loud_db": -2.0
+      }
+     ],
+     "end_s": 0.575
+    },
+    {
+     "text": "the",
+     "start_s": 0.575,
+     "phones": [
+      {
+       "ipa": "ð",
+       "start_s": 0.575,
+       "dur_ms": 35,
+       "voiced": true,
+       "pitch_st": 0.0,
+       "loud_db": -3.0
+      },
+      {
+       "ipa": "ə",
+       "start_s": 0.61,
+       "dur_ms": 50,
+       "voiced": true,
+       "pitch_st": -0.5,
+       "loud_db": -2.0
+      }
+     ],
+     "end_s": 0.66
+    },
+    {
+     "text": "party",
+     "start_s": 0.66,
+     "phones": [
+      {
+       "ipa": "p",
+       "start_s": 0.66,
+       "dur_ms": 70,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -6.0
+      },
+      {
+       "ipa": "ɑ",
+       "start_s": 0.73,
+       "dur_ms": 120,
+       "voiced": true,
+       "pitch_st": 1.5,
+       "loud_db": 3.0
+      },
+      {
+       "ipa": "ɹ",
+       "start_s": 0.85,
+       "dur_ms": 60,
+       "voiced": true,
+       "pitch_st": 0.0,
+       "loud_db": 0.0
+      },
+      {
+       "ipa": "ɾ",
+       "start_s": 0.91,
+       "dur_ms": 30,
+       "voiced": true,
+       "pitch_st": -0.5,
+       "loud_db": -2.0
+      },
+      {
+       "ipa": "i",
+       "start_s": 0.94,
+       "dur_ms": 90,
+       "voiced": true,
+       "pitch_st": -1.0,
+       "loud_db": -1.0
+      }
+     ],
+     "end_s": 1.03
+    },
+    {
+     "text": "tonight",
+     "start_s": 1.03,
+     "phones": [
+      {
+       "ipa": "t",
+       "start_s": 1.03,
+       "dur_ms": 50,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -7.0
+      },
+      {
+       "ipa": "ə",
+       "start_s": 1.08,
+       "dur_ms": 45,
+       "voiced": true,
+       "pitch_st": -2.0,
+       "loud_db": -3.0
+      },
+      {
+       "ipa": "n",
+       "start_s": 1.125,
+       "dur_ms": 60,
+       "voiced": true,
+       "pitch_st": -2.5,
+       "loud_db": -3.0
+      },
+      {
+       "ipa": "aɪ",
+       "start_s": 1.185,
+       "dur_ms": 200,
+       "voiced": true,
+       "pitch_st": -4.0,
+       "loud_db": -2.0
+      },
+      {
+       "ipa": "t",
+       "start_s": 1.385,
+       "dur_ms": 80,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -9.0
+      }
+     ],
+     "end_s": 1.465
+    }
+   ]
+  },
+  {
+   "speaker": "S1",
+   "label": "question",
+   "words": [
+    {
+     "text": "you're",
+     "start_s": 2.265,
+     "phones": [
+      {
+       "ipa": "j",
+       "start_s": 2.265,
+       "dur_ms": 60,
+       "voiced": true,
+       "pitch_st": 1.0,
+       "loud_db": 0.0
+      },
+      {
+       "ipa": "ɚ",
+       "start_s": 2.325,
+       "dur_ms": 110,
+       "voiced": true,
+       "pitch_st": 1.0,
+       "loud_db": 0.0
+      }
+     ],
+     "end_s": 2.435
+    },
+    {
+     "text": "going",
+     "start_s": 2.435,
+     "phones": [
+      {
+       "ipa": "ɡ",
+       "start_s": 2.435,
+       "dur_ms": 50,
+       "voiced": true,
+       "pitch_st": 1.5,
+       "loud_db": 0.0
+      },
+      {
+       "ipa": "oʊ",
+       "start_s": 2.485,
+       "dur_ms": 120,
+       "voiced": true,
+       "pitch_st": 1.5,
+       "loud_db": 0.0
+      },
+      {
+       "ipa": "ɪ",
+       "start_s": 2.605,
+       "dur_ms": 60,
+       "voiced": true,
+       "pitch_st": 1.0,
+       "loud_db": 0.0
+      },
+      {
+       "ipa": "ŋ",
+       "start_s": 2.665,
+       "dur_ms": 70,
+       "voiced": true,
+       "pitch_st": 0.5,
+       "loud_db": -1.0
+      }
+     ],
+     "end_s": 2.735
+    },
+    {
+     "text": "to",
+     "start_s": 2.735,
+     "phones": [
+      {
+       "ipa": "t",
+       "start_s": 2.735,
+       "dur_ms": 60,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -6.0
+      },
+      {
+       "ipa": "ə",
+       "start_s": 2.795,
+       "dur_ms": 45,
+       "voiced": true,
+       "pitch_st": 0.0,
+       "loud_db": -2.0
+      }
+     ],
+     "end_s": 2.84
+    },
+    {
+     "text": "the",
+     "start_s": 2.84,
+     "phones": [
+      {
+       "ipa": "ð",
+       "start_s": 2.84,
+       "dur_ms": 35,
+       "voiced": true,
+       "pitch_st": 0.0,
+       "loud_db": -3.0
+      },
+      {
+       "ipa": "ə",
+       "start_s": 2.875,
+       "dur_ms": 50,
+       "voiced": true,
+       "pitch_st": 0.0,
+       "loud_db": -2.0
+      }
+     ],
+     "end_s": 2.925
+    },
+    {
+     "text": "party",
+     "start_s": 2.925,
+     "phones": [
+      {
+       "ipa": "p",
+       "start_s": 2.925,
+       "dur_ms": 70,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -6.0
+      },
+      {
+       "ipa": "ɑ",
+       "start_s": 2.995,
+       "dur_ms": 120,
+       "voiced": true,
+       "pitch_st": 1.0,
+       "loud_db": 1.0
+      },
+      {
+       "ipa": "ɹ",
+       "start_s": 3.115,
+       "dur_ms": 60,
+       "voiced": true,
+       "pitch_st": 0.5,
+       "loud_db": 0.0
+      },
+      {
+       "ipa": "ɾ",
+       "start_s": 3.175,
+       "dur_ms": 30,
+       "voiced": true,
+       "pitch_st": 0.0,
+       "loud_db": -2.0
+      },
+      {
+       "ipa": "i",
+       "start_s": 3.205,
+       "dur_ms": 90,
+       "voiced": true,
+       "pitch_st": 0.0,
+       "loud_db": -1.0
+      }
+     ],
+     "end_s": 3.295
+    },
+    {
+     "text": "tonight",
+     "start_s": 3.295,
+     "phones": [
+      {
+       "ipa": "t",
+       "start_s": 3.295,
+       "dur_ms": 50,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -6.0
+      },
+      {
+       "ipa": "ə",
+       "start_s": 3.345,
+       "dur_ms": 45,
+       "voiced": true,
+       "pitch_st": 2.0,
+       "loud_db": -2.0
+      },
+      {
+       "ipa": "n",
+       "start_s": 3.39,
+       "dur_ms": 70,
+       "voiced": true,
+       "pitch_st": 4.0,
+       "loud_db": 0.0
+      },
+      {
+       "ipa": "aɪ",
+       "start_s": 3.46,
+       "dur_ms": 240,
+       "voiced": true,
+       "pitch_st": 9.0,
+       "loud_db": 3.0
+      },
+      {
+       "ipa": "t",
+       "start_s": 3.7,
+       "dur_ms": 80,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -6.0
+      }
+     ],
+     "end_s": 3.78
+    }
+   ]
+  },
+  {
+   "speaker": "S1",
+   "label": "emphatic",
+   "words": [
+    {
+     "text": "you're",
+     "start_s": 4.58,
+     "phones": [
+      {
+       "ipa": "j",
+       "start_s": 4.58,
+       "dur_ms": 80,
+       "voiced": true,
+       "pitch_st": 6.0,
+       "loud_db": 3.0
+      },
+      {
+       "ipa": "ɚ",
+       "start_s": 4.66,
+       "dur_ms": 220,
+       "voiced": true,
+       "pitch_st": 9.0,
+       "loud_db": 6.0
+      }
+     ],
+     "end_s": 4.88
+    },
+    {
+     "text": "going",
+     "start_s": 5.03,
+     "phones": [
+      {
+       "ipa": "ɡ",
+       "start_s": 5.03,
+       "dur_ms": 45,
+       "voiced": true,
+       "pitch_st": 3.0,
+       "loud_db": 0.0
+      },
+      {
+       "ipa": "oʊ",
+       "start_s": 5.075,
+       "dur_ms": 100,
+       "voiced": true,
+       "pitch_st": 1.0,
+       "loud_db": 0.0
+      },
+      {
+       "ipa": "ɪ",
+       "start_s": 5.175,
+       "dur_ms": 50,
+       "voiced": true,
+       "pitch_st": 0.0,
+       "loud_db": -1.0
+      },
+      {
+       "ipa": "ŋ",
+       "start_s": 5.225,
+       "dur_ms": 60,
+       "voiced": true,
+       "pitch_st": -1.0,
+       "loud_db": -2.0
+      }
+     ],
+     "end_s": 5.285
+    },
+    {
+     "text": "to",
+     "start_s": 5.285,
+     "phones": [
+      {
+       "ipa": "t",
+       "start_s": 5.285,
+       "dur_ms": 55,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -6.0
+      },
+      {
+       "ipa": "ə",
+       "start_s": 5.34,
+       "dur_ms": 40,
+       "voiced": true,
+       "pitch_st": -1.0,
+       "loud_db": -3.0
+      }
+     ],
+     "end_s": 5.38
+    },
+    {
+     "text": "the",
+     "start_s": 5.38,
+     "phones": [
+      {
+       "ipa": "ð",
+       "start_s": 5.38,
+       "dur_ms": 35,
+       "voiced": true,
+       "pitch_st": -1.0,
+       "loud_db": -3.0
+      },
+      {
+       "ipa": "ə",
+       "start_s": 5.415,
+       "dur_ms": 45,
+       "voiced": true,
+       "pitch_st": -1.5,
+       "loud_db": -3.0
+      }
+     ],
+     "end_s": 5.46
+    },
+    {
+     "text": "party",
+     "start_s": 5.46,
+     "phones": [
+      {
+       "ipa": "p",
+       "start_s": 5.46,
+       "dur_ms": 90,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": 3.0
+      },
+      {
+       "ipa": "ɑ",
+       "start_s": 5.55,
+       "dur_ms": 230,
+       "voiced": true,
+       "pitch_st": 8.0,
+       "loud_db": 9.0
+      },
+      {
+       "ipa": "ɹ",
+       "start_s": 5.78,
+       "dur_ms": 70,
+       "voiced": true,
+       "pitch_st": 5.0,
+       "loud_db": 3.0
+      },
+      {
+       "ipa": "ɾ",
+       "start_s": 5.85,
+       "dur_ms": 30,
+       "voiced": true,
+       "pitch_st": 2.0,
+       "loud_db": 0.0
+      },
+      {
+       "ipa": "i",
+       "start_s": 5.88,
+       "dur_ms": 110,
+       "voiced": true,
+       "pitch_st": 0.0,
+       "loud_db": -1.0
+      }
+     ],
+     "end_s": 5.99
+    },
+    {
+     "text": "tonight",
+     "start_s": 5.99,
+     "phones": [
+      {
+       "ipa": "t",
+       "start_s": 5.99,
+       "dur_ms": 50,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -6.0
+      },
+      {
+       "ipa": "ə",
+       "start_s": 6.04,
+       "dur_ms": 45,
+       "voiced": true,
+       "pitch_st": -1.0,
+       "loud_db": -3.0
+      },
+      {
+       "ipa": "n",
+       "start_s": 6.085,
+       "dur_ms": 60,
+       "voiced": true,
+       "pitch_st": -1.5,
+       "loud_db": -3.0
+      },
+      {
+       "ipa": "aɪ",
+       "start_s": 6.145,
+       "dur_ms": 220,
+       "voiced": true,
+       "pitch_st": 5.0,
+       "loud_db": 3.0
+      },
+      {
+       "ipa": "t",
+       "start_s": 6.365,
+       "dur_ms": 80,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -8.0
+      }
+     ],
+     "end_s": 6.445
+    }
+   ]
+  }
+ ]
+}

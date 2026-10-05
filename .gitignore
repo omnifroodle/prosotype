@@ -1,0 +1,20 @@
+# Environments and model caches (multi-GB, local only)
+.venv/
+.hf-cache/
+__pycache__/
+*.pyc
+.DS_Store
+
+# Audio stays local: the owner's voice recordings are not published
+*.m4a
+*.wav
+*.aiff
+*.mp3
+
+# Generated
+*.prs
+prototype/samples/**/*.html
+
+# Downloaded during setup (see prototype/README.md)
+prototype/fonts/*.ttf
+prototype/data/cmudict.dict

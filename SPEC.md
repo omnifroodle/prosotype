@@ -1,0 +1,476 @@
+# ProsoType specification
+
+Draft 0.2, 2026-10-05. All sections drafted. Section 9 records what the prototype measured on the owner's recordings and a synthetic clip. Facts taken from outside the project are listed with their sources in Appendix A; anything not listed there is a design decision of this document.
+
+## 1. Goals, non-goals, consumers
+
+### Goals
+
+1. Write speech as a sequence of IPA phones, each carrying a small, fixed amount of delivery information (pitch, duration, loudness), in a standard way.
+2. Define a compact fixed-width binary form (one symbol per phone) and measure honestly whether phone plus delivery fits in less space than the same speech written as text.
+3. Define a standard visual mapping from delivery to glyph appearance, so the same stream always looks the same.
+4. Show that a local transcription pipeline can produce the format from ordinary recordings with useful accuracy.
+
+### Non-goals for this phase
+
+- Fluent human reading of IPA (see section 8).
+- Resynthesising audio from the format.
+- Languages other than English, tone languages, overlapping speakers.
+- A hosted service.
+
+### Intended consumers
+
+| Consumer | Uses |
+|---|---|
+| Readers who are deaf or hard of hearing | The rendered form: what was said and how it was said. |
+| Readers with limited access to audio (noisy, silent or bandwidth-poor settings) | The rendered form, or the packed stream decoded locally. |
+| Researchers and annotators | The JSON form, which keeps unquantised measurements. |
+| Machines (search, analysis, later resynthesis) | The packed stream or JSON. Phones with pitch, duration and energy are the inputs a FastSpeech 2 style synthesiser conditions on (Appendix A), so the format is a plausible resynthesis input later. |
+
+## 2. Data model
+
+```
+Stream
+ ├─ header: language, phone table id, symbol profile, speakers[]
+ │           speaker: id, median pitch (Hz), mean loudness (dB)
+ └─ utterances[]            one speaker turn
+     ├─ speaker id
+     └─ words[]
+         ├─ orthographic form   (JSON only, for debugging; not in the packed stream)
+         ├─ start, end
+         └─ phones[]
+             ├─ IPA symbol
+             ├─ start time, duration (ms)
+             ├─ voiced (bool)
+             ├─ pitch: semitones relative to the speaker's median pitch; absent if unvoiced or untracked
+             └─ loudness: dB relative to the speaker's mean loudness
+```
+
+Rules:
+
+- Pitch in semitones is `12 * log2(f0 / speaker_median_f0)`. A phone's pitch is the median over the voiced pitch frames inside the phone's span.
+- Loudness is the phone's mean intensity in dB minus the speaker's mean vowel intensity (so a typical vowel is 0 dB).
+- Times inside a word are contiguous: a phone starts where the previous one ended. Silence is represented only between words (pauses), never inside a word.
+- Stress and length are not separate fields. They are carried by delivery (duration, pitch, loudness). IPA stress and length marks are stripped when phones are looked up in the phone table.
+
+## 3. Packed symbol stream
+
+### 3.1 Symbol layout
+
+Every symbol has the same width *W* (8, 12 or 16 bits). The top 6 bits are the **code**. The remaining *W*−6 bits are the **payload**.
+
+```
+ MSB                                         LSB
+ [ code: 6 ][ payload: W-6                     ]
+```
+
+- For a phone code, the payload holds delivery fields in the order `flag | pitch | duration | loudness`, most significant first. Any field may have zero width.
+- For a reserved code, the whole payload is that code's argument.
+- Symbols are concatenated into a big-endian bit stream with no padding between them. If the stream does not end on a byte boundary, it is padded with zero bits. The header records the symbol count, so padding is never read as a symbol.
+
+### 3.2 Reserved codes
+
+| Code | Name | Payload |
+|---|---|---|
+| 0 | PAD | ignored |
+| 1 | WORD | pause before the next word (profiles *a* only), see 3.5 |
+| 2 | PAUSE | pause length, see 3.5 |
+| 3 | TURN | speaker index into the header's speaker list. Starts every utterance. |
+| 4 | ESC | none. The next symbol is a phone from the header's extension table: its code field is an index into that table and its payload is the phone's delivery. |
+| 5–7 | | reserved |
+| 63 | | reserved (keeps the 16-bit space mappable onto one Unicode private-use plane, see 3.8) |
+
+### 3.3 Phone table `en-1`
+
+Codes 8 to 62. 55 phones, enough for General American and Southern British English in the broad-to-moderately-narrow detail that a phone recogniser produces. Anything else goes through ESC.
+
+| Codes | Phones |
+|---|---|
+| 8–33 consonants | p b t d k ɡ ʔ ɾ f v θ ð s z ʃ ʒ h tʃ dʒ m n ŋ l ɹ w j |
+| 34–36 syllabic | n̩ l̩ m̩ |
+| 37–53 monophthongs | i ɪ e ɛ æ a ɑ ɒ ɔ o ʊ u ʌ ə ɚ ɜ ɐ |
+| 54–62 diphthongs | eɪ aɪ ɔɪ aʊ oʊ əʊ ɪə ɛə ʊə |
+
+Folded before lookup: length and stress marks (ː ˑ ˈ ˌ) are removed; `g→ɡ`, `r→ɹ`, `ɫ→l`, `ɝ→ɚ`, `ᵻ→ɪ`, `ɹ̩→ɚ`, `ʧ/t͡ʃ→tʃ`, `ʤ/d͡ʒ→dʒ`. This table is a starting point. It will be revised after seeing which phones the recogniser actually emits (section 9).
+
+### 3.4 Profiles and quantisation
+
+A **profile** fixes the symbol width and the word-boundary option. Six profiles are defined. `16a` is the reference profile, and the standard visual mapping (section 5) shows its levels.
+
+| Profile | Width | Boundary | Flag | Pitch | Duration | Loudness |
+|---|---|---|---|---|---|---|
+| 16a | 16 | WORD symbol | – | 4 | 3 | 3 |
+| 16b | 16 | start flag | 1 | 4 | 3 | 2 |
+| 12a | 12 | WORD symbol | – | 3 | 2 | 1 |
+| 12b | 12 | start flag | 1 | 3 | 2 | – |
+| 8a | 8 | WORD symbol | – | 2 | – | – |
+| 8b | 8 | start flag | 1 | 1 | – | – |
+
+In the *b* profiles, the flag bit comes out of the least valuable field. For loudness, which is partly redundant with pitch and the weakest perceptual cue of the three, that is loudness first and then duration. Pitch keeps its bits because intonation (statement versus question) is the delivery feature most often lost in text.
+
+**Pitch**, in semitones from the speaker's median:
+
+| Bits | Levels | Meaning |
+|---|---|---|
+| 4 | 0 = unvoiced or untracked; 1–15 = (level−8) × 1.5 st, so −10.5 to +10.5, 8 = median | |
+| 3 | 0 = unvoiced; 1–7 = (level−4) × 3 st, so −9 to +9 | |
+| 2 | 0 = unvoiced; 1–3 = −4, 0, +4 st (boundaries at ±2) | low / mid / high |
+| 1 | 1 = more than 2 st above median, 0 = anything else | prominence only; voicing then comes from the phone table |
+
+Values outside the range are clipped to the end levels.
+
+**Duration**, nearest level on a log scale:
+
+| Bits | Level centres (ms) |
+|---|---|
+| 3 | 30, 45, 65, 95, 140, 200, 300, 450 |
+| 2 | 45, 95, 200, 450 |
+
+**Loudness**, in dB from the speaker's mean:
+
+| Bits | Levels |
+|---|---|
+| 3 | −12 to +9 in 3 dB steps (level 4 = 0 dB) |
+| 2 | −12, −6, 0, +6 |
+| 1 | 1 = more than 3 dB above mean ("loud"), 0 = otherwise |
+
+Decoding returns each level's centre value. Quantising a centre value again gives the same level, which is what makes the round trip below exact.
+
+### 3.5 Word boundaries and pauses
+
+Two options are defined and both are measured.
+
+- **(a) WORD symbol.** Between consecutive words of an utterance there is exactly one WORD symbol. Its payload is the pause before the next word (0 = none). Costs one symbol per word boundary.
+- **(b) Start flag.** The first phone of each word has its flag bit set. There are no WORD symbols. A PAUSE symbol is inserted only where there is an audible pause.
+
+Pause payloads use *L* = 2^(W−6) − 1 levels spaced geometrically from 100 ms to 3200 ms. Gaps under about 71 ms (100/√2) count as no pause. Longer gaps are split across several symbols, each carrying the largest level, with the remainder in the last one. Pauses before an utterance (including the start of the stream) are always PAUSE symbols placed before its TURN.
+
+This is a correction to the original planning note. Option (b) cannot drop pause information altogether, otherwise timing drifts and hesitations disappear. It therefore pays one extra symbol per audible pause instead of one per word.
+
+Known losses of option (b): a word with no recognised phones disappears entirely. Option (a) keeps it as an empty slot between two WORD symbols.
+
+### 3.6 Container
+
+```
+"PRS" 0x01                 magic + version
+u8   profile id            width | 0x80 if option b
+str  phone table id        u8 length + UTF-8
+u8   speaker count
+  per speaker: str id, u16 median f0 (0.1 Hz), i16 mean loudness (0.1 dB)
+u8   extension phone count
+  per phone: str IPA
+u32  symbol count
+...  body (packed symbols)
+```
+
+For one speaker and no extension phones, the header is 23 bytes. It is reported separately from the body in all measurements.
+
+### 3.7 Lossless at quantised resolution
+
+The required property, checked by `prototype/test_pack.py` for every profile:
+
+1. `encode(json)` produces bytes *B₁*.
+2. `decode(B₁)` produces JSON *J₂* (centre values, reconstructed times).
+3. `encode(J₂)` produces exactly *B₁* again, and decoding that gives exactly *J₂*.
+
+Reconstructed times are cumulative: each phone takes its duration level's centre, and each pause takes its level's centre. Absolute times therefore drift from the original by the accumulated quantisation error. The JSON form keeps true times.
+
+### 3.8 Size estimates
+
+The planning figures below assumed 3.5 phones per word. Measured values are 3.1 to 3.3, so the measured sizes in section 9.1 come out slightly smaller.
+
+| Profile | Symbols/word | Bytes/word |
+|---|---|---|
+| 16b | ≈3.5 + pauses | ≈7.0 |
+| 16a | ≈4.5 | ≈9.0 |
+| 12b | ≈3.5 + pauses | ≈5.3 |
+| 12a | ≈4.5 | ≈6.8 |
+| 8b | ≈3.5 + pauses | ≈3.5 |
+| 8a | ≈4.5 | ≈4.5 |
+
+Text reference: measured at 5.1 to 5.6 bytes per word in ASCII/UTF-8 (including the space and punctuation), and twice that in UTF-16.
+
+The hand-written sample (`prototype/samples/party_three_ways.json`, three deliveries of a six-word sentence, 60 phones) gives exactly 80 symbols in the *a* profiles and 66 in the *b* profiles: per delivery, 1 TURN, 20 phones and 5 WORDs; 2 PAUSEs between deliveries; and in *b*, 1 extra PAUSE for a 150 ms gap. That is 160 / 132 / 120 / 99 / 80 / 66 body bytes for 16a / 16b / 12a / 12b / 8a / 8b.
+
+### 3.9 Unicode private-use form (discussion)
+
+Purpose: let a stream live in ordinary text files, chat messages and databases.
+
+- **16-bit profiles.** Supplementary Private Use Area-A (plane 15, U+F0000–U+FFFFD) holds 65,534 code points, two short of 2¹⁶ because U+FFFFE and U+FFFFF are noncharacters. Reserving phone code 63 (3.2) makes every used symbol fit: symbol *s* maps to U+F0000 + *s*. Each symbol is 4 bytes in UTF-8 and 4 in UTF-16 (a surrogate pair), double the packed size.
+- **12-bit profiles.** These fit in the BMP Private Use Area (U+E000–U+F8FF, 6,400 code points): 3 bytes in UTF-8, 2 in UTF-16.
+- **8-bit profiles.** These could use the same BMP range at the same cost, which is worse than the packed form by 3×.
+
+Consequences:
+
+- The text form gives up the size claim. At about 4.5 symbols per word, a 16a stream costs about 18 UTF-8 bytes per word against about 5.6 for plain text. It is an interchange form, not a compact one.
+- Display still needs a renderer that decodes symbols into styled IPA glyphs. A font that drew each 16-bit symbol directly would need about 56,000 glyphs (55 phones × 1,024 payloads). That is inside OpenType's 65,535-glyph limit, but impractical, and it would fix one visual mapping into the font.
+- Private-use code points have no agreed meaning. Any system that normalises, filters or substitutes fonts may mangle them silently.
+
+Recommendation: keep the packed binary form canonical, and treat PUA text as an optional transport encoding.
+
+## 4. JSON form
+
+The JSON form holds unquantised measurements and everything in the data model. It is the format `transcribe.py` writes and `render.py` reads.
+
+```json
+{
+  "prosotype": "0.1",
+  "language": "en",
+  "phone_table": "en-1",
+  "source": {"audio": "samples/clip.wav", "note": "free text"},
+  "speakers": {"S1": {"f0_median_hz": 120.0, "loudness_mean_db": 62.0}},
+  "utterances": [
+    {
+      "speaker": "S1",
+      "label": "optional",
+      "words": [
+        {
+          "text": "party",
+          "start_s": 0.52, "end_s": 0.90,
+          "phones": [
+            {"ipa": "p", "start_s": 0.52, "dur_ms": 70, "voiced": false, "pitch_st": null, "loud_db": -6.0},
+            {"ipa": "ɑ", "start_s": 0.59, "dur_ms": 120, "voiced": true, "pitch_st": 1.5, "loud_db": 3.0}
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+- `pitch_st` is `null` when the phone is unvoiced or no pitch was tracked.
+- `ipa` may be any IPA string. It is folded (3.3) when packed, and phones outside the table go to the extension table.
+- Decoding a packed stream produces the same shape with `text: null`, centre values, reconstructed times, and a `profile` field.
+
+## 5. Standard visual mapping
+
+Both candidates draw IPA glyphs only, in one variable font (Noto Sans, axes `wght` 100–900 and `wdth` 62.5–100; see Appendix A), at the 16a levels. Both are implemented in `prototype/render.py`.
+
+### Mapping A (owner's proposal)
+
+| Feature | Visual variable | Levels |
+|---|---|---|
+| Pitch (4 bits) | Colour. Hue blue below the median and orange above. Chroma grows with distance from the median. Lightness is held constant so every level has the same contrast. Median = text colour; unvoiced = muted grey. | 16 |
+| Duration (3 bits) | Font size: 0.72, 0.80, 0.90, 1.00, 1.12, 1.26, 1.41, 1.60 em | 8 |
+| Loudness (3 bits) | Weight: 300, 325, 350, 400, 500, 600, 750, 900 (400 = 0 dB; floor 300, see 6.3) | 8 |
+
+### Mapping B
+
+| Feature | Visual variable | Levels |
+|---|---|---|
+| Pitch (4 bits) | Vertical offset from the baseline, 0.075 em per level (±0.525 em). A faint guide line marks the speaker's median pitch (the baseline) under each word. Unvoiced glyphs are muted grey and drawn at the height of the preceding voiced phone, so height changes only where pitch does. | 16 |
+| Duration (3 bits) | Width axis 62.5, 70, 78, 86, 94, 100, 100, 100, plus extra tracking of 0.06 em and 0.14 em on the two longest levels. Noto Sans can only narrow, not widen, so the longest levels need tracking. | 8 |
+| Loudness (3 bits) | Weight, as in A | 8 |
+| Colour | Free. Reserved for speaker or voice quality. | |
+
+Pauses in both: a gap whose width grows with log(pause length), bounded by faint rules.
+
+### Prior art
+
+Mapping B matches the "speech-modulated typography" of de Lacerda Pataca and Costa (2022): loudness to weight, pitch to baseline shift, duration to letter-spacing. It was later evaluated with 16 deaf and hard-of-hearing participants (de Lacerda Pataca et al., CHI 2023). WaveFont (Wölfel, Stitz, Schlippe) maps loudness to weight and speed to width. Rosenberger's Prosodic Font (MIT, 1998) mapped intensity to weight and size together. None of these used pitch as colour. Mapping A's main channel is therefore the less tested one.
+
+### Rules learned from recorded speech
+
+The two rules in mapping B's pitch row came from the owner's recordings (section 9.3):
+
+- **Guide line.** Without a reference, a whole utterance spoken high (the sarcastic take) reads as a uniform shift that the eye cannot see.
+- **Unvoiced height.** Unvoiced glyphs drawn at the median made voiceless consonants look like pitch jumps inside low or high phrases.
+
+## 6. Accessibility constraints
+
+Measured on `prototype/render.py`'s output. Contrast is WCAG 2 relative luminance. Colour differences are ΔE in OKLab (×100, where about 2 is a just-noticeable difference), with colour-vision deficiency simulated by the Machado et al. (2009) matrices at full severity.
+
+### 6.1 Colour is never the only channel
+
+The standard mapping must survive greyscale print, colour-blind readers and monochrome displays. In mapping A, pitch is carried only by colour. In greyscale it disappears completely: the question's rise and the flat take's fall become indistinguishable (`docs/img/recorded_grey.png`). Mapping B carries every feature without colour. Consequently:
+
+- **Rule:** a delivery feature in the standard mapping must be shown by size, position, width or weight. Colour may only repeat a feature already shown another way, or carry non-delivery information (speaker).
+
+### 6.2 Contrast
+
+| Glyph colour | Light theme | Dark theme |
+|---|---|---|
+| Pitch colours (A), 15 levels | 5.9 to 17.2 : 1 | 7.7 to 14.6 : 1 |
+| Unvoiced grey (A and B) | 5.2 : 1 (raised from 4.5) | 6.2 : 1 |
+
+- **Rule:** every glyph colour must be at least 4.5 : 1 against its background in every theme. Lightness is held constant across the pitch scale (A) so that no level becomes harder to read than another.
+
+### 6.3 Size and weight floors
+
+- Duration shrinks glyphs to 0.72 em at the shortest level. **Rule:** the base size must be at least 22 px on screen (10.5 pt in print), so that the smallest glyph is at least 16 px.
+- Quiet speech thins glyphs. **Rule:** the minimum weight is 300. The prototype originally used 250, which breaks up at small sizes.
+- B's vertical step is 0.075 em per level, which is 1.7 px at a 22 px base. Adjacent pitch levels are not separable by eye at that size, but contours and range (±11.5 px) are. **Rule:** line height of at least 2.3 so raised and lowered glyphs never collide with adjacent lines.
+
+### 6.4 Colour-blind safety (when colour is used for pitch)
+
+| Vision | Adjacent levels, ΔE min / median | −4.5 st vs +4.5 st | Ends of scale |
+|---|---|---|---|
+| Typical | 1.9 / 2.2 | 18.7 | 32.6 |
+| Protan | 1.1 / 2.0 | 15.6 | 27.3 |
+| Deutan | 0.3 / 1.9 | 16.9 | 28.1 |
+| Tritan | 0.8 / 2.4 | 20.4 | 30.1 |
+
+Light theme shown; the dark theme is similar (minimum adjacent ΔE 0.1 to 1.3). The blue/orange scale keeps "below median" and "above median" clearly apart for every type of colour vision. But adjacent levels are at or below the threshold of perception even for typical vision. Colour reliably carries 3 to 5 pitch bands, not 15.
+
+- **Rule:** if colour is used as a redundant pitch layer, quantise it to 5 bands: well below, below, median, above, well above.
+
+### 6.5 Monochrome print fallback
+
+| Element | Mapping B in monochrome |
+|---|---|
+| Pitch, duration, loudness | Unchanged (height, width, weight). |
+| Median guide line | Printed as a light grey hairline. |
+| Unvoiced glyphs | Printed as mid grey. |
+| Speaker colour | Replaced by a speaker label at the start of each utterance. |
+| Pauses | Unchanged (gap width with rules). |
+
+## 7. Transcription pipeline architecture
+
+As built in `prototype/transcribe.py`, which runs locally on an Apple M4 (16 GB). A 26 s clip takes about 20 s once the models are cached. The models take about 4 GB on disk and are kept in `.hf-cache/` on the project drive.
+
+```
+audio ──ffmpeg──► 16 kHz mono
+   │
+   ├─► Whisper large-v3-turbo (mlx-whisper) ──► words + segments (utterances)
+   │
+   ├─► wav2vec2-lv-60-espeak-cv-ft (CTC, 20 ms frames, MPS) ──► phone spikes
+   │        spikes mark phone ONSETS (checked against Praat on test clips);
+   │        a phone runs from its spike to the next, cut at pauses
+   │        (≥120 ms more than 25 dB below the recording's loud end;
+   │        a stop keeps ≤60 ms of closure)
+   │
+   ├─► label clean-up: split "ɑːɹ"→ɑ ɹ etc., fold length marks, merge "ɑːɹ ɹ"
+   │
+   ├─► CMUdict pronunciations of Whisper's words ──► edit-distance alignment
+   │        recognised phones → words (also yields as-spoken vs dictionary
+   │        differences)
+   │
+   └─► Praat via parselmouth: F0 (autocorrelation, 60–500 Hz, 10 ms), intensity
+            per phone: median F0 of voiced frames; mean intensity (power domain)
+            speaker baselines over all input files: median F0 of voiced phones,
+            mean intensity of vowels
+```
+
+Several files of one speaker can be passed together. They share one set of baselines, which is required for comparing deliveries: normalising each file separately hides a register shift.
+
+### Expected error sources
+
+| Source | Effect | Seen in |
+|---|---|---|
+| Quiet, creaky utterance ends (vocal fry) | Phones misrecognised or dropped. Pitch tracking unreliable at 80–90 Hz. | All three "tonight"s in the owner's recordings. |
+| Unreleased final stops | Final /t/ dropped or replaced. | question, sarcastic |
+| Phone recogniser substitutions | Wrong phone with the right timing: /w/→/h/, /v/→/b/, /n/→/m/, /aɪ/→/æ/, /aɪ/→/ɑɹ/. | flat, question, synthetic |
+| Real connected-speech variants | Not errors, but they show as dictionary differences: flapped /t/, "goin'" /n/, reduced "to" /tə/, full /æ/ in "and". | all |
+| Onset-to-onset durations | The phone before a pause absorbs any trailing frames. Durations have not been checked against hand labels (8.2). | – |
+| Recording gain and distance | Loudness across separately recorded files is not comparable. The three takes have noise floors of 37, 51 and 42 dB. | owner's recordings |
+| Per-phone median pitch | A pitch movement inside one long vowel is reduced to its middle value. | question /aɪ/ in synthetic clip |
+| Whisper word errors | Wrong words give wrong dictionary pronunciations. This only affects word assignment, not the phones themselves. | none observed (one OOV: "9") |
+
+**Fallback (not needed so far).** Dictionary pronunciation plus HMM forced alignment (Montreal Forced Aligner) would give better boundaries but canonical rather than as-spoken phones. It also needs a conda install. The CMUdict alignment already in the pipeline provides the canonical phones if this is ever wanted.
+
+## 8. Known limitations and open questions
+
+**Readability (deferred).** Fluent human reading of IPA is unlikely for most readers, and this format as it stands does not address that. It is acknowledged and deliberately left to later work. This phase neither tests it nor designs around it.
+
+1. **Evidence base is small.** It consists of three short recorded utterances from one speaker, plus synthetic speech. The planned 30–60 s of natural recorded speech is still outstanding. All error rates below are indicative, not estimates.
+2. **Durations are unvalidated.** Phone boundaries come from CTC onset spikes and have not been compared with hand-labelled or forced-aligned boundaries.
+3. **Pitch inside a phone.** One value per phone flattens rises and falls within long vowels. Open question: is a 1–2 bit pitch-slope field worth more than a loudness bit?
+4. **Loudness is session-relative.** It is only meaningful within one recording setup. A stream should either declare its recording conditions or use per-session baselines.
+5. **One speaker, no diarisation.** TURN symbols and speaker baselines exist, but nothing assigns speakers yet.
+6. **English only.** The phone table, CMUdict and the label clean-up are all English-specific. No out-of-table (ESC) phones occurred in any sample, but the table has seen fewer than 400 phones.
+7. **Option (b) drops words with no recognised phones,** and packed timestamps drift by accumulated quantisation error (3.7).
+8. **Rendering is only judged by the authors.** No reader has seen it. Prior work with deaf and hard-of-hearing readers suggests B-style captions are understood (Appendix A), but the IPA form is untested by design (see the readability note above).
+
+## 9. Findings
+
+Samples: the owner's recordings (`samples/flat.m4a`, `question.m4a`, `sarcastic.m4a`; one speaker; 19 words; transcribed together as `recorded_three_ways.json`), a 26 s synthetic paragraph (`samples/smoke/say_natural.wav`, macOS `say`; useful for sizes, not prosody), and the hand-written sample. The flat take uses a different sentence ("We are going to the movie tonight") from the other two.
+
+### 9.1 Encoding size
+
+Bytes per word, body only (the 23-byte header is excluded):
+
+| Form | Recorded (19 words) | Synthetic (87 words) | bit/s, synthetic |
+|---|---|---|---|
+| packed 16a | 8.53 | 8.74 | 237 |
+| packed 16b | 6.84 | 6.99 | 189 |
+| packed 12a | 6.42 | 6.55 | 177 |
+| packed 12b | 5.16 | 5.24 | 142 |
+| packed 8a | 4.26 | 4.37 | 118 |
+| packed 8b | 3.42 | 3.49 | 95 |
+| text, UTF-8 | 5.47 | 5.14 | 139 |
+| text, UTF-16 | 10.95 | 10.28 | 278 |
+| text UTF-8 + zlib | 3.05 | 3.30 | – |
+| packed 12b + zlib | 5.74 | 5.37 | – |
+| packed 8b + zlib | 3.63 | 3.29 | – |
+| Codec 2 700C | 44.0 | 29.5 | 799 |
+| Opus 6 kbit/s (Ogg) | 389 | 245 | 6,644 |
+
+Measured: 3.1 to 3.3 phones per word, 5.1 to 5.5 characters per word, 11 phones/s in continuous (synthetic) speech. The recorded clips have about 1 s of silence each, which inflates the audio figures per word.
+
+- **Against text, raw.** 8b is about 35% smaller than ASCII text and 12b is about the same size. 16b is 1.3× text and 16a is 1.6×. All profiles beat UTF-16 text. The claim "phone plus delivery fits in the space of text" holds at 12 bits or below with the word-start flag.
+- **Against text, compressed.** The claim does not survive: zlib brings text to about 3.0–3.3 bytes per word, while the packed streams barely compress (their bits are already dense and not byte-aligned). xz figures are dominated by container overhead at these sizes and are in `samples/bitrate_results.json`.
+- **Option (b) beats (a).** It is 18–20% smaller at every width, because audible pauses are much rarer than word boundaries.
+- **Against audio.** 16a at about 240 bit/s is 3.4× smaller than Codec 2 700C, the lowest mode in the current Codec 2 release, and 28× smaller than Opus at 6 kbit/s. 8b at about 95 bit/s is 8× smaller than Codec 2. This is not like-for-like: the stream cannot be played back without a synthesiser (out of scope).
+
+### 9.2 Transcription quality
+
+| Clip set | Phones match dictionary | Substitutions | Insertions | Deletions |
+|---|---|---|---|---|
+| Owner's recordings (64 dictionary phones) | 40 (63%) | 18 | 1 | 5 |
+| Synthetic paragraph (284) | 249 (88%) | 27 | 6 | 7 |
+
+A difference from the dictionary is not always an error (section 7 table). On the recordings, about a third of the differences are genuine as-spoken variants (flaps, "goin'", reduced vowels). The rest are recogniser errors, concentrated at utterance ends: all three takes of "tonight" are damaged. Whisper's words were correct in every clip. Pitch extraction recovered what the takes were meant to show, with one shared baseline (122 Hz):
+
+| Take | Pitch | Duration and loudness |
+|---|---|---|
+| Flat | Low and falling, −1 to −6.5 st | Vowels 3–10 dB below the speaker mean (partly recording gain) |
+| Question | Level, then rising through "tonight" from +7 to +13 st | – |
+| Sarcastic | Raised throughout, +2 to +5 st | Lengthened "you're" (360 ms against 180 ms in the question); loud stressed "par-" (+8 dB) |
+
+### 9.3 Visual mappings
+
+Screenshots: `docs/img/recorded_colour.png`, `docs/img/recorded_grey.png`, `docs/img/recorded_dark.png`.
+
+| | Mapping A (colour, size, weight) | Mapping B (height, width, weight) |
+|---|---|---|
+| Question rise | Visible as a blue→orange ramp. The direction must be decoded from hue. | Immediately visible as a rising contour. |
+| Sarcastic register shift | Very clear: the whole line turns orange. | Visible only with the median guide line (added after this test). |
+| Lengthened "you're" | Clear (size). | Present but subtle (width can only narrow, so long phones gain tracking). |
+| Loudness | Weight; clear in both mappings. | Same. |
+| Greyscale | **Loses pitch entirely.** | Unchanged. |
+| Colour-blind | Coarse bands only (6.4). | Unaffected. |
+| Prior art | None for pitch-as-colour. | Matches published speech-modulated typography. |
+
+**Recommendation:** adopt **mapping B** as the standard, with the guide line and unvoiced-height rule. Allow A's pitch colour only as an optional redundant layer, reduced to 5 bands (6.4), for single-speaker screen use where colour is not needed for speakers.
+
+### 9.4 Go / adjust / stop (technical questions only)
+
+| Question | Call | Reason |
+|---|---|---|
+| Encoding size | **Adjust** | The raw fixed-width claim holds at 12 and 8 bits with the start flag, but not at 16 bits, and not against compressed text. Make 12b or 16b the reference profile and option (b) the standard boundary. If "smaller than compressed text" matters, the next step is entropy coding (pitch as deltas, phone n-grams) rather than wider symbols. |
+| Transcription | **Adjust** | Words and pitch are dependable. Phones are good in clear speech but degrade at quiet utterance ends, and durations are unvalidated. Next steps: the 30–60 s natural recording, a hand-labelled check of boundaries on a few utterances, and either a stronger phone model or a dictionary-constrained decode for low-confidence spans. |
+| Rendering | **Go** | Mapping B separates all three deliveries in light, dark and greyscale, meets the contrast and size floors, and has precedent. |
+
+Overall: **go, with the adjustments above.** Nothing found so far makes the idea technically unviable.
+
+---
+
+## Appendix A. Verified background
+
+Status of the claims carried over from the planning notes, checked 2026-10-05.
+
+| Claim | Status | Detail |
+|---|---|---|
+| `facebook/wav2vec2-lv-60-espeak-cv-ft` recognises phones | Verified | Multilingual CTC phoneme recogniser fine-tuned on Common Voice, 16 kHz input, espeak-style IPA labels (392 tokens, including English diphthongs and r-coloured vowels as single tokens), Apache-2.0. Measured accuracy: section 9.2. |
+| Allosaurus | Exists | Universal phone recogniser, `pip install allosaurus`, ICASSP 2020. Timestamp output not yet checked. |
+| WhisperX | Verified | Whisper transcription plus word timestamps by wav2vec2 forced alignment, with optional pyannote diarisation. |
+| Montreal Forced Aligner | Verified | Installed with conda. Pretrained `english_us_arpa` acoustic model and dictionary. Canonical phones. |
+| parselmouth | Verified | `pip install praat-parselmouth`. Exposes Praat's own `to_pitch` and `to_intensity`. |
+| pYIN | Not checked | Only needed if parselmouth is unsuitable. |
+| Noto Sans is variable with weight and width axes, full IPA | Verified by inspecting the font file | `NotoSans[wdth,wght].ttf` from google/fonts: `wght` 100–900, `wdth` 62.5–100 (narrowing only). Covers all of IPA Extensions (U+0250–02AF), Spacing Modifier Letters (U+02B0–02FF) and Combining Diacritical Marks (U+0300–036F). |
+| ≈12 phones/s; ≈3.5 phones/word; ≈5.6 chars/word | Measured | 3.1–3.3 phones/word, 5.1–5.5 chars/word, about 11 phones/s on the samples (section 9.1). 10–15 phonemes/s is the usual cross-language figure. |
+| Lowest conventional speech codecs ≈700 bit/s | Verified, with a caveat | Codec 2 lists 700C and an experimental 450 bit/s mode, but the current release (1.2.0, installed here) offers 700C as its lowest. Opus goes down to 6 kbit/s. |
+| FastSpeech 2 conditions on phones + pitch + duration + energy | Verified | Its variance adaptor adds duration, pitch and energy to the phoneme hidden sequence. |
+| Prior art | Verified | In de Lacerda Pataca & Costa's study, 117 participants matched speech-modulated captions to their source audio 65% of the time on average, whether the text was animated or static. Rosenberger-Shankar, *Prosodic Font*, MIT MAS thesis, 1998. de Lacerda Pataca & Costa, "Hidden bawls, whispers, and yelps", arXiv:2202.10631, 2022. de Lacerda Pataca, Watkins, Peiris, Lee, Huenerfauth, "Visualization of Speech Prosody and Emotion in Captions", CHI 2023, doi:10.1145/3544548.3581511. Wölfel, Stitz, Schlippe, WaveFont. |
+
+Sources: [wav2vec2 model listing](https://www.promptlayer.com/models/wav2vec2-lv-60-espeak-cv-ft), [Allosaurus](https://github.com/xinjli/allosaurus), [WhisperX on PyPI](https://pypi.org/project/whisperx), [MFA docs](https://montreal-forced-aligner.readthedocs.io/en/v3.2.0/getting_started.html), [parselmouth](https://pypi.org/project/praat-parselmouth), [Codec 2](https://en.wikipedia.org/wiki/Codec_2), [FastSpeech 2](https://arxiv.org/abs/2006.04558), [Prosodic Font](https://dspace.mit.edu/handle/1721.1/62340), [arXiv:2202.10631](https://arxiv.org/abs/2202.10631), [CHI 2023 paper](https://digitalcommons.njit.edu/fac_pubs/1776), [WaveFont](https://nafath.mada.org.qa/nafath-article/wavefont-visualization-of-information-and-emotions-from-the-voice-in-captions/), [speaking-rate summary](https://virtualspeech.com/blog/average-speaking-rate-words-per-minute).
