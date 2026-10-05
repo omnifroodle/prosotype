@@ -11,6 +11,10 @@ Draft 0.3, 2026-10-05. © 2026 Matt Overstreet, licensed under [CC BY 4.0](LICEN
 3. Define a standard visual mapping from delivery to glyph appearance, so the same stream always looks the same.
 4. Show that a local transcription pipeline can produce the format from ordinary recordings with useful accuracy.
 
+### Positioning
+
+Each part of ProsoType has precedent: Bolinger's height-based intonation notation, caption typography that maps loudness to weight, phonetic vocoders that send one symbol per speech unit with its pitch, duration and power, and intonation alphabets like INTSINT. What ProsoType adds is the combination, as a single open standard: phone-level IPA with delivery on every phone, a normative fixed-width stream, a standard rendering and automatic transcription. See Appendix B.
+
 ### Non-goals for this phase
 
 - Fluent human reading of IPA (see section 8).
@@ -335,7 +339,7 @@ Pauses in both: a gap whose width grows with log(pause length), bounded by faint
 
 ### Prior art
 
-Mapping B matches the "speech-modulated typography" of de Lacerda Pataca and Costa (2022): loudness to weight, pitch to baseline shift, duration to letter-spacing. It was later evaluated with 16 deaf and hard-of-hearing participants (de Lacerda Pataca et al., CHI 2023). WaveFont (Wölfel, Stitz, Schlippe) maps loudness to weight and speed to width. Rosenberger's Prosodic Font (MIT, 1998) mapped intensity to weight and size together. None of these used pitch as colour. Mapping A's main channel is therefore the less tested one.
+Mapping B is in effect an automated, quantised form of Bolinger's intonation notation, which prints syllables higher or lower on the page as pitch rises and falls (Appendix B). It also matches the "speech-modulated typography" of de Lacerda Pataca and Costa (2022): loudness to weight, pitch to baseline shift, duration to letter-spacing. It was later evaluated with 16 deaf and hard-of-hearing participants (de Lacerda Pataca et al., CHI 2023). WaveFont (Wölfel, Stitz, Schlippe) maps loudness to weight and speed to width. Rosenberger's Prosodic Font (MIT, 1998) mapped intensity to weight and size together. None of these used pitch as colour. Mapping A's main channel is therefore the less tested one.
 
 ### Rules learned from recorded speech
 
@@ -442,12 +446,13 @@ Several files of one speaker can be passed together. They share one set of basel
 
 1. **Evidence base is small.** It consists of three short recorded utterances from one speaker, plus synthetic speech. The planned 30–60 s of natural recorded speech is still outstanding. All error rates below are indicative, not estimates.
 2. **Durations are unvalidated.** Phone boundaries come from CTC onset spikes and have not been compared with hand-labelled or forced-aligned boundaries.
-3. **Pitch inside a phone.** One value per phone flattens rises and falls within long vowels. Open question: is a 1–2 bit pitch-slope field worth more than a loudness bit?
-4. **Loudness is session-relative.** It is only meaningful within one recording setup. A stream should either declare its recording conditions or use per-session baselines.
-5. **One speaker, no diarisation.** TURN symbols and speaker baselines exist, but nothing assigns speakers yet.
-6. **English only.** The phone table, CMUdict and the label clean-up are all English-specific. No out-of-table (ESC) phones occurred in any sample, but the table has seen fewer than 400 phones.
-7. **Option (b) drops words with no recognised phones,** and packed timestamps drift by accumulated quantisation error (3.7).
-8. **Rendering is only judged by the authors.** No reader has seen it. Prior work with deaf and hard-of-hearing readers suggests B-style captions are understood (Appendix A), but the IPA form is untested by design (see the readability note above).
+3. **Pitch inside a phone.** One value per phone flattens rises and falls within long vowels. Open question: is a 1–2 bit pitch-slope field worth more than a loudness bit? Prosogram's perceptual stylisation, which keeps a pitch movement only where a listener would hear it as one, is a candidate model (Appendix B).
+4. **Delivery per phone or per syllable.** Pitch and loudness mostly matter on syllable nuclei, and Hirata and Nakagawa's 1989 vocoder coded delivery once per syllable (Appendix B). Carrying delivery only on vowels would roughly halve the delivery bits, but it breaks the one-symbol-one-width rule. It is worth measuring before the format is frozen beyond container version 1.
+5. **Loudness is session-relative.** It is only meaningful within one recording setup. A stream should either declare its recording conditions or use per-session baselines.
+6. **One speaker, no diarisation.** TURN symbols and speaker baselines exist, but nothing assigns speakers yet.
+7. **English only.** The phone table, CMUdict and the label clean-up are all English-specific. No out-of-table (ESC) phones occurred in any sample, but the table has seen fewer than 400 phones.
+8. **Option (b) drops words with no recognised phones,** and packed timestamps drift by accumulated quantisation error (3.7).
+9. **Rendering is only judged by the authors.** No reader has seen it. Prior work with deaf and hard-of-hearing readers suggests B-style captions are understood (Appendix A), but the IPA form is untested by design (see the readability note above).
 
 ## 9. Findings
 
@@ -478,7 +483,7 @@ Measured: 3.1 to 3.3 phones per word, 5.1 to 5.5 characters per word, 11 phones/
 - **Against text, raw.** 8b is about 35% smaller than ASCII text and 12b is about the same size. 16b is 1.3× text and 16a is 1.6×. All profiles beat UTF-16 text. The claim "phone plus delivery fits in the space of text" holds at 12 bits or below with the word-start flag.
 - **Against text, compressed.** The claim does not survive: zlib brings text to about 3.0–3.3 bytes per word, while the packed streams barely compress (their bits are already dense and not byte-aligned). xz figures are dominated by container overhead at these sizes and are in `samples/bitrate_results.json`.
 - **Option (b) beats (a).** It is 18–20% smaller at every width, because audible pauses are much rarer than word boundaries.
-- **Against audio.** 16a at about 240 bit/s is 3.4× smaller than Codec 2 700C, the lowest mode in the current Codec 2 release, and 28× smaller than Opus at 6 kbit/s. 8b at about 95 bit/s is 8× smaller than Codec 2. This is not like-for-like: the stream cannot be played back without a synthesiser (out of scope).
+- **Against audio.** 16a at about 240 bit/s is 3.4× smaller than Codec 2 700C, the lowest mode in the current Codec 2 release, and 28× smaller than Opus at 6 kbit/s. 8b at about 95 bit/s is 8× smaller than Codec 2. These are not the right competitors, though. Neural codecs now resynthesise speech at comparable rates (FocalCodec: 160–650 bit/s, NeurIPS 2025), and phonetic vocoders reached 100–400 bit/s decades ago (Appendix B). ProsoType's size is in the same range as these, not below them. Its difference is that the stream is symbolic: readable, searchable and renderable without a model. It cannot be played back without a synthesiser (out of scope).
 
 ### 9.2 Transcription quality
 
@@ -515,7 +520,7 @@ Screenshots: `docs/img/recorded_colour.png`, `docs/img/recorded_grey.png`, `docs
 
 | Question | Call | Reason |
 |---|---|---|
-| Encoding size | **Adjust** | The raw fixed-width claim holds at 12 and 8 bits with the start flag, but not at 16 bits, and not against compressed text. Make 12b or 16b the reference profile and option (b) the standard boundary. If "smaller than compressed text" matters, the next step is entropy coding (pitch as deltas, phone n-grams) rather than wider symbols. |
+| Encoding size | **Adjust** | Size alone is not a distinguishing claim: phonetic vocoders and neural codecs reach similar rates (Appendix B). The raw fixed-width claim holds at 12 and 8 bits with the start flag, but not at 16 bits, and not against compressed text. Make 12b or 16b the reference profile and option (b) the standard boundary. If "smaller than compressed text" matters, the next step is entropy coding (pitch as deltas, phone n-grams) rather than wider symbols. |
 | Transcription | **Adjust** | Words and pitch are dependable. Phones are good in clear speech but degrade at quiet utterance ends, and durations are unvalidated. Next steps: the 30–60 s natural recording, a hand-labelled check of boundaries on a few utterances, and either a stronger phone model or a dictionary-constrained decode for low-confidence spans. |
 | Rendering | **Go** | Mapping B separates all three deliveries in light, dark and greyscale, meets the contrast and size floors, and has precedent. |
 
@@ -542,3 +547,41 @@ Status of the claims carried over from the planning notes, checked 2026-10-05.
 | Prior art | Verified | In de Lacerda Pataca & Costa's study, 117 participants matched speech-modulated captions to their source audio 65% of the time on average, whether the text was animated or static. Rosenberger-Shankar, *Prosodic Font*, MIT MAS thesis, 1998. de Lacerda Pataca & Costa, "Hidden bawls, whispers, and yelps", arXiv:2202.10631, 2022. de Lacerda Pataca, Watkins, Peiris, Lee, Huenerfauth, "Visualization of Speech Prosody and Emotion in Captions", CHI 2023, doi:10.1145/3544548.3581511. Wölfel, Stitz, Schlippe, WaveFont. |
 
 Sources: [wav2vec2 model listing](https://www.promptlayer.com/models/wav2vec2-lv-60-espeak-cv-ft), [Allosaurus](https://github.com/xinjli/allosaurus), [WhisperX on PyPI](https://pypi.org/project/whisperx), [MFA docs](https://montreal-forced-aligner.readthedocs.io/en/v3.2.0/getting_started.html), [parselmouth](https://pypi.org/project/praat-parselmouth), [Codec 2](https://en.wikipedia.org/wiki/Codec_2), [FastSpeech 2](https://arxiv.org/abs/2006.04558), [Prosodic Font](https://dspace.mit.edu/handle/1721.1/62340), [arXiv:2202.10631](https://arxiv.org/abs/2202.10631), [CHI 2023 paper](https://digitalcommons.njit.edu/fac_pubs/1776), [WaveFont](https://nafath.mada.org.qa/nafath-article/wavefont-visualization-of-information-and-emotions-from-the-voice-in-captions/), [speaking-rate summary](https://virtualspeech.com/blog/average-speaking-rate-words-per-minute).
+
+## Appendix B. Related work and positioning
+
+Reviewed 2026-10-05, to place ProsoType relative to existing ways of writing down or transmitting how something was said. Each of ProsoType's parts has precedent. What this review did not find is the combination: phone-level IPA, carrying quantised pitch, duration and loudness on every phone, in a fixed-width interchange stream with normative quantisation and conformance vectors, a standard typographic rendering, and automatic transcription.
+
+### Notations for intonation and prosody
+
+| Work | What it is | How ProsoType differs |
+|---|---|---|
+| **ToBI** (Tones and Break Indices) | Phonological annotation of pitch accents, boundary tones and break indices on separate tiers, by trained labellers; versions exist for many languages. | ToBI records categories (*what* the intonation means phonologically). ProsoType records quantised measurements of all three delivery features on every phone, automatically. A ToBI layer could be derived from ProsoType data, not the other way round. |
+| **INTSINT / MOMEL** (Hirst) | An 8-symbol alphabet for pitch targets (Top, Higher, Upstepped, Same, Mid, Downstepped, Lower, Bottom), coded automatically from MOMEL target points; meant as an "IPA for intonation". | The closest in spirit to ProsoType's pitch field, but pitch only, at target points rather than on every phone. |
+| **Prosogram** (Mertens) | A Praat-based tool that stylises pitch per syllable nucleus according to a model of tonal perception, and plots it with phone and word tiers and syllable measurements. | Prosogram is an analysis graphic for linguists. ProsoType is a text format and a typographic rendering. Prosogram's perceptual stylisation could improve ProsoType's per-phone pitch (§8). Note the similar name. |
+| **Bolinger's notation** | Ordinary text printed with syllables raised and lowered on the page to follow pitch. It was considered impractical because it needed special typesetting. | Mapping B is this idea automated, quantised and extended to width and weight. Variable fonts and the web remove the typesetting obstacle. |
+| **Jefferson transcription** (conversation analysis) | Inline marks in orthographic text: ↑↓ for pitch shifts, CAPITALS for loud speech, °degree signs° for quiet speech, colons for lengthening, underlining for emphasis, timed pauses. Written by hand and widely used. | Proof that readers can work with prosody embedded in running text. ProsoType's marks are continuous rather than categorical, automatic, and on IPA rather than spelling. |
+| **IPA suprasegmentals and extIPA** | Stress and length marks, Chao tone letters, global rise and fall arrows, and extIPA/VoQS marks for loudness and tempo. | ProsoType strips IPA stress and length marks (3.3) and expresses them through delivery instead. A converter could emit IPA suprasegmentals for readers who expect them. |
+
+### Prosody in typography
+
+| Work | Mapping | How ProsoType differs |
+|---|---|---|
+| Rosenberger-Shankar, *Prosodic Font* (MIT, 1998) | Intensity → weight and size, at word or syllable level | ProsoType works at phone level with standard levels, on IPA. |
+| Lee, Forlizzi & Hudson, *Kinetic Typography Engine* (UIST 2002), and later kinetic-typography work | Animated text conveying emotion | ProsoType is static by design, so that it works in print. |
+| WaveFont (Wölfel, Stitz, Schlippe) | Loudness → weight, speed → width, pauses; evaluated with hearing-impaired and hearing viewers | Orthographic captions, no interchange format. |
+| de Lacerda Pataca & Costa (2022); de Lacerda Pataca et al. (CHI 2023) | Loudness → weight, pitch → baseline shift, duration → letter-spacing. 117 listeners matched captions to their audio 65% of the time; 16 DHH participants evaluated caption styles. | The same mapping as B, on orthography. ProsoType adds phone-level IPA, normative quantisation and a packed stream. |
+
+### Machine formats and low-rate coding
+
+| Work | What it is | How ProsoType differs |
+|---|---|---|
+| **SSML** `<prosody>` (W3C) | XML markup that tells a synthesiser what pitch, rate and volume to use, in coarse values over spans of text | Prescriptive and verbose. ProsoType is descriptive (it measures what was said) and compact. ProsoType JSON could be converted into SSML or phoneme-level synthesiser input. |
+| **Phonetic vocoders.** Hirata & Nakagawa, "A 100 bit/s speech coding using a speech recognition technique" (Eurospeech 1989); Baudoin et al. (ICASSP 2003, ~400 bit/s, corpus-based synthesis); Bistritz et al. (EUSIPCO 2008, <300 bit/s, speaker adaptation) | Recognise speech units, transmit their identity plus prosody, and resynthesise | **Direct precedent for the packed symbol.** Hirata & Nakagawa coded each Japanese syllable as one 16-bit symbol holding syllable category, duration, power and pitch. That is ProsoType's 16-bit design one level up, at syllables rather than phones. The compression idea is therefore not new. ProsoType's contribution is treating the stream as a written form, with a standard rendering and an open, normative definition. |
+| **Neural codecs.** FocalCodec (NeurIPS 2025, 160–650 bit/s); ContextCodec (2026, down to ~500 bit/s) | Learned token streams resynthesised by a neural decoder | Comparable or lower bit rates, and the output is playable audio. Their tokens are opaque and tied to a particular model. ProsoType's symbols mean the same thing to any reader or implementation. |
+
+### Name
+
+There was no existing project, package (PyPI, npm), product or trademark using "ProsoType" in a web, GitHub and registry check on 2026-10-05, and `prosotype.com`, `.org` and `.io` were unregistered. Prosogram, a well-known tool in the same field, has a similar name. This is not legal clearance; a formal trademark search would be needed before commercial use.
+
+Sources: [Prosogram](https://sites.google.com/site/prosogram/), [ToBI (MIT OCW)](https://ocw.mit.edu/courses/6-911-transcribing-prosodic-structure-of-spoken-utterances-with-tobi-january-iap-2006/), [INTSINT](https://en.wikipedia.org/wiki/INTSINT), [Momel](https://en.wikipedia.org/wiki/Momel), [Bolinger's notation (course notes)](https://studfile.net/preview/12728042/), [Jefferson symbols](https://ugc.futurelearn.com/uploads/files/47/8b/478b50f3-890e-4f15-9f6b-b30563b1229d/Jefferson_transcription_symbols.pdf), [IPA suprasegmentals and tone letters](https://en.wikipedia.org/wiki/Sinological_phonetic_notation), [SSML prosody](https://learn.microsoft.com/en-us/previous-versions/office/developer/speech-technologies/hh361578(v=office.14)), [Hirata & Nakagawa 1989](https://www.isca-archive.org/eurospeech_1989/hirata89_eurospeech.html), [Baudoin et al. 2003](https://perso.esiee.fr/~baudoing/pdf/baudoin2003-icassp.pdf), [Bistritz et al. 2008](https://www.eng.tau.ac.il/~bistritz/2008%20EUSIPCO.pdf), [FocalCodec](https://arxiv.org/abs/2502.04465), [ContextCodec](https://www.alphaxiv.org/abs/2606.10591), [Kinetic Typography Engine](https://uist.acm.org/archive/html/keywords/kwautomating.html), [Visualization of Speech Prosody and Emotion in Captions](https://digitalcommons.njit.edu/fac_pubs/1776).

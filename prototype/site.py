@@ -137,7 +137,7 @@ footer{{margin-top:72px;font-size:14px;color:var(--muted);border-top:1px solid v
 <header>
 <h1><img class="logo" src="img/logo.svg" alt="ProsoType" width="{logo_w}" height="{logo_h}"></h1>
 <p class="lede">Speech written in the International Phonetic Alphabet, with how it was said (pitch, length and loudness) set into the type itself.</p>
-<span class="status">Viability phase · specification draft 0.2 · October 2026</span>
+<span class="status">Viability phase · specification draft 0.3 · October 2026</span>
 </header>
 
 <section class="card takes" aria-label="Three deliveries, transcribed automatically">
@@ -161,7 +161,7 @@ footer{{margin-top:72px;font-size:14px;color:var(--muted);border-top:1px solid v
 {sizes}
 </tbody></table>
 </div>
-<p class="note" style="margin-top:10px">Packed symbols beat plain text at 8 and 12 bits, not at 16, and none beat zip-compressed text (about 3.3 B/word). Every packed form is at least 3× smaller than the lowest-rate Codec 2 audio. The packed form is not playable audio: turning it back into sound needs a synthesiser, which is out of scope.</p>
+<p class="note" style="margin-top:10px">Packed symbols beat plain text at 8 and 12 bits, not at 16, and none beat zip-compressed text (about 3.3 B/word). Every packed form is at least 3× smaller than the lowest-rate Codec 2 audio, but that is not the real comparison: phonetic vocoders reached 100–400 bit/s in 1989–2008, and neural codecs now reach 160 bit/s while staying playable. ProsoType's size is in that same range. What it adds is that its symbols mean something to any reader or program without a model; turning them back into sound needs a synthesiser, which is out of scope.</p>
 
 <h2>Two ways to draw it</h2>
 <p>Mapping A (the original proposal) shows pitch as colour, length as size and loudness as weight. Mapping B shows pitch as height, length as width and loudness as weight, close to published work on speech-modulated captions. In greyscale, A loses pitch entirely; B keeps everything.</p>
@@ -189,6 +189,8 @@ footer{{margin-top:72px;font-size:14px;color:var(--muted);border-top:1px solid v
 <li><a href="renders/synthetic.html"><strong>Synthetic speech render</strong><span>A 26-second paragraph from macOS speech synthesis.</span></a></li>
 <li><a href="{repo}/tree/main/prototype"><strong>Prototype</strong><span>Python: pack, render, transcribe, size report.</span></a></li>
 <li><a href="renders/party_three_ways.html"><strong>Hand-written sample</strong><span>One sentence, three deliveries, values chosen by hand.</span></a></li>
+<li><a href="{repo}/blob/main/SPEC.md#appendix-b-related-work-and-positioning"><strong>Related work</strong><span>Bolinger, ToBI, INTSINT, Prosogram, Jefferson notation, phonetic vocoders, neural codecs.</span></a></li>
+<li><a href="{repo}/tree/main/vectors"><strong>Conformance vectors</strong><span>Exact bytes for every profile, and a decoder in JavaScript written from the spec.</span></a></li>
 <li><a href="{repo}/blob/main/PLAN.md"><strong>Phase plan</strong><span>Goals and decisions for this phase.</span></a></li>
 </ul>
 
