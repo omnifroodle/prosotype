@@ -14,6 +14,8 @@
 //   voice     URL of a voice profile (SPEC 10) to speak with
 //   voices    space-separated voice profile URLs; shows a voice menu
 //   compact   smaller type, no footer
+//   synth     JSON options for the reference synthesiser, e.g. {"pitchSmooth": 60}
+//   label     text for the play button (default "Play")
 //   view      "controls": only the play controls and footer, for pages that
 //             draw the stream themselves and follow the prosotype-phone events
 // Properties: voiceProfile (a profile object; overrides voice), doc (decoded)
@@ -193,7 +195,7 @@ class ProsoTypePlayer extends HTMLElement {
     const dl = this._bytes ? `<a href="${URL.createObjectURL(new Blob([this._bytes], { type: "application/octet-stream" }))}" download="stream.prs">download stream</a>` : "";
     const controlsOnly = this.getAttribute("view") === "controls";
     this.shadowRoot.innerHTML = `<style>${STYLE}</style><div class="box" part="box">
-<div class="top"><button class="main" aria-label="Play">Play</button>${opts ? `<select aria-label="Voice">${opts}</select>` : ""}</div>
+<div class="top"><button class="main" aria-label="Play">${esc(this.getAttribute("label") || "Play")}</button>${opts ? `<select aria-label="Voice">${opts}</select>` : ""}</div>
 ${controlsOnly ? "" : rows}
 <div class="foot">ProsoType ${esc(doc.profile ?? "")} · ${size} · ${doc.utterances.length} utterance${multi ? "s" : ""} ${dl ? "· " + dl : ""}</div></div>`;
     this.shadowRoot.querySelector(".main").onclick = () => (this._source ? this.stop() : this.play());
@@ -224,7 +226,9 @@ ${controlsOnly ? "" : rows}
       const shift = (p) => ({ ...p, start_s: p.start_s - t0doc });
       doc = { ...this.doc, utterances: [{ ...u, words: u.words.map((w) => ({ ...w, start_s: w.start_s - t0doc, phones: w.phones.map(shift) })) }] };
     }
-    const res = synthesize(doc, { voice: this._voice() });
+    let extra = {};
+    try { extra = JSON.parse(this.getAttribute("synth") || "{}"); } catch {}
+    const res = synthesize(doc, { ...extra, voice: this._voice() });
     ctx ??= new AudioContext();
     const buf = ctx.createBuffer(1, res.samples.length, res.sampleRate);
     buf.copyToChannel(res.samples, 0);
@@ -272,7 +276,7 @@ ${controlsOnly ? "" : rows}
     if (playing === this) playing = null;
     this.shadowRoot?.querySelectorAll(".now").forEach((e) => e.classList.remove("now"));
     const main = this.shadowRoot?.querySelector(".main");
-    if (main) { main.textContent = "Play"; main.setAttribute("aria-label", "Play"); }
+    if (main) { main.textContent = this.getAttribute("label") || "Play"; main.setAttribute("aria-label", "Play"); }
   }
 }
 

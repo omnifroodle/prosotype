@@ -15,6 +15,7 @@ __pycache__/
 *.prs
 !vectors/expected/*.prs
 !docs/play/data/*.prs
+!docs/compare/*.prs
 prototype/samples/**/*.html
 
 # Downloaded during setup (see prototype/README.md)

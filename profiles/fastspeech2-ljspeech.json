@@ -1,5 +1,5 @@
 {
- "prosotype_profile": "0.1",
+ "prosotype_profile": "0.2",
  "id": "fastspeech2-ljspeech",
  "kind": "synthetic",
  "private": false,
@@ -154,6 +154,237 @@
   "jitter_local": 0.0193,
   "shimmer_local": 0.0795,
   "spectral_tilt_db_per_octave": -6.98
+ },
+ "conditions": {
+  "files": [
+   {
+    "file": "u00.wav",
+    "codec": "pcm_s16le",
+    "sample_rate": 22050,
+    "bit_rate": 352800,
+    "channels": 1
+   },
+   {
+    "file": "u01.wav",
+    "codec": "pcm_s16le",
+    "sample_rate": 22050,
+    "bit_rate": 352800,
+    "channels": 1
+   },
+   {
+    "file": "u02.wav",
+    "codec": "pcm_s16le",
+    "sample_rate": 22050,
+    "bit_rate": 352800,
+    "channels": 1
+   },
+   {
+    "file": "u03.wav",
+    "codec": "pcm_s16le",
+    "sample_rate": 22050,
+    "bit_rate": 352800,
+    "channels": 1
+   },
+   {
+    "file": "u04.wav",
+    "codec": "pcm_s16le",
+    "sample_rate": 22050,
+    "bit_rate": 352800,
+    "channels": 1
+   },
+   {
+    "file": "u05.wav",
+    "codec": "pcm_s16le",
+    "sample_rate": 22050,
+    "bit_rate": 352800,
+    "channels": 1
+   },
+   {
+    "file": "u06.wav",
+    "codec": "pcm_s16le",
+    "sample_rate": 22050,
+    "bit_rate": 352800,
+    "channels": 1
+   },
+   {
+    "file": "u07.wav",
+    "codec": "pcm_s16le",
+    "sample_rate": 22050,
+    "bit_rate": 352800,
+    "channels": 1
+   },
+   {
+    "file": "u08.wav",
+    "codec": "pcm_s16le",
+    "sample_rate": 22050,
+    "bit_rate": 352800,
+    "channels": 1
+   },
+   {
+    "file": "u09.wav",
+    "codec": "pcm_s16le",
+    "sample_rate": 22050,
+    "bit_rate": 352800,
+    "channels": 1
+   },
+   {
+    "file": "u10.wav",
+    "codec": "pcm_s16le",
+    "sample_rate": 22050,
+    "bit_rate": 352800,
+    "channels": 1
+   }
+  ],
+  "device": "synthetic (FastSpeech 2 + HiFi-GAN, 22.05 kHz)",
+  "environment": null,
+  "speech_level_dbfs": -24.3,
+  "noise_floor_dbfs": -66.7,
+  "snr_db": 42.4,
+  "transcription": "facebook/wav2vec2-lv-60-espeak-cv-ft@ae45363bf3413b374fecd9dc8bc1df0e24c3b7f4"
+ },
+ "articulation": {
+  "stops": {
+   "voiceless": {
+    "vot_ms": 22.0,
+    "closure_ms": 47.0,
+    "tokens": 17
+   },
+   "voiced": {
+    "vot_ms": 1.0,
+    "closure_ms": 57.0,
+    "tokens": 20
+   }
+  },
+  "fricatives": {
+   "band_hz": [
+    1000,
+    8000
+   ],
+   "f": {
+    "cog_hz": 4035.0,
+    "tokens": 5
+   },
+   "s": {
+    "cog_hz": 6435.0,
+    "tokens": 7
+   },
+   "z": {
+    "cog_hz": 6203.0,
+    "tokens": 2
+   },
+   "ʃ": {
+    "cog_hz": 4707.0,
+    "tokens": 2
+   },
+   "θ": {
+    "cog_hz": 1381.0,
+    "tokens": 1
+   }
+  },
+  "rhotic": {
+   "f3_hz": 1998.0,
+   "f3_drop_hz": 872,
+   "tokens": 20
+  },
+  "diphthongs": {
+   "aɪ": {
+    "delta_f1_hz": -218.0,
+    "delta_f2_hz": 336.0,
+    "tokens": 9
+   },
+   "aʊ": {
+    "delta_f1_hz": -23.0,
+    "delta_f2_hz": -253.0,
+    "tokens": 3
+   },
+   "eɪ": {
+    "delta_f1_hz": -48.0,
+    "delta_f2_hz": 334.0,
+    "tokens": 6
+   },
+   "oʊ": {
+    "delta_f1_hz": -103.0,
+    "delta_f2_hz": -213.0,
+    "tokens": 5
+   }
+  }
+ },
+ "speaking": {
+  "rhythm": {
+   "percent_v": 49.1,
+   "delta_c_ms": 53.7,
+   "npvi_v": 37.3
+  },
+  "pitch": {
+   "declination_st_per_s": -2.26,
+   "median_step_st": 0.86
+  },
+  "phrase_final": {
+   "lengthening_ratio": 1.51,
+   "unpitched_share": 0.09
+  },
+  "utterances": 11
+ },
+ "pronunciation": {
+  "phones_compared": 270,
+  "match_share": 0.79,
+  "substitutions": {
+   "ə→ɐ": {
+    "rate": 0.18,
+    "count": 4,
+    "of": 22
+   },
+   "ɑ→ʌ": {
+    "rate": 0.44,
+    "count": 4,
+    "of": 9
+   },
+   "ə→ɪ": {
+    "rate": 0.18,
+    "count": 4,
+    "of": 22
+   },
+   "ə→æ": {
+    "rate": 0.14,
+    "count": 3,
+    "of": 22
+   },
+   "ɚ→ɜ": {
+    "rate": 0.33,
+    "count": 2,
+    "of": 6
+   },
+   "i→eɪ": {
+    "rate": 0.17,
+    "count": 2,
+    "of": 12
+   },
+   "ɑ→ɔ": {
+    "rate": 0.22,
+    "count": 2,
+    "of": 9
+   },
+   "d→t": {
+    "rate": 0.14,
+    "count": 2,
+    "of": 14
+   },
+   "ɔ→o": {
+    "rate": 0.14,
+    "count": 1,
+    "of": 7
+   },
+   "f→θ": {
+    "rate": 0.17,
+    "count": 1,
+    "of": 6
+   },
+   "t→s": {
+    "rate": 0.05,
+    "count": 1,
+    "of": 21
+   }
+  }
  },
  "embeddings": {},
  "synth": {

@@ -15,6 +15,7 @@ This repository holds the output of the viability phase:
 | Path | What |
 |---|---|
 | [SPEC.md](SPEC.md) | The specification (draft 0.2), including measured findings and a go / adjust / stop call |
+| [VOICE-PROFILE.md](VOICE-PROFILE.md) | The voice profile specification (versioned separately; schema in `profiles/schema/`) |
 | [PLAN.md](PLAN.md) | The plan and the decisions this phase worked from |
 | [prototype/](prototype) | Python prototype: `pack.py`, `render.py`, `transcribe.py`, `bitrate.py`, `site.py` |
 | [vectors/](vectors) | Conformance test vectors for the packed stream (SPEC.md §3.10) |

@@ -75,8 +75,9 @@ The rendered pages are self-contained (with an embedded font subset) and have th
 | `synthesize.py` | FastSpeech 2 + HiFi-GAN: speak a stream with no original audio; its voice profile and calibration are in `../profiles/fastspeech2-ljspeech.json`; `--voice` and `--speaker` map pitch onto a target voice profile |
 | `mfa.py` | Montreal Forced Aligner wrapper for `transcribe.py --aligner mfa` and `timing_check.py --boundaries mfa`; setup steps in its docstring |
 | `timing_check.py` | Phone timing vs reference boundaries: synthesised speech now, Buckeye once downloaded; summaries in `samples/timing/` |
-| `voiceprofile.py` | Builds voice profiles (pitch, timing, formants, vocal-tract length, voice quality; SPEC 10) |
+| `voiceprofile.py` | Builds and validates voice profiles (`../VOICE-PROFILE.md`, schema in `../profiles/schema/`) |
 | `textmap.py` | Text maps: the character range of each word in the stream (SPEC 4.1) |
+| `compare.py` | Builds `../docs/compare.html`, the synthesiser comparison (called by `site.py`) |
 | `player.py` | Builds the reader `../docs/play.html`, the per-sample streams and text maps, and the component's font (called by `site.py`) |
 | `site.py`, `logo.py` | Build the GitHub Pages site and logo in `../docs` |
 | `fetch.py` | Pinned external inputs and model revisions |

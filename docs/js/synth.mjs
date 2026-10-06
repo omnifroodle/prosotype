@@ -93,8 +93,18 @@ function voiceSettings(doc, voice, speaker) {
     if ((t.formant_tokens?.[v] ?? 0) >= 3) measured[v] = f;
   }
   const tilt = t.spectral_tilt_db_per_octave ?? -8;
+  // articulation (profile 0.2, VOICE-PROFILE.md): used only with enough tokens behind it
+  const a = voice?.articulation || {};
+  const enough = (x, n) => x && (x.tokens ?? 0) >= n;
+  const vl = a.stops?.voiceless, vd = a.stops?.voiced;
+  const fric = {};
+  for (const f of ["s", "z", "ʃ", "ʒ"]) if (enough(a.fricatives?.[f], 3) && a.fricatives[f].cog_hz) fric[f] = a.fricatives[f].cog_hz;
   return {
     median, range, k, measured,
+    vot: enough(vl, 10) && vl.vot_ms != null ? vl.vot_ms / 1000 : 0.060, // American voiceless stops: about 60 ms
+    votVoiced: enough(vd, 10) && vd.vot_ms != null ? vd.vot_ms / 1000 : 0.012,
+    fric,
+    rhoticF3: enough(a.rhotic, 5) ? a.rhotic.f3_hz : null,
     tilt: Math.min(0.85, Math.max(0, (-tilt - 6) / 8)), // one-pole low-pass coefficient on the source
     breath: t.hnr_db != null ? Math.min(0.5, Math.max(0.02, (18 - t.hnr_db) / 30)) : 0.08,
     jitter: Math.min(0.02, (t.jitter_local ?? 0.01) * 0.5),
@@ -114,7 +124,9 @@ function consonantFormants(f, vs) {
 
 // --- plan: per-phone formant keys and source segments ----------------------------
 
-function plan(doc, vs, rate) {
+const SONORANT = (ipa) => V[ipa] || DIPH[ipa] || ["approx", "nasal", "flap"].includes(C[ipa]?.kind);
+
+function plan(doc, vs, rate, opts = {}) {
   const phones = [];
   doc.utterances.forEach((u, ui) => u.words.forEach((w, wi) => w.phones.forEach((p) => {
     phones.push({ ...p, utt: ui, word: wi, t0: p.start_s / rate, t1: (p.start_s + p.dur_ms / 1000) / rate });
@@ -123,26 +135,51 @@ function plan(doc, vs, rate) {
   const segs = []; // {t0, t1, AV, AH, AF, noise, nz}
   const pkeys = []; // [t, semitones]
   const gkeys = []; // [t, dB]
-  for (const p of phones) {
+  const spill = new Array(phones.length).fill(0); // aspiration carried into the next phone
+  const rhotic = (F) => { if (F && vs.rhoticF3) F[2] = vs.rhoticF3; return F; };
+  phones.forEach((p, i) => {
     const ipa = p.ipa;
     const d = p.t1 - p.t0;
     const w = Math.min(0.025, d / 3);
     const c = C[ipa];
     const bw = c?.kind === "nasal" ? [100, 120, 180, 250, 300] : BW;
+    // a voiceless stop's breath may run into this phone: breathy onset, then the phone itself
+    const t0 = p.t0 + spill[i];
+    if (spill[i] > 0) segs.push({ t0: p.t0, t1: t0, AH: 0.5, AV: 0.12 });
     if (V[ipa] || DIPH[ipa] || !c) {
       const [a, b] = DIPH[ipa] || [ipa, ipa];
-      fkeys.push([p.t0 + w, vowelFormants(a, vs), bw], [p.t1 - w, vowelFormants(b, vs), bw]);
-      segs.push({ t0: p.t0, t1: p.t1, AV: 1 });
+      const fa = vowelFormants(a, vs), fb = vowelFormants(b, vs);
+      if (a === "ɚ" || a === "ɜ") rhotic(fa);
+      if (b === "ɚ" || b === "ɜ") rhotic(fb);
+      fkeys.push([p.t0 + w, fa, bw], [p.t1 - w, fb, bw]);
+      segs.push({ t0, t1: p.t1, AV: 1 });
     } else {
       const F = consonantFormants(c.F, vs);
+      if (ipa === "ɹ") rhotic(F);
       if (F) fkeys.push([p.t0 + w, F, bw], [p.t1 - w, F, bw]);
       const nz = c.zero ? c.zero * vs.k : 0;
-      const noise = c.noise ? NOISE[c.noise] : null;
-      if (c.kind === "stop") {
+      let noise = c.noise ? NOISE[c.noise] : null;
+      const cog = vs.fric[ipa] ?? vs.fric[{ z: "s", ʒ: "ʃ", "tʃ": "ʃ", "dʒ": "ʃ" }[ipa]];
+      if (noise && cog) noise = { ...noise, peaks: [[cog, noise.peaks[0][1], noise.peaks[0][2]], ...noise.peaks.slice(1)], fixed: true };
+      if (c.kind === "stop" && opts.stops === "legacy") {
         const tc = p.t0 + d * 0.6, tb = Math.min(p.t1, tc + Math.min(0.01, d * 0.2));
         segs.push({ t0: p.t0, t1: tc, AV: c.voiced ? 0.12 : 0 });
         segs.push({ t0: tc, t1: tb, AF: 0.9, noise: NOISE[c.burst] });
         segs.push({ t0: tb, t1: p.t1, AV: c.voiced ? 0.6 : 0, AH: c.voiced ? 0 : 0.5 });
+      } else if (c.kind === "stop") {
+        // closure, burst, then aspiration (voiceless) or voicing (voiced), timed from the profile;
+        // aspiration that does not fit spills into a following sonorant, up to 45% of it
+        const next = phones[i + 1];
+        const v = c.voiced ? vs.votVoiced : vs.vot;
+        const b = Math.min(0.010, d * 0.15);
+        const clo = Math.max(d * 0.35, Math.min(d * 0.75, d - b - v));
+        const tc = p.t0 + clo, tb = Math.min(p.t1, tc + b);
+        segs.push({ t0: p.t0, t1: tc, AV: c.voiced ? 0.12 : 0 });
+        segs.push({ t0: tc, t1: tb, AF: 0.9, noise: NOISE[c.burst] });
+        segs.push({ t0: tb, t1: p.t1, AV: c.voiced ? 0.6 : 0, AH: c.voiced ? 0 : 0.55 });
+        if (!c.voiced && next && SONORANT(next.ipa) && Math.abs(next.t0 - p.t1) < 0.005) {
+          spill[i + 1] = Math.min(Math.max(0, v - (p.t1 - tb)), 0.45 * (next.t1 - next.t0));
+        }
       } else if (c.kind === "affr") {
         const tc = p.t0 + d * 0.35;
         segs.push({ t0: p.t0, t1: tc, AV: c.voiced ? 0.12 : 0 });
@@ -154,17 +191,17 @@ function plan(doc, vs, rate) {
       } else if (c.kind === "glottal") {
         segs.push({ t0: p.t0, t1: p.t0 + d * 0.2, AV: 0.5 }, { t0: p.t0 + d * 0.8, t1: p.t1, AV: 0.5 });
       } else if (c.kind === "flap") {
-        segs.push({ t0: p.t0, t1: p.t1, AV: 0.45 });
+        segs.push({ t0, t1: p.t1, AV: 0.45 });
       } else if (c.kind === "nasal") {
-        segs.push({ t0: p.t0, t1: p.t1, AV: 0.7, nz });
+        segs.push({ t0, t1: p.t1, AV: 0.7, nz });
       } else {
-        segs.push({ t0: p.t0, t1: p.t1, AV: 0.8 });
+        segs.push({ t0, t1: p.t1, AV: 0.8 });
       }
     }
     const mid = (p.t0 + p.t1) / 2;
     if (p.pitch_st != null) pkeys.push([mid, p.pitch_st]);
     gkeys.push([mid, Math.max(-20, Math.min(12, p.loud_db ?? 0))]);
-  }
+  });
   return { phones, fkeys, segs, pkeys, gkeys };
 }
 
@@ -213,9 +250,14 @@ class AntiResonator {
 
 // --- synthesis -------------------------------------------------------------------
 
-export function synthesize(doc, { voice = null, speaker = null, rate = 1, seed = 1 } = {}) {
+// Options: voice and speaker profiles; rate; seed; stops: "legacy" (default for
+// now: closure 60%, short burst) or "profile" (aspiration from the voice profile,
+// default 60 ms, spilling into the next vowel; under listening comparison,
+// docs/compare.html); pitchSmooth: ms of moving-average smoothing on the pitch
+// track (0 = straight lines between phone centres).
+export function synthesize(doc, { voice = null, speaker = null, rate = 1, seed = 1, stops = "legacy", pitchSmooth = 0 } = {}) {
   const vs = voiceSettings(doc, voice, speaker);
-  const { phones, fkeys, segs, pkeys, gkeys } = plan(doc, vs, rate);
+  const { phones, fkeys, segs, pkeys, gkeys } = plan(doc, vs, rate, { stops });
   const end = phones.length ? phones[phones.length - 1].t1 + 0.15 : 0.15;
   const nFrames = Math.ceil(end / FRAME);
   const N = nFrames * Math.round(FRAME * SR);
@@ -246,6 +288,12 @@ export function synthesize(doc, { voice = null, speaker = null, rate = 1, seed =
   let phase = 0, periodF0 = vs.median, periodAmp = 1, tiltY = 0, hpX = 0, hpY = 0, n = 0;
   let lastNoise = null;
   const fk = fkeys.map(([tt, f, b]) => [tt, f.concat(b)]);
+  let stTrack = Float32Array.from({ length: nFrames }, (_, i) => interp(pkeys, (i + 0.5) * FRAME, 0));
+  const half = Math.round(pitchSmooth / 1000 / FRAME / 2);
+  if (half > 0) {
+    const src = stTrack;
+    stTrack = src.map((_, i) => { let s = 0, n = 0; for (let j = Math.max(0, i - half); j <= Math.min(src.length - 1, i + half); j++) { s += src[j]; n++; } return s / n; });
+  }
   const neutral = vowelFormants("ə", vs).concat(BW);
   for (let i = 0; i < nFrames; i++) {
     const t = (i + 0.5) * FRAME;
@@ -256,8 +304,8 @@ export function synthesize(doc, { voice = null, speaker = null, rate = 1, seed =
     if (nasal) anti.set(NZ[i], 150);
     const noise = noiseAt[i] || lastNoise;
     if (noiseAt[i]) lastNoise = noiseAt[i];
-    if (noise) noise.peaks.forEach(([f, bw], j) => par[j].set(f * Math.sqrt(vs.k), bw, true));
-    const st = interp(pkeys, t, 0) * vs.range;
+    if (noise) noise.peaks.forEach(([f, bw], j) => par[j].set(noise.fixed && j === 0 ? f : f * Math.sqrt(vs.k), bw, true));
+    const st = stTrack[i] * vs.range;
     const f0 = vs.median * Math.pow(2, st / 12);
     const gain = Math.pow(10, interp(gkeys, t, 0) / 20);
     for (let s = 0; s < spf; s++, n++) {

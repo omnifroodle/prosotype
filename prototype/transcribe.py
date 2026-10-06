@@ -66,6 +66,9 @@ SPLIT = {
     "aɪə": ["aɪ", "ə"], "ts": ["t", "s"], "ju": ["j", "u"],
 }
 FOLD = {"iə": "ɪə"}
+# With --refine, a vowel+r label gives the vowel this share of its span instead of half
+# (the recogniser hears "ar" as one sound; an even split leaves the vowel a sliver).
+VOWEL_R_SHARE = 0.65
 
 # The recogniser's spikes come after the true phone onset. Median lag per class,
 # measured against Buckeye hand labels (SPEC 9.5) and validated on held-out
@@ -212,21 +215,25 @@ def spans(tokens: list[dict], logp: np.ndarray, silent: np.ndarray) -> None:
             t["b"] = run[0] if run else min(n, t["f1"] + 3)
 
 
-def expand(tokens: list[dict]) -> list[dict]:
+def expand(tokens: list[dict], refine: bool = False) -> list[dict]:
     """Recogniser labels -> table phones, with spans in seconds."""
     out = []
     for t in tokens:
         parts = SPLIT.get(t["tok"], [FOLD.get(t["tok"], t["tok"])])
         a, b = t["a"] * FRAME_S, max(t["b"], t["a"] + 1) * FRAME_S
         step = (b - a) / len(parts)
+        shares = [1 / len(parts)] * len(parts)
+        if refine and len(parts) == 2 and parts[0] in VOWELS and parts[1] in ("ɹ", "ɚ"):
+            shares = [VOWEL_R_SHARE, 1 - VOWEL_R_SHARE]
+        edges = [a + (b - a) * sum(shares[:j]) for j in range(len(parts) + 1)]
         for j, ipa in enumerate(parts):
             ipa = pack.normalise_ipa(ipa)
             prev = out[-1] if out else None
             if prev and prev["ipa"] == ipa and (len(parts) > 1 or prev["raw"] in SPLIT):
                 # "ɑːɹ ɹ": a split label followed by the phone it already contains
-                prev["end"] = a + (j + 1) * step
+                prev["end"] = edges[j + 1]
                 continue
-            out.append({"ipa": ipa, "start": a + j * step, "end": a + (j + 1) * step,
+            out.append({"ipa": ipa, "start": edges[j], "end": edges[j + 1],
                         "conf": t["conf"], "raw": t["tok"]})
     return correct_onsets(out)
 
@@ -403,7 +410,7 @@ def mfa_phones(path: str, audio: np.ndarray, words: list[dict]) -> list[dict]:
     return out
 
 
-def analyse(path: str, aligner: str = "recogniser") -> dict:
+def analyse(path: str, aligner: str = "recogniser", refine: bool = False) -> dict:
     """One audio file -> segments, words with phones (absolute F0 and dB)."""
     audio = load_audio(path)
     segs = whisper_words(path)
@@ -414,7 +421,7 @@ def analyse(path: str, aligner: str = "recogniser") -> dict:
     else:
         logp, tokens, _ = ctc(audio)
         spans(tokens, logp, ac.silent_frames(len(logp)))
-        phones = expand(tokens)
+        phones = expand(tokens, refine)
         stats = align(phones, words) if words and phones else {}
     for w in words:
         w["phones"] = [p for p in phones if p.get("word") is not None and words[p["word"]] is w]
@@ -427,13 +434,32 @@ def analyse(path: str, aligner: str = "recogniser") -> dict:
             "phones": phones, "tokens": tokens, "stats": stats}
 
 
+def fill_vowel_pitch(doc: dict, max_ms: float = 80.0, reach_s: float = 0.15) -> None:
+    """A short vowel with no pitch track (Praat needs a few periods) takes its
+    pitch from the voiced phones either side, if both are close; it is marked
+    "pitch_filled". Vowels are voiced unless whispered."""
+    for u in doc["utterances"]:
+        ps = [p for w in u["words"] for p in w["phones"]]
+        for i, p in enumerate(ps):
+            if p["ipa"] not in VOWELS or p["pitch_st"] is not None or p["dur_ms"] > max_ms:
+                continue
+            mid = p["start_s"] + p["dur_ms"] / 2000
+            before = next((q for q in reversed(ps[:i]) if q["pitch_st"] is not None), None)
+            after = next((q for q in ps[i + 1:] if q["pitch_st"] is not None), None)
+            near = [q for q in (before, after) if q and abs(q["start_s"] + q["dur_ms"] / 2000 - mid) <= reach_s]
+            if near:
+                p["pitch_st"] = round(float(np.mean([q["pitch_st"] for q in near])), 2)
+                p["voiced"] = True
+                p["pitch_filled"] = True
+
+
 def transcribe(paths: list[str], labels: list[str] | None = None, aligner: str = "recogniser",
-               voice: dict | None = None) -> dict:
+               voice: dict | None = None, refine: bool = False) -> dict:
     """Audio files of one speaker -> one document. Files follow each other in
     time; speaker baselines are computed over all of them, except that a known
     voice profile (voiceprofile.py) fixes the pitch baseline, so that levels mean
     the same thing across sessions. Loudness stays session-relative (SPEC 8)."""
-    runs = [analyse(p, aligner) for p in paths]
+    runs = [analyse(p, aligner, refine) for p in paths]
     phones = [p for r in runs for p in r["phones"] if "db" in p]
     f0s = [p["f0"] for p in phones if p["voiced"] and p["f0"]]
     # Loudness baseline: mean over vowels, so that a typical vowel is 0 dB and
@@ -493,6 +519,9 @@ def transcribe(paths: list[str], labels: list[str] | None = None, aligner: str =
             if utt["words"]:
                 doc["utterances"].append(utt)
         offset += r["duration_s"]
+    if refine:
+        fill_vowel_pitch(doc)
+        doc["source"]["refined"] = {"vowel_r_share": VOWEL_R_SHARE, "filled_vowel_pitch": True}
     import textmap
     return textmap.add_chars(doc)  # document "text" and each word's "chars" range (SPEC 4.1)
 
@@ -506,9 +535,11 @@ def main() -> None:
                     help="recogniser: phones as heard by wav2vec2 (default); mfa: dictionary phones of "
                          "Whisper's words, forced-aligned (better timing, SPEC 9.5)")
     ap.add_argument("--voice", help="the speaker's voice profile (voiceprofile.py): fixes the pitch baseline")
+    ap.add_argument("--refine", action="store_true",
+                    help="give vowel+r labels' vowel most of the span, and fill pitch on short unpitched vowels")
     a = ap.parse_args()
     voice = json.loads(Path(a.voice).read_text()) if a.voice else None
-    doc = transcribe(a.inputs, a.label, a.aligner, voice)
+    doc = transcribe(a.inputs, a.label, a.aligner, voice, a.refine)
     out = a.output or str(Path(a.inputs[0]).with_suffix(".json"))
     Path(out).write_text(json.dumps(doc, ensure_ascii=False, indent=1) + "\n")
     n = sum(len(w["phones"]) for u in doc["utterances"] for w in u["words"])

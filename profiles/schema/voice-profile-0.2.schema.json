@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://omnifroodle.github.io/prosotype/profiles/schema/voice-profile-0.2.schema.json",
+  "title": "ProsoType voice profile, version 0.2",
+  "description": "See VOICE-PROFILE.md. Readers must ignore properties they do not know; producers may add properties under an 'x_' prefix.",
+  "type": "object",
+  "required": ["prosotype_profile", "id", "kind", "private", "pitch"],
+  "properties": {
+    "prosotype_profile": {"type": "string", "pattern": "^0\\.[12]$"},
+    "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$"},
+    "kind": {"enum": ["person", "synthetic"]},
+    "private": {"type": "boolean"},
+    "created": {"type": "string", "format": "date"},
+    "source": {"type": "object"},
+    "pitch": {
+      "type": "object",
+      "required": ["median_hz"],
+      "properties": {
+        "median_hz": {"type": "number", "exclusiveMinimum": 0},
+        "p10_hz": {"type": "number"},
+        "p90_hz": {"type": "number"},
+        "range_st": {"type": "number", "minimum": 0}
+      }
+    },
+    "loudness": {
+      "type": "object",
+      "properties": {"vowel_mean_db": {"type": "number"}, "sd_db": {"type": "number", "minimum": 0}}
+    },
+    "timing": {
+      "type": "object",
+      "properties": {
+        "phones_per_s": {"type": "number", "minimum": 0},
+        "median_phone_ms": {"type": "object", "additionalProperties": {"type": "number"}}
+      }
+    },
+    "timbre": {
+      "type": "object",
+      "properties": {
+        "formant_ceiling_hz": {"type": "number"},
+        "formants_hz": {"type": "object", "additionalProperties": {"type": "array", "items": {"type": "number"}, "minItems": 3, "maxItems": 5}},
+        "formant_tokens": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+        "vowel_tokens": {"type": "integer", "minimum": 0},
+        "formant_mean_hz": {"type": "array", "items": {"type": "number"}},
+        "formant_dispersion_hz": {"type": "number"},
+        "vocal_tract_cm": {"type": "number", "exclusiveMinimum": 0},
+        "hnr_db": {"type": ["number", "null"]},
+        "jitter_local": {"type": ["number", "null"]},
+        "shimmer_local": {"type": ["number", "null"]},
+        "spectral_tilt_db_per_octave": {"type": ["number", "null"]}
+      }
+    },
+    "conditions": {
+      "type": "object",
+      "properties": {
+        "files": {"type": "array", "items": {"type": "object"}},
+        "device": {"type": ["string", "null"]},
+        "environment": {"type": ["string", "null"]},
+        "speech_level_dbfs": {"type": ["number", "null"]},
+        "noise_floor_dbfs": {"type": ["number", "null"]},
+        "snr_db": {"type": ["number", "null"]},
+        "transcription": {"type": ["string", "null"]}
+      }
+    },
+    "articulation": {
+      "type": "object",
+      "properties": {
+        "stops": {
+          "type": "object",
+          "additionalProperties": {"$ref": "#/$defs/stop"}
+        },
+        "fricatives": {"type": "object"},
+        "rhotic": {
+          "type": "object",
+          "properties": {"f3_hz": {"type": ["number", "null"]}, "f3_drop_hz": {"type": ["number", "null"]}, "tokens": {"type": "integer"}}
+        },
+        "diphthongs": {"type": "object"}
+      }
+    },
+    "speaking": {
+      "type": "object",
+      "properties": {
+        "rhythm": {"type": "object"},
+        "pitch": {"type": "object"},
+        "phrase_final": {"type": "object"},
+        "utterances": {"type": "integer"}
+      }
+    },
+    "pronunciation": {
+      "type": ["object", "null"],
+      "properties": {
+        "phones_compared": {"type": "integer"},
+        "match_share": {"type": ["number", "null"]},
+        "substitutions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["rate", "count", "of"],
+            "properties": {"rate": {"type": "number"}, "count": {"type": "integer"}, "of": {"type": "integer"}}
+          }
+        }
+      }
+    },
+    "embeddings": {"type": "object"},
+    "synth": {"type": "object"}
+  },
+  "$defs": {
+    "stop": {
+      "type": "object",
+      "properties": {
+        "vot_ms": {"type": ["number", "null"]},
+        "closure_ms": {"type": ["number", "null"]},
+        "tokens": {"type": "integer", "minimum": 0}
+      }
+    }
+  }
+}

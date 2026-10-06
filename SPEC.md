@@ -617,43 +617,27 @@ A voice profile describes how a voice sounds. It does two jobs:
 
 Profiles should eventually carry as much vocal information as good resynthesis needs, including timbre. A profile of a real person is therefore personal. Treat it like a private key: keep it local and share it sparingly. In this repository, profiles of people go in `profiles/private/` (git-ignored); only synthetic voices' profiles are published. How profiles should be shared, and whether a profile could be usable for synthesis without being readable (in the spirit of public/private keys), is an open question for later.
 
-### 10.1 Format (version 0.1)
+### 10.1 Format
 
-```json
-{
-  "prosotype_profile": "0.1", "id": "fastspeech2-ljspeech", "kind": "synthetic", "private": false,
-  "source": {"speech_s": 21.0, "phones": 267, "tool": "prototype/voiceprofile.py"},
-  "pitch": {"median_hz": 208.8, "p10_hz": 179.3, "p90_hz": 231.0, "range_st": 4.39},
-  "loudness": {"vowel_mean_db": 71.2, "sd_db": 2.51},
-  "timing": {"phones_per_s": 12.7, "median_phone_ms": {"vowel": 89, "stop": 81.5, "other consonant": 51}},
-  "timbre": {
-    "formants_hz": {"i": [410, 2699, 3090, 4054]}, "formant_tokens": {"i": 10},
-    "formant_mean_hz": [558, 1744, 2814, 3776], "formant_dispersion_hz": 1102.2, "vocal_tract_cm": 15.88,
-    "hnr_db": 13.06, "jitter_local": 0.0193, "shimmer_local": 0.0795, "spectral_tilt_db_per_octave": -6.98
-  },
-  "embeddings": {},
-  "synth": {"fastspeech2": {"kp": 0.15, "ke": 0.16, "base_pitch": 0.13, "pitch_limits": [-0.87, 1.43]}}
-}
-```
+The voice profile format has its own versioned specification, [VOICE-PROFILE.md](VOICE-PROFILE.md) (currently 0.2), with a JSON Schema per version in `profiles/schema/`, compatibility rules, field stability levels and a changelog. In outline:
 
-- **pitch**: the median and spread of the voiced phones' F0.
-- **timbre**:
-  - Per-vowel median formants F1–F4, measured at vowel midpoints, with token counts.
-  - The apparent vocal-tract length, from formant dispersion over F1–F4 (Fi ≈ (2i−1)/2 · ΔF; L = c / 2ΔF).
-  - Harmonics-to-noise ratio, and local jitter and shimmer, measured by Praat on the continuous recording.
-  - The long-term spectral tilt of the voiced speech.
-- **embeddings**: reserved for learned speaker embeddings, for synthesisers that clone timbre. None yet.
-- **synth**: optional controls for one synthesiser, for example FastSpeech 2's pitch and energy calibration.
+- **pitch, loudness, timing**: level, range and pace.
+- **timbre**: per-vowel formants, apparent vocal-tract length, HNR, jitter, shimmer and spectral tilt.
+- **conditions** (0.2): how the audio was captured.
+- **articulation** (0.2): how stops divide into closure and aspiration, fricative spectra, r-colouring and diphthong glides.
+- **speaking** (0.2): rhythm, pitch habits and phrase endings.
+- **pronunciation** (0.2): departures from dictionary pronunciations.
+- **embeddings** and **synth**: reserved.
 
-`prototype/voiceprofile.py` builds a profile from recordings or from a transcript and its audio. Checks so far, measured on 60 s of speech per speaker:
+`prototype/voiceprofile.py` builds and validates profiles. Checks so far, on 60 s of speech per speaker:
 
-| Voice | Median F0 | Vocal tract |
-|---|---|---|
-| Buckeye s01 (woman under 40) | 201 Hz | 14.4 cm |
-| Buckeye s03 (man over 40) | 129 Hz | 18.3 cm |
-| Owner (4 s only) | 121 Hz | 18.4 cm |
+| Voice | Median F0 | Vocal tract | Voiceless / voiced VOT | "s" centre of gravity |
+|---|---|---|---|---|
+| Buckeye s01 (woman under 40) | 201 Hz | 14.4 cm | 28 / 8 ms | 5.9 kHz |
+| Buckeye s03 (man over 40) | 129 Hz | 18.3 cm | 32 / 9 ms | 4.8 kHz |
+| FastSpeech 2 voice | 209 Hz | 15.9 cm | 27 / 6 ms | 6.4 kHz |
 
-The owner's profile is private. Jitter and shimmer come out high for all voices (about 2% and 9–14%), as is common for running speech, so they are useful for comparing voices rather than as absolute norms.
+The owner's profile is private. Its 4 s of speech contain mostly unstressed stops ("to", "tonight"), which English barely aspirates, so its voiceless VOT (8 ms) is too low to stand for the voice. This is why profiles need planned recordings (VOICE-PROFILE.md §7) and, later, stress-specific stop timing.
 
 ### 10.2 Mapping a stream onto a voice
 

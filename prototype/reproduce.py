@@ -76,6 +76,8 @@ def main() -> int:
         results.append(run("vectors (JS decoder)", ["node", str(ROOT / "js" / "test_vectors.mjs")]))
     else:
         print("SKIP  JS decoder (Node not installed)")
+    results.append(run("published voice profiles validate", [PY, "voiceprofile.py", "validate",
+                                                             *map(str, sorted((ROOT / "profiles").glob("*.json")))]))
     results.append(run("logo", [PY, "logo.py"]))
     results.append(run("site", [PY, "site.py"]))
     results.append(docs_unchanged())

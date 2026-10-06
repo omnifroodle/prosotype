@@ -187,6 +187,7 @@ footer{{margin-top:72px;font-size:14px;color:var(--muted);border-top:1px solid v
 <ul class="links">
 <li><a href="{repo}/blob/main/SPEC.md"><strong>Specification</strong><span>Data model, packed stream, visual mapping, accessibility, findings.</span></a></li>
 <li><a href="play.html"><strong>Reader</strong><span>Every sample, decoded and spoken in your browser in a choice of voice profiles, with each phone and word highlighted; and how to embed it.</span></a></li>
+<li><a href="compare.html"><strong>Synthesiser comparison</strong><span>The same sentences with one synthesiser change at a time, and in your own voice profile.</span></a></li>
 <li><a href="renders/recorded_three_ways.html"><strong>Interactive render</strong><span>The recorded takes in both mappings, with theme and greyscale toggles.</span></a></li>
 <li><a href="renders/synthetic.html"><strong>Synthetic speech render</strong><span>A 26-second paragraph from macOS speech synthesis.</span></a></li>
 <li><a href="{repo}/tree/main/prototype"><strong>Prototype</strong><span>Python: pack, render, transcribe, size report.</span></a></li>
@@ -230,6 +231,8 @@ def main() -> None:
     print(f"docs/index.html: {len(page.encode()) / 1024:.0f} KB; renders: {', '.join(RENDERS)}")
     import player
     print(player.build(DOCS, REPO))
+    import compare
+    print(compare.build(DOCS, REPO))
 
 
 if __name__ == "__main__":
