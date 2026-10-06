@@ -38,3 +38,6 @@ data/timit/
 
 # Voice profiles of real people (personal, like a private key)
 profiles/private/
+
+# Public-domain audio used for evaluation (LibriVox); kept local
+data/librivox/
