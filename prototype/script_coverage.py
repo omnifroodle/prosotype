@@ -134,11 +134,14 @@ def main() -> int:
     ap.add_argument("script", nargs="?", type=Path, default=DEFAULT)
     ap.add_argument("--export", type=Path, help="write each part's text to DIR/partN.txt")
     a = ap.parse_args()
-    if a.export:
+    if a.export:  # one file per "### Part" heading, matching part1.wav, part2.wav, ...
         a.export.mkdir(parents=True, exist_ok=True)
-        for i, (_, text) in enumerate(parts_of(a.script.read_text()), 1):
-            (a.export / f"part{i}.txt").write_text(" ".join(text.split()) + "\n")
-        print(f"wrote {len(parts_of(a.script.read_text()))} parts to {a.export}")
+        grouped: dict[str, list[str]] = {}
+        for heading, text in parts_of(a.script.read_text()):
+            grouped.setdefault(heading, []).append(" ".join(text.split()))
+        for i, (heading, texts) in enumerate(grouped.items(), 1):
+            (a.export / f"part{i}.txt").write_text(" ".join(texts) + "\n")
+            print(f"part{i}.txt  {heading}: {sum(len(t.split()) for t in texts)} words")
         return 0
     return report(a.script)
 

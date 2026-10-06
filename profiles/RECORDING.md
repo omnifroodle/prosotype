@@ -1,6 +1,6 @@
 # Recording for a voice profile
 
-Script version 0.1, draft, 2026-10-06. © 2026 Matt Overstreet, licensed under [CC BY 4.0](../LICENSE-CC-BY-4.0.txt). Part of the [voice profile specification](../VOICE-PROFILE.md) (§7).
+Script version 0.2, draft, 2026-10-06. © 2026 Matt Overstreet, licensed under [CC BY 4.0](../LICENSE-CC-BY-4.0.txt). Part of the [voice profile specification](../VOICE-PROFILE.md) (§7).
 
 This script gives a voice profile what it needs: every English sound several times, enough stressed and unstressed "p", "t" and "k" to measure aspiration, the hissing sounds, r-coloured vowels and diphthongs, and a range of deliveries. It also elicits breaths, phrase endings and phrasing, so we can decide how ProsoType should encode them. It takes about 4–5 minutes to read through, plus a minute of free speech. `prototype/script_coverage.py` checks the coverage.
 
@@ -51,7 +51,7 @@ Shelly should share her fresh fish with the shy chef.
 The third birthday party was worth every word, Herbert heard.
 ```
 
-### Part 2: deliveries (about 60 seconds)
+### Part 2: deliveries (about 90 seconds)
 
 **A. One sentence, five ways.** Say it as each description says, as you really would.
 
@@ -100,6 +100,30 @@ Well, I suppose that's the end of it.
 Maybe we'll try again some other time.
 ```
 
+**E. Drawn-out sounds.** Stretch the marked sound much longer than usual, the way you would if you meant it.
+
+```script
+Whoa, look at that!
+Mm, that smells good.
+Shh, the baby's asleep.
+So, what now?
+Really?
+```
+
+1. Stretch the "oa" in *whoa* to a second or two, letting your voice rise and fall. 2. Hum the *mm* for about a second. 3. Hold the *sh* for a second or two. 4. Draw out *so*, then pause before "what now". 5. Disbelieving: stretch the first vowel of *really* with your voice going up and down.
+
+**F. Fast and clipped.** These test the short end: rushed, clipped and broken-off speech.
+
+```script
+My brother, who by the way never calls, showed up yesterday.
+I was gonna, never mind.
+Wait, wait, wait!
+It's fine, it's fine, really, it's totally fine.
+I left it on the table, on the counter.
+```
+
+1. Say "who by the way never calls" quickly and a little quieter, as an aside. 2. Break off abruptly after *gonna*, then start again. 3. Fast, almost running together. 4. Rushed and clipped, as if brushing something off. 5. Cut *table* off halfway ("ta-") and correct yourself.
+
 ### Part 3: a passage (about 45 seconds)
 
 Read it as a story, breathing where it feels natural.
@@ -135,3 +159,10 @@ The profile is written to `profiles/private/me.json`. It is personal: keep it th
 - at least 10 before an unstressed vowel
 - at least 8 of each hissing sound ("s", "z", "sh", "f", "th" in "thin", "th" in "then"), and 5 of "zh" (as in "measure")
 - at least 8 r-coloured vowels and 8 "r"s
+
+Parts 2E and 2F are written in ordinary spelling. How you stretch, rush or cut them off is what the recording is for, so their timing is not part of the coverage count. The forced aligner may misplace boundaries inside a cut-off word ("ta-" against "table").
+
+## Changelog
+
+- **0.2** (2026-10-06): added Part 2E (drawn-out sounds: a vowel, a hum, a hiss, a word before a pause, a vowel with pitch movement) and 2F (a rushed aside, a cut-off and restart, fast repetition, clipped speech, a word cut off mid-way). These provide evidence for container v2's HOLD event, speaker-relative duration and cut-off marker (SPEC §12).
+- **0.1** (2026-10-06): first version.
