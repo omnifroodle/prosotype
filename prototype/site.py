@@ -207,9 +207,17 @@ footer{{margin-top:72px;font-size:14px;color:var(--muted);border-top:1px solid v
 def main() -> None:
     (DOCS / "renders").mkdir(parents=True, exist_ok=True)
     (DOCS / ".nojekyll").write_text("")
+    import player
+    player.write_js(DOCS)
+    player.write_streams(DOCS)
+    player.write_voices(DOCS)
+    ids = {Path(path).stem: sid for sid, _, _, path in player.SAMPLES}
+    pl = {"script": "../js/prosotype-player.mjs",
+          "voices": [f"../play/voices/{v}.json" for v, _ in player.VOICES],
+          "streams": {stem: (f"../play/data/{sid}.16a.prs", f"../play/data/{sid}.16a.text.json") for stem, sid in ids.items()}}
     for name, inputs in RENDERS.items():
         docs = [(Path(p).stem, json.loads((HERE / p).read_text())) for p in inputs]
-        (DOCS / "renders" / name).write_text(render.render(docs))
+        (DOCS / "renders" / name).write_text(render.render(docs, pl))
     rec = json.loads((HERE / "samples/recorded_three_ways.json").read_text())
     results = json.loads((HERE / "samples/bitrate_results.json").read_text())
     chars = {c for u in rec["utterances"] for w in u["words"] for p in w["phones"] for c in render.pack.normalise_ipa(p["ipa"])}

@@ -694,10 +694,11 @@ It sounds robotic by design. It is a reference for what a stream contains, not a
 - **Text:** with a text map (`text`, or a child `<script type="application/json">`), each utterance shows its words and label, and words highlight alongside glyphs.
 - **Player:** Play speaks the whole stream with the reference synthesiser. When there are several utterances, each line also gets its own play button. `voice` names a voice profile; `voices` adds a voice menu; the `voiceProfile` property takes a profile object, such as one a viewer loads from disk.
 - **Events and methods:** `prosotype-phone` fires as each phone sounds (index, phone, utterance, word), and `prosotype-end` fires at the end. `play(utterance?)` and `stop()` control playback. Only one element sounds at a time.
+- **Controls only:** `view="controls"` shows just the play controls and footer, for pages that draw the stream themselves and follow the events.
 - **Styling:** it lives in a shadow root, so page CSS cannot break it. It follows light and dark mode, and pages can retheme it with `--prosotype-ink`, `-muted`, `-unvoiced`, `-rule`, `-guide`, `-highlight`, `-highlight-ink`, `-surface` and `-size`. The `compact` attribute gives a smaller version without the footer.
 - **Without JavaScript:** content placed inside the element shows until it upgrades, so a static rendering can sit inside as the fallback.
 
-On the site, the homepage hero is a `<prosotype-player>` with the static rendering inside it as the fallback. The **reader** (`docs/play.html`, built by `prototype/player.py`) shows every sample as an element, with page-level menus that switch all of them between 16a, 12b and 8b and between voice profiles. A viewer can also load their own profile from disk; it never leaves the browser.
+On the site, the homepage hero is a `<prosotype-player>` with the static rendering inside it as the fallback. Each document on the render pages (mappings A and B side by side) has a controls-only player: its `prosotype-phone` events highlight the phone being spoken in both columns, and every line has its own play button. `render.py` adds these only when asked (`render(docs, player=…)`), so its standalone pages stay self-contained. The **reader** (`docs/play.html`, built by `prototype/player.py`) shows every sample as an element, with page-level menus that switch all of them between 16a, 12b and 8b and between voice profiles. A viewer can also load their own profile from disk; it never leaves the browser.
 
 ## Appendix A. Verified background
 

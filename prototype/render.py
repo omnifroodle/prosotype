@@ -286,12 +286,39 @@ button[aria-pressed=true]{{border-color:var(--ink)}}
 """
 
 
-def render(docs: list[tuple[str, dict]]) -> str:
+PLAYER_JS = """<script type="module" src="{script}"></script>
+<script type="module">
+// Highlight the phone being spoken in both columns of its document (SPEC 11.1 events).
+for (const pl of document.querySelectorAll("prosotype-player")) {
+  const sec = pl.closest("section");
+  const clear = () => sec.querySelectorAll(".now").forEach((e) => e.classList.remove("now"));
+  pl.addEventListener("prosotype-phone", (e) => {
+    clear();
+    sec.querySelectorAll(`[data-i="${e.detail.index}"]`).forEach((g) => g.classList.add("now"));
+  });
+  pl.addEventListener("prosotype-end", clear);
+  sec.querySelectorAll("button.say").forEach((b) => (b.onclick = () => pl.play(+b.dataset.u)));
+}
+</script>"""
+PLAYER_CSS = (".now{background:oklch(0.9 0.08 85);color:#1b1b1f;border-radius:3px}"
+              ":root[data-theme=dark] .now{background:oklch(0.45 0.09 85);color:#fff}"
+              "@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .now{background:oklch(0.45 0.09 85);color:#fff}}"
+              "button.say{font-size:11px;padding:0 8px;line-height:18px;border-radius:999px}"
+              "prosotype-player{margin:6px 0 4px;--prosotype-ink:var(--ink);--prosotype-muted:var(--muted);"
+              "--prosotype-rule:var(--rule);--prosotype-unvoiced:var(--unvoiced);--prosotype-guide:var(--guide)}")
+
+
+def render(docs: list[tuple[str, dict]], player: dict | None = None) -> str:
+    """player (optional): {"script": URL of prosotype-player.mjs, "voices": [URLs],
+    "streams": {doc name: (stream URL, text map URL)}}. Documents with a stream get
+    a player whose phones highlight in both columns, and a play button per line."""
     chars = set("aa ") | {chr(c) for c in range(0x20, 0x7F)}
     sections = []
     for name, doc in docs:
         spk_names = list(doc["speakers"])
         rows = []
+        stream = (player or {}).get("streams", {}).get(name)
+        ca, cb = [0, 0], [0, 0]  # the same phone index in both columns
         for ui, utt in enumerate(doc["utterances"]):
             spk = spk_names.index(utt["speaker"])
             for w in utt["words"]:
@@ -299,33 +326,44 @@ def render(docs: list[tuple[str, dict]]) -> str:
                     chars |= set(pack.normalise_ipa(ph["ipa"]))
             text = " ".join(w.get("text") or "" for w in utt["words"]).strip()
             label = utt.get("label") or f"utterance {ui + 1}"
+            say = f'<button class="say" type="button" data-u="{ui}" aria-label="Play this line">▶</button>' if stream else ""
             rows.append(
-                '<div class="utt"><div class="utt-head">'
+                f'<div class="utt"><div class="utt-head">{say}'
                 f'<span class="label">{html.escape(label)}</span>'
                 f'<span>speaker {html.escape(utt["speaker"])}</span>'
                 + (f'<span>{html.escape(text)}</span>' if text != label else "") + '</div>'
                 '<div class="pair">'
-                f'<div><div class="map-tag">A</div><div class="map" lang="und-fonipa">{utterance_html(utt, "A", spk)}</div></div>'
-                f'<div><div class="map-tag">B</div><div class="map mapB" lang="und-fonipa">{utterance_html(utt, "B", spk)}</div></div>'
+                f'<div><div class="map-tag">A</div><div class="map" lang="und-fonipa">{utterance_html(utt, "A", spk, ca if stream else None)}</div></div>'
+                f'<div><div class="map-tag">B</div><div class="map mapB" lang="und-fonipa">{utterance_html(utt, "B", spk, cb if stream else None)}</div></div>'
                 "</div></div>"
             )
         src = doc.get("source", {})
         audio = src.get("audio") or ""
         note = src.get("note") or (", ".join(audio) if isinstance(audio, list) else audio)
+        controls = ""
+        if stream:
+            voices = " ".join(player.get("voices", []))
+            controls = (f'<prosotype-player view="controls" src="{html.escape(stream[0])}" text="{html.escape(stream[1])}"'
+                        + (f' voices="{html.escape(voices)}"' if voices else "") + "></prosotype-player>")
         sections.append(
-            f"<h2>{html.escape(name)}</h2>"
+            f"<section><h2>{html.escape(name)}</h2>"
             + (f'<p class="sub">{html.escape(note)}</p>' if note else "")
-            + "".join(rows)
+            + controls + "".join(rows) + "</section>"
         )
     levelcss, darkpa = css()
-    return PAGE.format(
+    page = PAGE.format(
         fontface=font_face("".join(sorted(chars))),
         darkauto=darkpa.replace("{sel}", ":root:not([data-theme=light])"),
         darkforced=darkpa.replace("{sel}", ":root[data-theme=dark]"),
-        levelcss=levelcss,
+        levelcss=levelcss + ("\n" + PLAYER_CSS if player else ""),
         legend=legend(),
         body="".join(sections),
     )
+    if player:
+        page = page.replace("</body>", PLAYER_JS.replace("{script}", player["script"]) + "\n</body>")
+        page = page.replace("Hover a glyph for its values.</p>",
+                            "Hover a glyph for its values. Play speaks the packed stream with the reference synthesiser.</p>")
+    return page
 
 
 def main() -> None:

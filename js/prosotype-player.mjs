@@ -14,6 +14,8 @@
 //   voice     URL of a voice profile (SPEC 10) to speak with
 //   voices    space-separated voice profile URLs; shows a voice menu
 //   compact   smaller type, no footer
+//   view      "controls": only the play controls and footer, for pages that
+//             draw the stream themselves and follow the prosotype-phone events
 // Properties: voiceProfile (a profile object; overrides voice), doc (decoded)
 // Methods: play(utterance?), stop()
 // Events: "prosotype-phone" {index, ipa, utterance, word}, "prosotype-end"
@@ -185,23 +187,25 @@ class ProsoTypePlayer extends HTMLElement {
       }
       return `<div class="utt">${cap}<div class="ipa" lang="und-fonipa">${glyphs}</div></div>`;
     }).join("");
-    const opts = voiceUrls.map((u) => `<option value="${esc(u)}"${u === vurl ? " selected" : ""}>${esc(this._voices[u]?.id ?? u)}</option>`).join("");
+    const opts = voiceUrls.length ? `<option value="">speaker's pitch</option>` + voiceUrls.map((u) =>
+      `<option value="${esc(u)}"${u === vurl ? " selected" : ""}>${esc(this._voices[u]?.id ?? u)}</option>`).join("") : "";
     const size = this._bytes ? `${this._bytes.length} bytes` : "JSON form";
     const dl = this._bytes ? `<a href="${URL.createObjectURL(new Blob([this._bytes], { type: "application/octet-stream" }))}" download="stream.prs">download stream</a>` : "";
+    const controlsOnly = this.getAttribute("view") === "controls";
     this.shadowRoot.innerHTML = `<style>${STYLE}</style><div class="box" part="box">
 <div class="top"><button class="main" aria-label="Play">Play</button>${opts ? `<select aria-label="Voice">${opts}</select>` : ""}</div>
-${rows}
+${controlsOnly ? "" : rows}
 <div class="foot">ProsoType ${esc(doc.profile ?? "")} · ${size} · ${doc.utterances.length} utterance${multi ? "s" : ""} ${dl ? "· " + dl : ""}</div></div>`;
     this.shadowRoot.querySelector(".main").onclick = () => (this._source ? this.stop() : this.play());
     this.shadowRoot.querySelectorAll("button.row").forEach((b) => (b.onclick = () => this.play(+b.dataset.u)));
     const sel = this.shadowRoot.querySelector("select");
-    if (sel) sel.onchange = () => { this.stop(); this.setAttribute("voice", sel.value); };
+    if (sel) sel.onchange = () => { this.stop(); if (sel.value) this.setAttribute("voice", sel.value); else this.removeAttribute("voice"); };
   }
 
   _voice() {
     if (this.voiceProfile) return this.voiceProfile;
     const sel = this.shadowRoot.querySelector("select");
-    const u = sel?.value || this.getAttribute("voice");
+    const u = sel ? sel.value : this.getAttribute("voice");  // "" in the menu: the stream speaker's own pitch
     return u ? this._voices[u] : null;
   }
 
