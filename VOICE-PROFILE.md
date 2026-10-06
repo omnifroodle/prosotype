@@ -66,7 +66,8 @@ uv run voiceprofile.py build me-1.wav me-2.wav --id me --device "USB condenser" 
 ```
 
 - **Amount of speech.** Many fields need it: stop timing wants about 20 or more voiceless stops before vowels, rhythm a few dozen syllables. A minute of natural speech is the practical minimum, and a reading script (§7) makes coverage predictable.
-- **Boundaries.** Articulation fields depend on good phone boundaries. The forced aligner (`--aligner mfa`) places them best (SPEC §9.5), but `pronunciation` needs the recogniser, because dictionary phones show no departures from the dictionary.
+- **Heard phones only.** A profile describes the voice in the audio, so it is built from phones as heard: the recogniser, by default. Dictionary forced alignment (`--aligner mfa`, `--text`) replaces what was said with the dictionary's pronunciation, and would describe an accent-neutralised voice (SPEC §1, §7.1). `voiceprofile.py` refuses it without `--dictionary-phones`, which exists for experiments only.
+- **Boundaries.** Articulation fields depend on phone boundaries. `voiceprofile.py` therefore defaults to `--aligner heard` when MFA is installed: the heard phones, re-timed by aligning exactly those phones with no dictionary. On Buckeye this puts 80% of onsets within 20 ms, against 65% for the recogniser alone (SPEC §9.5).
 - **Conditions.** Several timbre fields shift with the channel: spectral tilt, HNR and fricative spectra all change with a compressed phone recording and its 8–12 kHz bandwidth. Record `device` and `environment`, and compare profiles only across similar conditions.
 
 ## 5. Using a profile to synthesise
@@ -99,7 +100,7 @@ Durations, pitch and loudness of each phone always come from the stream. The oth
 
 ## 7. Recording for a profile
 
-[`profiles/RECORDING.md`](profiles/RECORDING.md) is the recording script (version 0.1) with recording instructions. It has four parts: sound coverage sentences, deliveries (one sentence five ways, moving emphasis, phrasing pairs, trailing endings), a read passage, and free speech. With the script's text known, `voiceprofile.py build --aligner mfa --text …` forced-aligns the scripted parts without speech recognition. `prototype/script_coverage.py` checks the script's coverage. The current version has 81 voiceless stops before stressed vowels and 44 before unstressed ones, and every General American sound at least 5 times.
+[`profiles/RECORDING.md`](profiles/RECORDING.md) is the recording script (version 0.1) with recording instructions. It has four parts: sound coverage sentences, deliveries (one sentence five ways, moving emphasis, phrasing pairs, trailing endings), a read passage, and free speech. The script's text only tells the speaker what to say. The profile is built from what the recording contains, transcribed from the audio. `prototype/script_coverage.py` checks the script's coverage. The current version has 81 voiceless stops before stressed vowels and 44 before unstressed ones, and every General American sound at least 5 times.
 
 ## 8. Changelog
 

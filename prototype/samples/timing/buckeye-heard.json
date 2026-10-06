@@ -1,0 +1,84 @@
+{
+ "clips": 80,
+ "reference_phones": 3169,
+ "recognised_phones": 3237,
+ "aligned_share": 0.952,
+ "identical_share": 0.758,
+ "all": {
+  "pairs": 3018,
+  "onset_error_ms": {
+   "median_signed": 0.0,
+   "median_abs": 7.9,
+   "p90_abs": 39.3
+  },
+  "onsets_within_20ms": 0.801,
+  "duration_ms": {
+   "ref_median": 72.5,
+   "hyp_median": 70.0
+  },
+  "duration_ratio_median": 1.0,
+  "duration_log_correlation": 0.734,
+  "same_level_16a": 0.494,
+  "within_one_level_16a": 0.868
+ },
+ "vowel": {
+  "pairs": 1234,
+  "onset_error_ms": {
+   "median_signed": 3.0,
+   "median_abs": 7.1,
+   "p90_abs": 29.4
+  },
+  "onsets_within_20ms": 0.853,
+  "duration_ms": {
+   "ref_median": 83.1,
+   "hyp_median": 80.0
+  },
+  "duration_ratio_median": 0.94,
+  "duration_log_correlation": 0.786,
+  "same_level_16a": 0.54,
+  "within_one_level_16a": 0.88
+ },
+ "stop": {
+  "pairs": 570,
+  "onset_error_ms": {
+   "median_signed": 0.0,
+   "median_abs": 7.4,
+   "p90_abs": 40.0
+  },
+  "onsets_within_20ms": 0.788,
+  "duration_ms": {
+   "ref_median": 72.3,
+   "hyp_median": 70.0
+  },
+  "duration_ratio_median": 1.05,
+  "duration_log_correlation": 0.636,
+  "same_level_16a": 0.467,
+  "within_one_level_16a": 0.858
+ },
+ "other consonant": {
+  "pairs": 1214,
+  "onset_error_ms": {
+   "median_signed": -1.9,
+   "median_abs": 8.9,
+   "p90_abs": 41.7
+  },
+  "onsets_within_20ms": 0.755,
+  "duration_ms": {
+   "ref_median": 62.9,
+   "hyp_median": 60.0
+  },
+  "duration_ratio_median": 1.05,
+  "duration_log_correlation": 0.711,
+  "same_level_16a": 0.46,
+  "within_one_level_16a": 0.861
+ },
+ "aligned_by_mfa_share": 1.0,
+ "source": "buckeye",
+ "boundaries": "heard",
+ "phone_model": "facebook/wav2vec2-lv-60-espeak-cv-ft@ae45363bf3413b374fecd9dc8bc1df0e24c3b7f4, re-timed by MFA 3.4.2 english_us_arpa (heard phones, no dictionary)",
+ "settings": {
+  "per_speaker": 10,
+  "seed": 1
+ },
+ "acknowledgement": "Buckeye Corpus of Conversational Speech, Pitt, M.A., Dilley, L., Johnson, K., Kiesling, S., Raymond, W., Hume, E. and Fosler-Lussier, E. (2007), Ohio State University"
+}

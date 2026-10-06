@@ -4,6 +4,17 @@ Draft 0.3, 2026-10-05. © 2026 Matt Overstreet, licensed under [CC BY 4.0](LICEN
 
 ## 1. Goals, non-goals, consumers
 
+### Principle: transcribe the audio
+
+**ProsoType transcribes audio. It does not convert speech into English text, or into any text.** A transcription records the sounds a speaker actually made and how they made them:
+
+- **Phones come from the audio, as heard.** A dropped sound stays dropped, an added one stays, and a speaker's own realisations (a tap or glottal stop for "t", a vowel without "r", a reduced or merged vowel) are kept. Accents depend on exactly these differences.
+- **No text may supply or remove phones.** That includes a pronouncing dictionary, a speech recogniser's words and a reading script. A phone that comes from text instead of the audio is not a transcription. Any tool that produces one must mark it as such, and it must not be presented or published as a ProsoType transcription.
+- **Text is an optional, separate layer.** Orthographic words may travel alongside a stream for display and highlighting (the text map, §4.1), but nothing in the stream depends on them.
+- **Delivery is measured, never inferred from text.** Pitch, duration and loudness come from the signal. Where a value is inferred from neighbouring measurements rather than measured (for example `pitch_filled`, §7), it is marked.
+
+The prototype does not yet meet this fully: speech recognition still decides utterance and word boundaries. §7.1 lists every remaining dependence on text and the plan for each.
+
 ### Goals
 
 1. Write speech as a sequence of IPA phones, each carrying a small, fixed amount of delivery information (pitch, duration, loudness), in a standard way.
@@ -314,6 +325,7 @@ The JSON form holds unquantised measurements and everything in the data model. I
 - `ipa` may be any IPA string. It is folded (3.3) when packed, and phones outside the table go to the extension table.
 - Decoding a packed stream produces the same shape with `text: null`, centre values, reconstructed times, and a `profile` field.
 - A speaker may name a voice profile (`"voice_profile": "id"`, §10) whose pitch median was used as the baseline.
+- **Provenance.** A phone without a `from` field was heard in the audio. `"from": "dictionary"` marks a phone taken from a pronouncing dictionary; such a document is not a transcription (§1). `"timing": "aligned"` marks a heard phone whose boundaries were refined by forced alignment of the heard phones (§7). `"pitch_filled": true` marks pitch inferred from neighbours.
 
 ### 4.1 Text map
 
@@ -453,7 +465,20 @@ Several files of one speaker can be passed together. They share one set of basel
 | Per-phone median pitch | A pitch movement inside one long vowel is reduced to its middle value. | question /aɪ/ in synthetic clip |
 | Whisper word errors | Wrong words give wrong dictionary pronunciations. This only affects word assignment, not the phones themselves. | none observed (one OOV: "9") |
 
-**Fallback (not needed so far).** Dictionary pronunciation plus HMM forced alignment (Montreal Forced Aligner) would give better boundaries but canonical rather than as-spoken phones. It also needs a conda install. The CMUdict alignment already in the pipeline provides the canonical phones if this is ever wanted.
+**Dictionary forced alignment is not a transcription.** The Montreal Forced Aligner (`--aligner mfa`, `--text`) writes each word's dictionary pronunciation and places it on the audio. Its boundaries are better (§9.5), but its phones come from text, so under the principle in §1 its output is not a ProsoType transcription. It is kept as a measurement reference and for experiments only, and `voiceprofile.py` refuses it unless explicitly told to use dictionary phones. On Buckeye it kept none of the taps (0 of 54) or glottal stops (0 of 42) that the speakers actually produced.
+
+### 7.1 Where text still shapes a transcript (audit)
+
+| Step | How text enters | Effect on the transcription | Plan |
+|---|---|---|---|
+| Utterance boundaries | Whisper's segments: an English text model decides where an utterance ends | Utterances follow sentence-like text units rather than the audio | Segment from the audio: pauses, and pitch resets at phrase ends |
+| Word grouping | Whisper's words, then an edit-distance match between the heard phones and CMUdict pronunciations, which assigns each phone to a word | Phones are unchanged, but the stream's word layer (WORD symbols and start flags) reflects English words, and a misheard word can move a phone to the wrong word | Derive groups from the audio (pause groups or syllable groups), or keep text words only as the optional text layer; mark the word layer's source |
+| Phone identities | None directly: the wav2vec2 recogniser hears the audio. Its training labels, however, were generated from dictionary-style pronunciations | A dictionary bias inside the recogniser. On Buckeye it kept 57% of taps but none of 40 glottal stops, writing "t" instead | Evaluate less dictionary-bound phone recognisers (for example Allosaurus, Appendix A) against Buckeye's allophones |
+| Language | Whisper is told the speech is English; the phone table is `en-1` | Non-English sounds go through ESC, and recognition may push them toward English | A language-neutral pipeline is a later phase (§1 non-goals) |
+| Forced alignment | Dictionary phones (above) | Accent erased; dropped sounds refilled with at least 30 ms each | Reference only. **Done:** `--aligner heard` aligns the *heard* phones with no dictionary: the aligner's timing without its phones (§9.5) |
+| `--refine` | None. Vowel+r splits use phone labels, and missing vowel pitch is filled from neighbours | An inference, not a measurement | Kept optional, and marked `pitch_filled` |
+| Recording script | Its text is what the speaker is asked to say | It must not become the transcription | The script elicits speech; its text is never used as phones (`profiles/RECORDING.md`) |
+| Text map, player | Display only | None | Already separate (§4.1) |
 
 ## 8. Known limitations and open questions
 
@@ -469,6 +494,12 @@ Several files of one speaker can be passed together. They share one set of basel
 8. **Option (b) drops words with no recognised phones,** and packed timestamps drift by accumulated quantisation error (3.7).
 9. **Rendering is only judged by the authors.** No reader has seen it. Prior work with deaf and hard-of-hearing readers suggests B-style captions are understood (Appendix A), but the IPA form is untested by design (see the readability note above).
 10. **Streaming is not specified.** The container header gives the symbol count and the speaker's median pitch and loudness up front, so a live stream cannot start before the speech ends. A streaming framing would need an open-ended count and a running or replaced baseline (§12, item 3). Each symbol is complete once its phone ends, so the format itself adds about one phone of delay (median 70 ms in Buckeye). Measured on an Apple-silicon Mac for a 2.6 s utterance, after warm-up: phone recogniser 59 ms, pitch and loudness 2 ms, synthesis 185 ms (for 1.2 s of output), Whisper words 1.6 s, MFA alignment 34 s (mostly process start-up). The recogniser path can stream; Whisper and MFA need whole utterances. For an anonymity use, the header's absolute pitch and loudness reveal the speaker's voice and must not be sent.
+11. **Reading an accent.** An accent shows in a transcription only as far as the phones and delivery capture it, and an assumed accent mid-speech (a reader voicing Huck Finn in *Tom Sawyer*) only as a change in them. Three limits stand in the way today:
+    - **The recogniser's inventory and biases:** it never writes a glottal stop (§7.1).
+    - **Folding:** dark `ɫ` becomes `l`, and length marks are removed (3.3).
+    - **Categories:** the phone table records vowel *categories*, so a shift within a category (a fronted, raised or centralised vowel) is invisible.
+
+    Options are a narrower table or IPA diacritics through ESC (already possible in v1), and v2 personas (§12 item 10). Test material: public-domain readings with character voices, such as LibriVox recordings of *Tom Sawyer*.
 
 ## 9. Findings
 
@@ -591,9 +622,17 @@ Next steps, in order of cost:
 | Recogniser, corrected | 65% | 14 ms | 36% | 79% | 0.59 | 76% |
 | MFA on Whisper's words | **78%** | **8 ms** | **47%** | **87%** | **0.72** | 76% |
 
-  MFA's phones are dictionary pronunciations, so they cannot show a pronunciation the dictionary lacks. Even so, they match the hand labels about as often as the recogniser's do (76.3% against 75.8%). Identity counts schwa and ʌ as one, because Buckeye's "ah" label covers both. An earlier version of this table gave MFA 76% and the recogniser 74%: MFA's unstressed AH was mislabelled ʌ, which happened to match Buckeye's "ah". On the owner's recordings, MFA writes "tonight" correctly in all three takes, where the recogniser misheard it each time (9.2). Two costs: MFA is English-only through its dictionary, and it needs a full utterance plus its words before it can align, which matters for streaming (§8 item 10).
+  MFA's phones are dictionary pronunciations, so they cannot show a pronunciation the dictionary lacks, and under §1 they are not a transcription. In this sample it kept 0 of 54 taps and 0 of 42 glottal stops, against the recogniser's 32 of 56 and 0 of 40. Even so, they match the hand labels about as often as the recogniser's do (76.3% against 75.8%). Identity counts schwa and ʌ as one, because Buckeye's "ah" label covers both. An earlier version of this table gave MFA 76% and the recogniser 74%: MFA's unstressed AH was mislabelled ʌ, which happened to match Buckeye's "ah". On the owner's recordings, MFA writes "tonight" correctly in all three takes, where the recogniser misheard it each time (9.2). Two costs: MFA is English-only through its dictionary, and it needs a full utterance plus its words before it can align, which matters for streaming (§8 item 10).
 
-- Even with MFA, fewer than half of durations land on the exact 3-bit level. Treat 3-bit durations from automatic transcription as accurate to about ±1 level; 2-bit durations are within reach.
+- **Done: heard-phone alignment.** `transcribe.py --aligner heard` keeps the recogniser's phones exactly. It groups them at pauses in the audio, gives each group a one-off pronunciation that is exactly its heard phones (so the aligner can move boundaries but cannot change, add or remove a phone), and force-aligns them. On the same 80 clips, the aligner placed every phone:
+
+| | Onsets within 20 ms | Median onset error | Same 3-bit duration level | Within one level | Duration correlation (log) | Phones identical |
+|---|---|---|---|---|---|---|
+| Heard phones, aligned | **80%** | **8 ms** | **49%** | **87%** | **0.73** | 75.8%, as heard |
+
+  It matches or beats the dictionary aligner on every timing measure, without its phones. It is the default for building voice profiles. Transcription keeps the recogniser's timing by default for now, because the aligner needs the separate MFA install.
+
+- Even aligned, fewer than half of durations land on the exact 3-bit level. Treat 3-bit durations from automatic transcription as accurate to about ±1 level; 2-bit durations are within reach.
 
 ### 9.6 Go / adjust / stop (technical questions only)
 
@@ -699,6 +738,7 @@ Container version 1 (§3) is stable and has conformance vectors. Version 2 colle
 | 7 | Voice quality per phone | pending evidence | Creaky, breathy or whispered phonation as a delivery cue: creak at phrase ends, boredom, sarcasm. The 16-bit symbol has no spare bits, so this needs a field trade-off or an event. |
 | 8 | Phrase boundary marker | pending evidence | Phrase boundaries without pauses ("Let's eat, Grandpa"), as distinct from silence. Decide after the scripted phrasing pairs show whether boundaries without pauses carry meaning that the stream loses. |
 | 9 | Cut-off marker | pending evidence | A word broken off abruptly ("I wa-", "sev- seventeen"), which conversation analysis writes with a dash. It is an abrupt ending, not a short duration: an event or a flag on the last phone. See 12.3. |
+| 10 | Personas: one speaker, several voices | proposed | A reader doing character voices, or a speaker slipping into an assumed accent, is one person producing a different voice. A TURN to a persona entry (for example "S1 as Huck") that shares the speaker's baseline makes the switch explicit, while the shift in register stays visible instead of being normalised away. Phones as heard already carry the assumed accent (§1). See §8 item 11. |
 
 ### 12.1 Speaker-relative duration
 

@@ -98,6 +98,38 @@ def mfa_recognise(clips: list[tuple[str, np.ndarray, list[dict]]]) -> dict[str, 
     return {k: v["phones"] for k, v in mfa.align(items).items()}
 
 
+def pause_groups(phones: list[dict], gap_s: float = 0.1) -> list[list[dict]]:
+    """Split a phone sequence where the audio has a gap: groups come from the
+    audio, not from words."""
+    groups: list[list[dict]] = []
+    for ph in phones:
+        if not groups or ph["start"] - groups[-1][-1]["end"] >= gap_s:
+            groups.append([])
+        groups[-1].append(ph)
+    return groups
+
+
+def heard_aligned(clips: list[tuple[str, np.ndarray, list[dict]]]) -> tuple[dict[str, list[dict]], float]:
+    """The recogniser's phones, re-timed by aligning exactly those phones (mfa.align_heard).
+    Returns the phones per clip and the share of phones the aligner could place."""
+    heard = {name: recognise(audio) for name, audio, _ in clips}
+    items = [(name, name[:3], audio, T.SR, [[p["ipa"] for p in g] for g in pause_groups(heard[name])]) for name, audio, _ in clips]
+    times = mfa.align_heard(items)
+    placed = total = 0
+    out = {}
+    for name, phones in heard.items():
+        new = []
+        for ph, t in zip(phones, times.get(name, [None] * len(phones))):
+            total += 1
+            if t:
+                placed += 1
+                new.append({**ph, "start": t[0], "end": t[1]})
+            else:
+                new.append(ph)
+        out[name] = new
+    return out, placed / max(1, total)
+
+
 # --- alignment and scoring ------------------------------------------------------
 
 
@@ -291,8 +323,9 @@ def main() -> None:
     ap.add_argument("--per-speaker", type=int, default=10)
     ap.add_argument("--seed", type=int, default=1)
     ap.add_argument("--unpack", action="store_true")
-    ap.add_argument("--boundaries", choices=["recogniser", "mfa"], default="recogniser",
-                    help="recogniser: transcribe.py's phones; mfa: Montreal Forced Aligner on Whisper's words")
+    ap.add_argument("--boundaries", choices=["recogniser", "heard", "mfa"], default="recogniser",
+                    help="recogniser: transcribe.py's phones; heard: the same phones re-timed by aligning them "
+                         "(no dictionary); mfa: dictionary phones of Whisper's words (reference only)")
     a = ap.parse_args()
     if a.source == "buckeye":
         if not a.dir:
@@ -302,11 +335,19 @@ def main() -> None:
         clips = buckeye_clips(a.dir, a.per_speaker, a.seed)
     else:
         clips = synth_clips()
-    res, rows = score(clips, mfa_recognise(clips) if a.boundaries == "mfa" else None)
+    hyps, placed = None, None
+    if a.boundaries == "mfa":
+        hyps = mfa_recognise(clips)
+    elif a.boundaries == "heard":
+        hyps, placed = heard_aligned(clips)
+    res, rows = score(clips, hyps)
+    if placed is not None:
+        res["aligned_by_mfa_share"] = round(placed, 3)
     res["source"] = a.source
     res["boundaries"] = a.boundaries
-    res["phone_model"] = (f"{T.PHONE_MODEL}@{T.PHONE_MODEL_REV}" if a.boundaries == "recogniser"
-                          else f"MFA {mfa.VERSION} {mfa.MODEL} on {T.WORD_MODEL}@{T.WORD_MODEL_REV} words")
+    res["phone_model"] = {"recogniser": f"{T.PHONE_MODEL}@{T.PHONE_MODEL_REV}",
+                          "heard": f"{T.PHONE_MODEL}@{T.PHONE_MODEL_REV}, re-timed by MFA {mfa.VERSION} {mfa.MODEL} (heard phones, no dictionary)",
+                          "mfa": f"MFA {mfa.VERSION} {mfa.MODEL} on {T.WORD_MODEL}@{T.WORD_MODEL_REV} words"}[a.boundaries]
     if a.source == "buckeye":
         res["settings"] = {"per_speaker": a.per_speaker, "seed": a.seed}
         res["acknowledgement"] = ("Buckeye Corpus of Conversational Speech, Pitt, M.A., Dilley, L., Johnson, K., "

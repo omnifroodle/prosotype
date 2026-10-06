@@ -454,8 +454,13 @@ def main() -> None:
     b.add_argument("--id", required=True)
     b.add_argument("-o", "--output", type=Path)
     b.add_argument("--synthetic", action="store_true", help="a synthetic voice (public by default)")
-    b.add_argument("--aligner", choices=["recogniser", "mfa"], default="recogniser")
+    b.add_argument("--aligner", choices=["heard", "recogniser", "mfa"], default=None,
+                   help="heard (default when MFA is installed): heard phones with aligned timing; recogniser: heard "
+                        "phones with recogniser timing; mfa: dictionary phones (refused without --dictionary-phones)")
     b.add_argument("--text", nargs="+", help="known text per input (a file, or - for none); see profiles/RECORDING.md")
+    b.add_argument("--dictionary-phones", action="store_true",
+                   help="allow --aligner mfa or --text: builds the profile from dictionary phones, not the audio "
+                        "(experiments only; VOICE-PROFILE.md 4)")
     b.add_argument("--device", help="recording device or microphone, for the conditions block")
     b.add_argument("--environment", help="room or setting, for the conditions block")
     s = sub.add_parser("show")
@@ -471,7 +476,13 @@ def main() -> None:
             print(f"{'ok     ' if not errs else 'INVALID'} {f}" + "".join(f"\n    {e}" for e in errs))
         raise SystemExit(1 if bad else 0)
     if a.cmd == "build":
+        import mfa
         import transcribe as T
+        if a.aligner is None:
+            a.aligner = "heard" if mfa.available() else "recogniser"
+        if (a.aligner == "mfa" or a.text) and not a.dictionary_phones:
+            raise SystemExit("refusing: --aligner mfa and --text build a profile from dictionary phones, which erases the "
+                             "speaker's own pronunciation (VOICE-PROFILE.md 4). Pass --dictionary-phones for experiments.")
         p = build(a.inputs, a.id, a.synthetic, a.aligner, a.device, a.environment, T.read_texts(a.text, len(a.inputs)))
         print(show(p))
         print(f"-> {save(p, a.output)}")

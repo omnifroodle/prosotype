@@ -94,3 +94,70 @@ def align(items: list[tuple[str, str, np.ndarray, int, str]]) -> dict[str, dict]
             words = [(a, b, w) for a, b, w in read_textgrid(tg, "words") if w.strip()]
             res[keys[tg.stem]] = {"words": words, "phones": phones}
     return res
+
+
+# --- aligning the heard phones (no dictionary) ---------------------------------------
+# Each heard phone needs a stand-in from the acoustic model's phone set for alignment
+# only; the transcript keeps the heard label. Full vowels take stress 1, reduced ones 0.
+HEARD_TO_ARPA = {
+    "p": "P", "b": "B", "t": "T", "d": "D", "k": "K", "ɡ": "G", "ʔ": "T", "ɾ": "D",
+    "f": "F", "v": "V", "θ": "TH", "ð": "DH", "s": "S", "z": "Z", "ʃ": "SH", "ʒ": "ZH", "h": "HH",
+    "tʃ": "CH", "dʒ": "JH", "m": "M", "n": "N", "ŋ": "NG", "l": "L", "ɹ": "R", "w": "W", "j": "Y",
+    "n̩": "N", "l̩": "L", "m̩": "M",
+    "i": "IY1", "ɪ": "IH1", "e": "EY1", "ɛ": "EH1", "æ": "AE1", "a": "AA1", "ɑ": "AA1", "ɒ": "AA1",
+    "ɔ": "AO1", "o": "OW1", "ʊ": "UH1", "u": "UW1", "ʌ": "AH1", "ə": "AH0", "ɚ": "ER0", "ɜ": "ER1", "ɐ": "AH0",
+    "eɪ": "EY1", "aɪ": "AY1", "ɔɪ": "OY1", "aʊ": "AW1", "oʊ": "OW1", "əʊ": "OW1",
+    "ɪə": "IH1", "ɛə": "EH1", "ʊə": "UH1",
+    "x": "HH", "ç": "HH", "ʍ": "W", "β": "B", "ɣ": "G", "y": "UW1", "ø": "ER1", "ɨ": "IH0",
+}
+
+
+def align_heard(items: list[tuple[str, str, np.ndarray, int, list[list[str]]]]) -> dict[str, list[tuple[float, float] | None]]:
+    """Forced-align phones as heard, with no pronouncing dictionary (SPEC 1, 7.1).
+
+    items: (key, speaker, audio, sample rate, groups), where groups are runs of
+    heard IPA phones (for example, phones between pauses). Each group becomes a
+    pseudo-word whose only pronunciation is exactly its heard phones, so the
+    aligner can place boundaries but cannot change, add or remove a phone.
+    Returns, per key, one (start, end) per phone in order, or None for a phone
+    whose group the aligner could not fit (callers keep their own timing there)."""
+    import soundfile as sf
+
+    if not available():
+        raise SystemExit(f"MFA is not installed in {MFA_DIR / 'env'} (see mfa.py)")
+    with tempfile.TemporaryDirectory(dir=MFA_DIR) as td:
+        corpus, out = Path(td) / "corpus", Path(td) / "out"
+        lexicon = Path(td) / "heard.dict"
+        entries, keys, layout = [], {}, {}
+        for i, (key, spk, audio, sr, groups) in enumerate(items):
+            d = corpus / spk
+            d.mkdir(parents=True, exist_ok=True)
+            names = []
+            for j, g in enumerate(groups):
+                name = f"u{i:05d}g{j:04d}"
+                entries.append(f"{name}\t{' '.join(HEARD_TO_ARPA.get(ph, 'AH0') for ph in g)}")
+                names.append(name)
+            sf.write(d / f"u{i:05d}.wav", audio, sr)
+            (d / f"u{i:05d}.lab").write_text(" ".join(names) + "\n")
+            keys[f"u{i:05d}"] = key
+            layout[key] = [(n, len(g)) for n, g in zip(names, groups)]
+        lexicon.write_text("\n".join(entries) + "\n")
+        r = subprocess.run([str(MFA_DIR / "env" / "bin" / "mfa"), "align", "--clean", "-j", "4", str(corpus),
+                            str(lexicon), MODEL, str(out)], capture_output=True, text=True, env=env())
+        if r.returncode:
+            raise SystemExit(f"mfa align failed:\n{r.stdout[-3000:]}\n{r.stderr[-3000:]}")
+        res = {key: [None] * sum(n for _, n in layout[key]) for key in layout}
+        for tg in out.rglob("*.TextGrid"):
+            key = keys[tg.stem]
+            words = {w: (a, b) for a, b, w in read_textgrid(tg, "words") if w.strip()}
+            phones = [(a, b) for a, b, lab in read_textgrid(tg, "phones") if lab.strip() and lab not in ("sil", "sp", "spn")]
+            k = 0
+            pos = 0
+            for name, n in layout[key]:
+                if name in words:
+                    wa, wb = words[name]
+                    inside = [(a, b) for a, b in phones if a >= wa - 1e-6 and b <= wb + 1e-6]
+                    if len(inside) == n:
+                        res[key][pos:pos + n] = inside
+                pos += n
+        return res

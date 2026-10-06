@@ -138,17 +138,15 @@ No script. Talk about something you did last weekend, or explain how you make a 
 
 ## Making the profile
 
-Export the scripted parts as text, then build the profile with the forced aligner using the known words (part 4 has no text, so it uses speech recognition):
+The profile is built from the recording, transcribed from the audio. The script's text only tells you what to say; it is never used as the transcription. If you drop a sound, stretch one, or say a word your own way, the profile keeps it.
 
 ```bash
 cd prototype
-uv run script_coverage.py --export ../profiles/private/script
-uv run voiceprofile.py build part1.wav part2.wav part3.wav part4.wav --id me --aligner mfa \
-  --text ../profiles/private/script/part1.txt ../profiles/private/script/part2.txt ../profiles/private/script/part3.txt - \
+uv run voiceprofile.py build part1.wav part2.wav part3.wav part4.wav --id me \
   --device "your microphone" --environment "your room"
 ```
 
-The profile is written to `profiles/private/me.json`. It is personal: keep it there (VOICE-PROFILE.md §6).
+With the Montreal Forced Aligner installed (`prototype/mfa.py`), the phones are re-timed by aligning exactly the phones heard, with no dictionary. The profile is written to `profiles/private/me.json`. It is personal: keep it there (VOICE-PROFILE.md §6).
 
 ## Coverage
 

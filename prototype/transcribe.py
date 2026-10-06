@@ -406,7 +406,8 @@ def mfa_phones(path: str, audio: np.ndarray, words: list[dict]) -> list[dict]:
         wi = match.get(k) if k is not None else None
         if wi is None:  # unmatched: nearest Whisper word in time
             wi = int(np.argmin(np.abs(centres - (p["start"] + p["end"]) / 2)))
-        out.append({"ipa": p["ipa"], "start": p["start"], "end": p["end"], "conf": 1.0, "raw": p["label"], "word": wi})
+        out.append({"ipa": p["ipa"], "start": p["start"], "end": p["end"], "conf": 1.0, "raw": p["label"], "word": wi,
+                    "from": "dictionary"})
     return out
 
 
@@ -441,8 +442,30 @@ def known_text(path: str, audio: np.ndarray, text: str, gap_s: float = 0.3) -> t
         wi = next((i for i, w in enumerate(words) if w["start"] - 1e-6 <= mid <= w["end"] + 1e-6), None)
         if wi is None and words:
             wi = int(np.argmin([abs((w["start"] + w["end"]) / 2 - mid) for w in words]))
-        phones.append({"ipa": ph["ipa"], "start": ph["start"], "end": ph["end"], "conf": 1.0, "raw": ph["label"], "word": wi})
+        phones.append({"ipa": ph["ipa"], "start": ph["start"], "end": ph["end"], "conf": 1.0, "raw": ph["label"], "word": wi,
+                       "from": "dictionary"})
     return segs, words, phones
+
+
+def retime_heard(path: str, audio: np.ndarray, phones: list[dict], gap_s: float = 0.1) -> None:
+    """Better boundaries for the heard phones: force-align exactly these phones,
+    grouped by pauses in the audio, with no dictionary (mfa.align_heard). The
+    phones themselves never change; a group the aligner cannot fit keeps the
+    recogniser's timing. Measured on Buckeye in SPEC 9.5."""
+    import mfa
+
+    groups, idx = [], []
+    for i, ph in enumerate(phones):
+        if not groups or ph["start"] - phones[idx[-1][-1]]["end"] >= gap_s:
+            groups.append([])
+            idx.append([])
+        groups[-1].append(ph["ipa"])
+        idx[-1].append(i)
+    times = mfa.align_heard([(path, "S1", audio, SR, groups)])[path]
+    for i, t in zip([i for g in idx for i in g], times):
+        if t:
+            phones[i]["start"], phones[i]["end"] = t
+            phones[i]["timing"] = "aligned"
 
 
 def analyse(path: str, aligner: str = "recogniser", refine: bool = False, text: str | None = None) -> dict:
@@ -465,6 +488,8 @@ def analyse(path: str, aligner: str = "recogniser", refine: bool = False, text: 
         logp, tokens, _ = ctc(audio)
         spans(tokens, logp, ac.silent_frames(len(logp)))
         phones = expand(tokens, refine)
+        if aligner == "heard" and phones:
+            retime_heard(path, audio, phones)
         stats = align(phones, words) if words and phones else {}
     for w in words:
         w["phones"] = [p for p in phones if p.get("word") is not None and words[p["word"]] is w]
@@ -527,6 +552,9 @@ def transcribe(paths: list[str], labels: list[str] | None = None, aligner: str =
                    "duration_s": round(sum(r["duration_s"] for r in runs), 3),
                    "word_model": f"{WORD_MODEL}@{WORD_MODEL_REV}",
                    **({"phone_model": f"{PHONE_MODEL}@{PHONE_MODEL_REV}"} if aligner == "recogniser" and not any(texts)
+                      else {"phone_model": f"{PHONE_MODEL}@{PHONE_MODEL_REV}",
+                            "timing": "heard phones forced-aligned with MFA 3.4.2 english_us_arpa, no dictionary"}
+                      if aligner == "heard" and not any(texts)
                       else {"aligner": "Montreal Forced Aligner 3.4.2, english_us_arpa"
                             + (" (known text for: " + ", ".join(Path(p).name for p, t in zip(paths, texts) if t) + ")" if any(texts) else "")}),
                    "transcript": "\n".join(" ".join(s["text"] for s in r["segs"]) for r in runs),
@@ -553,6 +581,8 @@ def transcribe(paths: list[str], labels: list[str] | None = None, aligner: str =
                         "dur_ms": round((p["end"] - p["start"]) * 1000, 1), "voiced": v,
                         "pitch_st": round(12 * math.log2(p["f0"] / f0_med), 2) if (v and f0_med) else None,
                         "loud_db": round(p["db"] - db_mean, 2), "conf": round(p["conf"], 3),
+                        **({"from": p["from"]} if p.get("from") else {}),  # absent = heard (SPEC 1, 4)
+                        **({"timing": p["timing"]} if p.get("timing") else {}),  # "aligned": re-timed, heard phone
                     })
                 if word["phones"]:
                     word["start_s"] = word["phones"][0]["start_s"]
@@ -585,16 +615,21 @@ def main() -> None:
     ap.add_argument("inputs", nargs="+", help="one or more audio files of the same speaker, in order")
     ap.add_argument("-o", "--output")
     ap.add_argument("--label", action="append", help="utterance label per input file (repeatable)")
-    ap.add_argument("--aligner", choices=["recogniser", "mfa"], default="recogniser",
-                    help="recogniser: phones as heard by wav2vec2 (default); mfa: dictionary phones of "
-                         "Whisper's words, forced-aligned (better timing, SPEC 9.5)")
+    ap.add_argument("--aligner", choices=["recogniser", "heard", "mfa"], default="recogniser",
+                    help="recogniser: phones as heard (default). heard: the same phones, re-timed by aligning "
+                         "exactly them, no dictionary (best timing, SPEC 9.5; needs MFA). mfa: DICTIONARY phones of Whisper's words, "
+                         "forced-aligned; not a transcription of the audio (SPEC 1, 7.1), for comparison only")
     ap.add_argument("--voice", help="the speaker's voice profile (voiceprofile.py): fixes the pitch baseline")
-    ap.add_argument("--text", nargs="+", help="known text per input (a file, or - for none): forced-aligned, no recognition")
+    ap.add_argument("--text", nargs="+", help="known text per input (a file, or - for none): its DICTIONARY phones are "
+                                               "forced-aligned; not a transcription of the audio, for comparison only")
     ap.add_argument("--refine", action="store_true",
                     help="give vowel+r labels' vowel most of the span, and fill pitch on short unpitched vowels")
     a = ap.parse_args()
     voice = json.loads(Path(a.voice).read_text()) if a.voice else None
     texts = read_texts(a.text, len(a.inputs))
+    if a.aligner == "mfa" or texts:
+        print("warning: phones will come from the pronouncing dictionary, not the audio; marked \"from\": "
+              "\"dictionary\". This is not a ProsoType transcription (SPEC 1).", file=sys.stderr)
     doc = transcribe(a.inputs, a.label, a.aligner, voice, a.refine, texts)
     out = a.output or str(Path(a.inputs[0]).with_suffix(".json"))
     Path(out).write_text(json.dumps(doc, ensure_ascii=False, indent=1) + "\n")
