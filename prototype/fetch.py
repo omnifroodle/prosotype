@@ -4,6 +4,7 @@
     fetch.py            font + pronouncing dictionary (small)
     fetch.py --models   also the two models used by transcribe.py (about 4 GB,
                         into ../.hf-cache/hub)
+    fetch.py --synth    the two models used by synthesize.py (about 340 MB)
 
 Every file is pinned to an upstream commit and checked against a SHA-256, so a
 fresh checkout reproduces the same renders and transcriptions.
@@ -43,7 +44,18 @@ PHONE_MODEL = "facebook/wav2vec2-lv-60-espeak-cv-ft"
 PHONE_MODEL_REV = "ae45363bf3413b374fecd9dc8bc1df0e24c3b7f4"
 WORD_MODEL = "mlx-community/whisper-large-v3-turbo"
 WORD_MODEL_REV = "a4aaeec0636e6fef84abdcbe3544cb2bf7e9f6fb"
+# Speech synthesis from a stream (synthesize.py): ESPnet FastSpeech 2 (LJSpeech) + HiFi-GAN, Apache-2.0
+TTS_MODEL = "espnet/fastspeech2_conformer"
+TTS_MODEL_REV = "042ba6cbcd94061400d781881084a8b745cd81df"
+VOCODER = "espnet/fastspeech2_conformer_hifigan"
+VOCODER_REV = "70d3712097eca74aa6782a9f5d7e46203a0f7f04"
 HF_CACHE = HERE.parent / ".hf-cache" / "hub"
+
+
+def use_project_hf_cache() -> None:
+    """Keep every Hugging Face cache (models and download chunks) on the project drive."""
+    os.environ.setdefault("HF_HOME", str(HERE.parent / ".hf-cache"))
+    os.environ.setdefault("HF_HUB_CACHE", str(HF_CACHE))
 
 
 def sha256(path: Path) -> str:
@@ -71,25 +83,30 @@ def fetch_file(spec: dict) -> bool:
     return True
 
 
-def fetch_models() -> None:
-    os.environ.setdefault("HF_HUB_CACHE", str(HF_CACHE))
+def fetch_models(transcribe: bool = True, synth: bool = False) -> None:
+    use_project_hf_cache()
     from huggingface_hub import snapshot_download
 
-    for repo, rev, patterns in [
-        (PHONE_MODEL, PHONE_MODEL_REV, ["*.json", "pytorch_model.bin"]),
-        (WORD_MODEL, WORD_MODEL_REV, ["*.json", "*.safetensors"]),
-    ]:
+    wanted = []
+    if transcribe:
+        wanted += [(PHONE_MODEL, PHONE_MODEL_REV, ["*.json", "pytorch_model.bin"]),
+                   (WORD_MODEL, WORD_MODEL_REV, ["*.json", "*.safetensors"])]
+    if synth:
+        wanted += [(TTS_MODEL, TTS_MODEL_REV, ["*.json", "pytorch_model.bin"]),
+                   (VOCODER, VOCODER_REV, ["*.json", "pytorch_model.bin"])]
+    for repo, rev, patterns in wanted:
         path = snapshot_download(repo, revision=rev, allow_patterns=patterns)
         print(f"model     {repo}@{rev[:7]} -> {path}")
 
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--models", action="store_true")
+    ap.add_argument("--models", action="store_true", help="transcription models (about 4 GB)")
+    ap.add_argument("--synth", action="store_true", help="synthesis models (about 340 MB)")
     a = ap.parse_args()
     ok = all([fetch_file(f) for f in FILES])
-    if a.models:
-        fetch_models()
+    if a.models or a.synth:
+        fetch_models(transcribe=a.models, synth=a.synth)
     return 0 if ok else 1
 
 

@@ -22,3 +22,6 @@ prototype/data/cmudict.dict
 
 # uv cache kept on the project drive
 .uv-cache/
+
+# Resynthesised audio and its round-trip transcriptions (contain or derive from the owner's voice)
+prototype/samples/resynth/

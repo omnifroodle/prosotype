@@ -45,6 +45,7 @@ import pack
 
 HERE = Path(__file__).parent
 # Models live on the project drive, not in ~/.cache (the internal disk is small).
+os.environ.setdefault("HF_HOME", str(HERE.parent / ".hf-cache"))
 os.environ.setdefault("HF_HUB_CACHE", str(HERE.parent / ".hf-cache" / "hub"))
 SR = 16000
 HOP = 320  # wav2vec2 conv stride in samples

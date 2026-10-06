@@ -16,6 +16,7 @@ For transcription as well:
 uv sync --extra transcribe
 uv run fetch.py --models      # the two models at pinned revisions, about 4 GB, into ../.hf-cache/hub
 brew install codec2           # optional: Codec 2 row in the size report
+uv run fetch.py --synth       # optional: the speech synthesiser for synthesize.py, about 340 MB
 ```
 
 `transcribe.py` sets `HF_HUB_CACHE` to `../.hf-cache/hub` itself, so the models stay on the project drive.
@@ -43,6 +44,8 @@ uv run pack.py decode samples/party_three_ways.12b.prs
 uv run render.py samples/party_three_ways.json -o samples/party_three_ways.html
 uv run transcribe.py samples/flat.m4a samples/question.m4a samples/sarcastic.m4a -o samples/recorded_three_ways.json
 uv run bitrate.py samples/recorded_three_ways.json samples/smoke/say_natural.json --json samples/bitrate_results.json
+uv run redeliver.py samples/recorded_three_ways.json                  # recordings re-delivered per profile (needs the recordings)
+uv run synthesize.py samples/recorded_three_ways.json --profile 16a 8b # speak a stream with no original audio
 uv run make_vectors.py        # regenerate ../vectors after a deliberate format change
 uv run site.py                # rebuild ../docs
 uv run logo.py                # rebuild the logo files in ../docs/img
@@ -62,6 +65,8 @@ The rendered pages are self-contained (with an embedded font subset) and have th
 | `render.py` | JSON → HTML, mappings A and B side by side |
 | `transcribe.py` | Audio → JSON: Whisper words, wav2vec2 phones, CMUdict alignment, Praat pitch and intensity |
 | `bitrate.py` | Size report: packed profiles vs text vs audio (PCM, Opus 6k, Codec 2 700C) |
+| `redeliver.py` | Praat resynthesis: a stream's delivery imposed on the original recording (SPEC 9.4) |
+| `synthesize.py` | FastSpeech 2 + HiFi-GAN: speak a stream with no original audio; `data/synth_calibration.json` holds its pitch and energy calibration |
 | `site.py`, `logo.py` | Build the GitHub Pages site and logo in `../docs` |
 | `fetch.py` | Pinned external inputs and model revisions |
 | `reproduce.py` | Runs every check |

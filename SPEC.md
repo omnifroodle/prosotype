@@ -516,12 +516,41 @@ Screenshots: `docs/img/recorded_colour.png`, `docs/img/recorded_grey.png`, `docs
 
 **Recommendation:** adopt **mapping B** as the standard, with the guide line and unvoiced-height rule. Allow A's pitch colour only as an optional redundant layer, reduced to 5 bands (6.4), for single-speaker screen use where colour is not needed for speakers.
 
-### 9.4 Go / adjust / stop (technical questions only)
+### 9.4 Resynthesis (back to audio)
+
+Two tools turn ProsoType back into sound, so that a listener can judge what a stream keeps. Both run on the owner's three recorded takes, at the unquantised values ("measured") and at profiles 16a, 12b and 8b.
+
+- **Re-delivery** (`prototype/redeliver.py`). Praat overlap-add resynthesis imposes the stream's pitch, durations and loudness on the original recording. The phones and voice stay real, so only the delivery is tested. At the measured values, the imposed pitch lands within 0.44 st of target at every voiced phone centre (median error 0.0 st). Profiles 12b and 8b carry no loudness, so the recorded loudness is left in place.
+- **Re-speaking** (`prototype/synthesize.py`). This uses the stream alone, with no original audio: ESPnet FastSpeech 2 (LJSpeech, Apache-2.0) with HiFi-GAN. Our per-phone pitch, energy and durations replace the model's own predictions. Phones map from IPA to its ARPAbet symbols, and pauses become a comma token. The voice is the model's single female reader, because ProsoType does not encode voice identity.
+  - **Calibration.** Measured on the model's own output, its pitch input moves the voice about 6.6 st per unit. It is monotonic only from about −6.6 to +8.6 st around its mean; beyond that it saturates or breaks, so targets are clipped to that range. Its energy input moves loudness by about 6.4 dB per unit.
+  - **Closed-loop check.** Measured pitch at each phone follows the targets with a median error of 0.3–1.7 st per take.
+
+**Round trip.** The re-spoken audio was transcribed again with `transcribe.py` and compared with the stream that produced it:
+
+| Variant | Phone edits vs the stream | Question: end rise (in → out) | Sarcastic: end rise | Flat: end fall |
+|---|---|---|---|---|
+| measured | 26/59 (44%) | +8.7 → +8.3 st | +2.9 → +2.6 | −3.1 → +0.7 |
+| 16a | 22/59 (37%) | +8.7 → +8.1 | +2.9 → +2.8 | −3.1 → −1.0 |
+| 8b | 11/59 (19%) | +8.7 → +3.5 | +2.9 → +1.2 | −3.1 → −0.1 |
+
+"End rise" is the mean pitch of the last third of voiced phones minus the rest, relative to the take's median.
+
+What this shows:
+
+1. **The question survives** at 16a and above: the final rise comes back almost unchanged. At 8b it shrinks to less than half, because one pitch bit can only say "high" or "not high".
+2. **The flat take's final fall is lost** at every level. Its target goes below the range the synthesiser can follow, and its last phones are the creaky, misrecognised end of "tonight" (9.2).
+3. **The durations are the weak link.** 8b stores no durations and speaks every phone for 80 ms, yet it is the most intelligible variant by a wide margin. The measured durations come from recogniser onsets (§8 item 2) and are uneven enough to garble the synthesiser: some phones are squeezed to a frame or two, while others absorb the gaps. This is the first direct evidence that phone timing, not the format, limits intelligibility. Validating durations against hand labels (Buckeye or TIMIT) is now the highest-value next check.
+4. **The edit counts are relative to our own transcription, not to the truth.** They measure what the stream preserves, not whether the original transcription was right.
+
+Human listening has not started. Every comparison above is a machine measurement.
+
+### 9.5 Go / adjust / stop (technical questions only)
 
 | Question | Call | Reason |
 |---|---|---|
 | Encoding size | **Adjust** | Size alone is not a distinguishing claim: phonetic vocoders and neural codecs reach similar rates (Appendix B). The raw fixed-width claim holds at 12 and 8 bits with the start flag, but not at 16 bits, and not against compressed text. Make 12b or 16b the reference profile and option (b) the standard boundary. If "smaller than compressed text" matters, the next step is entropy coding (pitch as deltas, phone n-grams) rather than wider symbols. |
 | Transcription | **Adjust** | Words and pitch are dependable. Phones are good in clear speech but degrade at quiet utterance ends, and durations are unvalidated. Next steps: the 30–60 s natural recording, a hand-labelled check of boundaries on a few utterances, and either a stronger phone model or a dictionary-constrained decode for low-confidence spans. |
+| Resynthesis | **Adjust** | A stream alone can be spoken back and keeps a question's rise at 16a. Durations from the recogniser hurt intelligibility more than quantisation does (9.4), so fix the timing before trusting duration levels. |
 | Rendering | **Go** | Mapping B separates all three deliveries in light, dark and greyscale, meets the contrast and size floors, and has precedent. |
 
 Overall: **go, with the adjustments above.** Nothing found so far makes the idea technically unviable.

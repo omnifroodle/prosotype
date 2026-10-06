@@ -21,7 +21,7 @@ This repository holds the output of the viability phase:
 | [js/](js) | An independent decoder in JavaScript, written from the spec, and its vector test |
 | [docs/](docs) | The GitHub Pages site, built by `prototype/site.py`; logo by `prototype/logo.py` |
 
-Status: technical viability looks good, with adjustments (SPEC.md §9.4). Everything reproduces with `cd prototype && uv sync && uv run reproduce.py`. Fluent reading of IPA is a known limitation that is deliberately deferred.
+Status: technical viability looks good, with adjustments (SPEC.md §9.5). Everything reproduces with `cd prototype && uv sync && uv run reproduce.py`. Fluent reading of IPA is a known limitation that is deliberately deferred.
 
 The evidence comes from one speaker. Their source recordings are not published; their transcriptions (`prototype/samples/*.json`) are. The project was developed under the working name Shadowcat.
 
