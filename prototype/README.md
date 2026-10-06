@@ -49,6 +49,9 @@ uv run synthesize.py samples/recorded_three_ways.json --profile 16a 8b # speak a
 uv run timing_check.py synth                                         # phone timing vs known synthetic timing
 uv run timing_check.py buckeye ../data/buckeye --unpack              # vs Buckeye hand labels (register at buckeyecorpus.osu.edu)
 uv run timing_check.py buckeye ../data/buckeye --boundaries mfa      # the same, with forced-aligned boundaries
+uv run voiceprofile.py build samples/recorded_three_ways.json --id me     # a private voice profile -> ../profiles/private/me.json
+uv run transcribe.py IN.m4a --voice ../profiles/private/me.json           # transcribe with that pitch baseline
+node ../js/speak.mjs ../docs/play/data/hand.16a.prs -o out.wav --voice ../profiles/reference-high.json
 uv run make_vectors.py        # regenerate ../vectors after a deliberate format change
 uv run site.py                # rebuild ../docs
 uv run logo.py                # rebuild the logo files in ../docs/img
@@ -69,9 +72,12 @@ The rendered pages are self-contained (with an embedded font subset) and have th
 | `transcribe.py` | Audio → JSON: Whisper words, wav2vec2 phones, CMUdict alignment, Praat pitch and intensity |
 | `bitrate.py` | Size report: packed profiles vs text vs audio (PCM, Opus 6k, Codec 2 700C) |
 | `redeliver.py` | Praat resynthesis: a stream's delivery imposed on the original recording (SPEC 9.4) |
-| `synthesize.py` | FastSpeech 2 + HiFi-GAN: speak a stream with no original audio; `data/synth_calibration.json` holds its pitch and energy calibration |
+| `synthesize.py` | FastSpeech 2 + HiFi-GAN: speak a stream with no original audio; its voice profile and calibration are in `../profiles/fastspeech2-ljspeech.json`; `--voice` and `--speaker` map pitch onto a target voice profile |
 | `mfa.py` | Montreal Forced Aligner wrapper for `transcribe.py --aligner mfa` and `timing_check.py --boundaries mfa`; setup steps in its docstring |
 | `timing_check.py` | Phone timing vs reference boundaries: synthesised speech now, Buckeye once downloaded; summaries in `samples/timing/` |
+| `voiceprofile.py` | Builds voice profiles (pitch, timing, formants, vocal-tract length, voice quality; SPEC 10) |
+| `textmap.py` | Text maps: the character range of each word in the stream (SPEC 4.1) |
+| `player.py` | Builds the browser player `../docs/play.html` (called by `site.py`) |
 | `site.py`, `logo.py` | Build the GitHub Pages site and logo in `../docs` |
 | `fetch.py` | Pinned external inputs and model revisions |
 | `reproduce.py` | Runs every check |

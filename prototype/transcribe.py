@@ -427,16 +427,19 @@ def analyse(path: str, aligner: str = "recogniser") -> dict:
             "phones": phones, "tokens": tokens, "stats": stats}
 
 
-def transcribe(paths: list[str], labels: list[str] | None = None, aligner: str = "recogniser") -> dict:
+def transcribe(paths: list[str], labels: list[str] | None = None, aligner: str = "recogniser",
+               voice: dict | None = None) -> dict:
     """Audio files of one speaker -> one document. Files follow each other in
-    time; speaker baselines are computed over all of them."""
+    time; speaker baselines are computed over all of them, except that a known
+    voice profile (voiceprofile.py) fixes the pitch baseline, so that levels mean
+    the same thing across sessions. Loudness stays session-relative (SPEC 8)."""
     runs = [analyse(p, aligner) for p in paths]
     phones = [p for r in runs for p in r["phones"] if "db" in p]
     f0s = [p["f0"] for p in phones if p["voiced"] and p["f0"]]
     # Loudness baseline: mean over vowels, so that a typical vowel is 0 dB and
     # consonants' intrinsically lower energy does not push every vowel "loud".
     dbs = [p["db"] for p in phones if p["ipa"] in VOWELS] or [p["db"] for p in phones]
-    f0_med = float(np.median(f0s)) if f0s else 0.0
+    f0_med = voice["pitch"]["median_hz"] if voice else (float(np.median(f0s)) if f0s else 0.0)
     db_mean = float(np.mean(dbs)) if dbs else 0.0
 
     stats = Counter()
@@ -458,7 +461,8 @@ def transcribe(paths: list[str], labels: list[str] | None = None, aligner: str =
                    "transcript": "\n".join(" ".join(s["text"] for s in r["segs"]) for r in runs),
                    "raw_phones": "\n".join(" ".join(t["tok"] for t in r["tokens"]) for r in runs),
                    "alignment": {**dict(stats), "top_differences": dict(diffs.most_common(15))}},
-        "speakers": {"S1": {"f0_median_hz": round(f0_med, 1), "loudness_mean_db": round(db_mean, 1)}},
+        "speakers": {"S1": {"f0_median_hz": round(f0_med, 1), "loudness_mean_db": round(db_mean, 1),
+                            **({"voice_profile": voice["id"]} if voice else {})}},
         "utterances": [],
     }
     offset = 0.0
@@ -489,7 +493,8 @@ def transcribe(paths: list[str], labels: list[str] | None = None, aligner: str =
             if utt["words"]:
                 doc["utterances"].append(utt)
         offset += r["duration_s"]
-    return doc
+    import textmap
+    return textmap.add_chars(doc)  # document "text" and each word's "chars" range (SPEC 4.1)
 
 
 def main() -> None:
@@ -500,8 +505,10 @@ def main() -> None:
     ap.add_argument("--aligner", choices=["recogniser", "mfa"], default="recogniser",
                     help="recogniser: phones as heard by wav2vec2 (default); mfa: dictionary phones of "
                          "Whisper's words, forced-aligned (better timing, SPEC 9.5)")
+    ap.add_argument("--voice", help="the speaker's voice profile (voiceprofile.py): fixes the pitch baseline")
     a = ap.parse_args()
-    doc = transcribe(a.inputs, a.label, a.aligner)
+    voice = json.loads(Path(a.voice).read_text()) if a.voice else None
+    doc = transcribe(a.inputs, a.label, a.aligner, voice)
     out = a.output or str(Path(a.inputs[0]).with_suffix(".json"))
     Path(out).write_text(json.dumps(doc, ensure_ascii=False, indent=1) + "\n")
     n = sum(len(w["phones"]) for u in doc["utterances"] for w in u["words"])

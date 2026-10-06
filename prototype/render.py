@@ -102,7 +102,7 @@ def tip(ph: dict, lv: tuple[int, int, int]) -> str:
     )
 
 
-def phone_span(ph: dict, mapping: str, spk: int, height: int = 8) -> str:
+def phone_span(ph: dict, mapping: str, spk: int, height: int = 8, attrs: str = "") -> str:
     """height: for mapping B, the pitch level an unvoiced glyph is drawn at."""
     lv = levels(ph)
     pitch, dur, loud = lv
@@ -114,7 +114,7 @@ def phone_span(ph: dict, mapping: str, spk: int, height: int = 8) -> str:
         cls = f"p pb{height} unv w{dur} l{loud} s{spk}"
     else:
         cls = f"p pb{pitch} w{dur} l{loud} s{spk}"
-    return f'<span class="{cls}" title="{t}">{glyph}</span>'
+    return f'<span class="{cls}" title="{t}"{attrs}>{glyph}</span>'
 
 
 def pause_span(ms: float) -> str:
@@ -145,7 +145,9 @@ def unvoiced_heights(utt: dict) -> dict[int, int]:
     return out
 
 
-def utterance_html(utt: dict, mapping: str, spk: int) -> str:
+def utterance_html(utt: dict, mapping: str, spk: int, counter: list[int] | None = None) -> str:
+    """counter: [next phone index, next word index]; when given, each glyph gets
+    data-i and each word data-w (stream order), for players that highlight."""
     heights = unvoiced_heights(utt)
     parts = []
     prev_end = None
@@ -157,8 +159,16 @@ def utterance_html(utt: dict, mapping: str, spk: int) -> str:
         spans_ = []
         for k, ph in enumerate(w["phones"]):
             h = heights[id(ph)] if mapping == "B" else 8
-            spans_.append(phone_span(ph, mapping, spk, h))
-        parts.append('<span class="w">' + "".join(spans_) + "</span>")
+            attrs = ""
+            if counter is not None:
+                attrs = f' data-i="{counter[0]}"'
+                counter[0] += 1
+            spans_.append(phone_span(ph, mapping, spk, h, attrs))
+        wattr = ""
+        if counter is not None:
+            wattr = f' data-w="{counter[1]}"'
+            counter[1] += 1
+        parts.append(f'<span class="w"{wattr}>' + "".join(spans_) + "</span>")
         if w["phones"]:
             last = w["phones"][-1]
             prev_end = max(w.get("end_s", 0), last["start_s"] + last["dur_ms"] / 1000)

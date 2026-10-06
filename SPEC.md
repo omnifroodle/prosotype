@@ -313,6 +313,21 @@ The JSON form holds unquantised measurements and everything in the data model. I
 - `pitch_st` is `null` when the phone is unvoiced or no pitch was tracked.
 - `ipa` may be any IPA string. It is folded (3.3) when packed, and phones outside the table go to the extension table.
 - Decoding a packed stream produces the same shape with `text: null`, centre values, reconstructed times, and a `profile` field.
+- A speaker may name a voice profile (`"voice_profile": "id"`, §10) whose pitch median was used as the baseline.
+
+### 4.1 Text map
+
+A packed stream keeps word boundaries but not spelling. To display or highlight readable text alongside it, the JSON form carries a document-level `"text"` string and a `"chars": [start, end)` range on each word, as offsets into that string. `transcribe.py` joins words with spaces and utterances with newlines, using Whisper's spelling and punctuation.
+
+For a packed stream, the same information travels as a **text map** sidecar, written by `prototype/textmap.py`:
+
+```json
+{"prosotype_text": "0.1", "profile": "16a",
+ "text": "You're going to the party tonight?",
+ "utterances": [[[0, 6], [7, 12], [13, 15], [16, 19], [20, 25], [26, 34]]]}
+```
+
+`utterances[u][w]` is the character range of the *w*-th word that the stream contains in utterance *u*, in stream order. That means it follows 3.10's rules: profiles *b* drop words without phones, and profiles *a* drop a lone empty word. A text map is therefore specific to a profile. A later container version may carry it as an optional block.
 
 ## 5. Standard visual mapping
 
@@ -592,6 +607,79 @@ Next steps, in order of cost:
 Overall: **go, with the adjustments above.** Nothing found so far makes the idea technically unviable.
 
 ---
+
+## 10. Voice profiles
+
+A voice profile describes how a voice sounds. It does two jobs:
+
+- **Analysis baseline.** Transcribing a known voice with its profile (`transcribe.py --voice`) fixes the pitch baseline, so a pitch level means the same thing across sessions and a stream can start before the speaker has said enough to measure a median. Loudness stays session-relative, because microphone gain changes between sessions (§8).
+- **Playback.** A synthesiser maps a stream onto a target profile, and can use the speaker's own profile to adjust range. Swapping one profile for another changes the voice while keeping the delivery.
+
+Profiles should eventually carry as much vocal information as good resynthesis needs, including timbre. A profile of a real person is therefore personal. Treat it like a private key: keep it local and share it sparingly. In this repository, profiles of people go in `profiles/private/` (git-ignored); only synthetic voices' profiles are published. How profiles should be shared, and whether a profile could be usable for synthesis without being readable (in the spirit of public/private keys), is an open question for later.
+
+### 10.1 Format (version 0.1)
+
+```json
+{
+  "prosotype_profile": "0.1", "id": "fastspeech2-ljspeech", "kind": "synthetic", "private": false,
+  "source": {"speech_s": 21.0, "phones": 267, "tool": "prototype/voiceprofile.py"},
+  "pitch": {"median_hz": 208.8, "p10_hz": 179.3, "p90_hz": 231.0, "range_st": 4.39},
+  "loudness": {"vowel_mean_db": 71.2, "sd_db": 2.51},
+  "timing": {"phones_per_s": 12.7, "median_phone_ms": {"vowel": 89, "stop": 81.5, "other consonant": 51}},
+  "timbre": {
+    "formants_hz": {"i": [410, 2699, 3090, 4054]}, "formant_tokens": {"i": 10},
+    "formant_mean_hz": [558, 1744, 2814, 3776], "formant_dispersion_hz": 1102.2, "vocal_tract_cm": 15.88,
+    "hnr_db": 13.06, "jitter_local": 0.0193, "shimmer_local": 0.0795, "spectral_tilt_db_per_octave": -6.98
+  },
+  "embeddings": {},
+  "synth": {"fastspeech2": {"kp": 0.15, "ke": 0.16, "base_pitch": 0.13, "pitch_limits": [-0.87, 1.43]}}
+}
+```
+
+- **pitch**: the median and spread of the voiced phones' F0.
+- **timbre**:
+  - Per-vowel median formants F1–F4, measured at vowel midpoints, with token counts.
+  - The apparent vocal-tract length, from formant dispersion over F1–F4 (Fi ≈ (2i−1)/2 · ΔF; L = c / 2ΔF).
+  - Harmonics-to-noise ratio, and local jitter and shimmer, measured by Praat on the continuous recording.
+  - The long-term spectral tilt of the voiced speech.
+- **embeddings**: reserved for learned speaker embeddings, for synthesisers that clone timbre. None yet.
+- **synth**: optional controls for one synthesiser, for example FastSpeech 2's pitch and energy calibration.
+
+`prototype/voiceprofile.py` builds a profile from recordings or from a transcript and its audio. Checks so far, measured on 60 s of speech per speaker:
+
+| Voice | Median F0 | Vocal tract |
+|---|---|---|
+| Buckeye s01 (woman under 40) | 201 Hz | 14.4 cm |
+| Buckeye s03 (man over 40) | 129 Hz | 18.3 cm |
+| Owner (4 s only) | 121 Hz | 18.4 cm |
+
+The owner's profile is private. Jitter and shimmer come out high for all voices (about 2% and 9–14%), as is common for running speech, so they are useful for comparing voices rather than as absolute norms.
+
+### 10.2 Mapping a stream onto a voice
+
+A stream's pitch is in semitones from its speaker's median (§2). Playing it in a target voice:
+
+- f0 = target median × 2^(*s* · *r* / 12), where *s* is the stream's semitones and *r* = target range / speaker range when the speaker's profile is known, otherwise 1.
+- Durations and loudness are played as written. A rate option may scale time.
+- Timbre comes from whatever the synthesiser can use: the reference synthesiser (§11) scales its formants by vocal-tract length, uses measured vowel formants that have at least 3 tokens, and sets source tilt, breathiness (from HNR), jitter and shimmer. FastSpeech 2 has one fixed voice, so it takes only the pitch level and range. Its clean range is about −6.6 to +8.6 st around its own median, so a low male target (about −9.5 st) is clipped.
+
+## 11. Reference synthesiser and player
+
+`js/synth.mjs` is a small Klatt-style formant synthesiser in JavaScript, for browsers and Node (`node js/speak.mjs IN.prs -o OUT.wav --voice P.json`). It speaks a decoded stream exactly as written, with nothing predicted:
+
+- Each phone gets its stream duration.
+- Pitch is interpolated between voiced phones' centres.
+- Loudness is applied as gain.
+- Formants glide between phone targets: adult male means for vowels (Hillenbrand et al. 1995), with consonant loci and noise spectra for fricatives and bursts.
+- The voice source is a KLGLOTT88 glottal pulse.
+
+It sounds robotic by design. It is a reference for what a stream contains, not a natural voice. Its output is deterministic (seeded noise), so it can be tested.
+
+- **Intelligibility.** Whisper transcribes the reference voice almost perfectly. All three takes of the hand-written sentence come back word for word. The 26 s synthetic story comes back with two errors ("cancelled twice" → "can sit worse", "best day" → "best life").
+- **Profiles take effect.** Asked for the FastSpeech 2 voice (209 Hz, 15.9 cm), its output profiles at 208 Hz and 15.6 cm. With no profile it uses the stream's own speaker median: 174 Hz against a 175 Hz target. The vocal-tract estimate rests on few vowels (3–9) because the profiler finds all four formants in only a few of the robotic vowels.
+- **Speed.** It renders 25 s of speech in about 65 ms in Node.
+
+The **player** (`docs/play.html`, built by `prototype/player.py`) loads a packed stream and its text map. It decodes the stream in the browser, speaks it in a chosen voice profile, and highlights each glyph of the mapping B rendering, and each word of the text, while it sounds. Highlights are scheduled on the audio clock at phone boundaries rather than per display frame. A viewer can load their own profile from disk; it never leaves the browser.
 
 ## Appendix A. Verified background
 

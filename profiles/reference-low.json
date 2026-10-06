@@ -1,0 +1,25 @@
+{
+ "prosotype_profile": "0.1",
+ "id": "reference-low",
+ "kind": "synthetic",
+ "private": false,
+ "created": "2026-10-06",
+ "source": {
+  "defined": "A low adult voice, defined by hand for the reference synthesiser.",
+  "tool": "by hand"
+ },
+ "pitch": {
+  "median_hz": 105.0,
+  "p10_hz": 88.3,
+  "p90_hz": 124.9,
+  "range_st": 6.0
+ },
+ "timbre": {
+  "vocal_tract_cm": 18.2,
+  "hnr_db": 14.0,
+  "jitter_local": 0.01,
+  "shimmer_local": 0.04,
+  "spectral_tilt_db_per_octave": -10.0
+ },
+ "embeddings": {}
+}

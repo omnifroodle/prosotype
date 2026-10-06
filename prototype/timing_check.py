@@ -174,7 +174,7 @@ def synth_clips() -> list[tuple[str, np.ndarray, list[dict]]]:
     import synthesize as S
 
     s = S.Synth()
-    cal = json.loads(S.CAL_FILE.read_text())
+    cal = json.loads(S.VOICE_FILE.read_text())["synth"]["fastspeech2"]
     clips = []
     for path in ("samples/party_three_ways.json", "samples/smoke/say_natural.json"):
         doc = json.loads((HERE / path).read_text())

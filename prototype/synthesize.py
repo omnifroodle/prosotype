@@ -29,6 +29,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 from pathlib import Path
 
 import numpy as np
@@ -42,7 +43,7 @@ HERE = Path(__file__).parent
 SR = 22050
 HOP = 256
 FRAME_MS = HOP / SR * 1000  # 11.61 ms
-CAL_FILE = HERE / "data" / "synth_calibration.json"
+VOICE_FILE = HERE.parent / "profiles" / "fastspeech2-ljspeech.json"  # this model's voice profile and calibration
 
 ARPA = {
     "p": "P", "b": "B", "t": "T", "d": "D", "k": "K", "ɡ": "G", "ʔ": "T", "ɾ": "D",
@@ -152,9 +153,11 @@ def fill_unvoiced(values: list[float | None], tokens: list[str]) -> list[float |
     return out
 
 
-def speak(s: Synth, utt: dict, cal: dict) -> tuple[np.ndarray, list]:
+def speak(s: Synth, utt: dict, cal: dict, shift_st: float = 0.0, range_scale: float = 1.0) -> tuple[np.ndarray, list]:
+    """shift_st moves the whole voice up or down; range_scale widens or narrows
+    the stream's pitch movements (see voice_mapping)."""
     tokens, frames, st, db, phone_tokens = plan(utt)
-    st = fill_unvoiced(st, tokens)
+    st = [None if v is None else shift_st + range_scale * v for v in fill_unvoiced(st, tokens)]
     lo, hi = cal["pitch_limits"]
     pitch = [None if v is None else float(np.clip(cal["base_pitch"] + cal["kp"] * v, lo, hi)) for v in st]
     energy = [None if v is None else cal["base_energy"] + cal["ke"] * v for v in db]
@@ -214,6 +217,19 @@ def calibrate(s: Synth, utt: dict) -> dict:
             "model": f"{fetch.TTS_MODEL}@{fetch.TTS_MODEL_REV}", "vocoder": f"{fetch.VOCODER}@{fetch.VOCODER_REV}"}
 
 
+def voice_mapping(model: dict, target: dict | None, speaker: dict | None) -> tuple[float, float]:
+    """(shift_st, range_scale) to play a stream in the target voice's pitch:
+    its median relative to the model's, and its range relative to the speaker's
+    (SPEC 10.3). The model's own timbre is unchanged: FastSpeech 2 has one voice."""
+    if target is None:
+        return 0.0, 1.0
+    shift = 12 * math.log2(target["pitch"]["median_hz"] / model["pitch"]["median_hz"])
+    scale = 1.0
+    if speaker and speaker["pitch"].get("range_st") and target["pitch"].get("range_st"):
+        scale = target["pitch"]["range_st"] / speaker["pitch"]["range_st"]
+    return shift, scale
+
+
 def stream_view(doc: dict, profile: str) -> dict:
     """What a stream at this profile holds: pack, then decode (texts and labels kept for naming)."""
     if profile == "measured":
@@ -243,14 +259,21 @@ def main() -> None:
     ap.add_argument("--profile", nargs="+", default=["16a"])
     ap.add_argument("-o", "--out", default="samples/resynth")
     ap.add_argument("--calibrate", action="store_true", help="refit KP/KE on the hand-written sample")
+    ap.add_argument("--voice", help="target voice profile: play at its pitch level (and range, with --speaker)")
+    ap.add_argument("--speaker", help="the stream speaker's voice profile, for range mapping")
     a = ap.parse_args()
     s = Synth()
-    if a.calibrate or not CAL_FILE.exists():
+    model = json.loads(VOICE_FILE.read_text())
+    if a.calibrate:
         hand = json.loads((HERE / "samples/party_three_ways.json").read_text())
-        cal = calibrate(s, hand["utterances"][0])
-        CAL_FILE.write_text(json.dumps(cal, indent=1) + "\n")
-        print(f"calibrated: kp={cal['kp']:.4f} per st, ke={cal['ke']:.4f} per dB  {cal['probe']}")
-    cal = json.loads(CAL_FILE.read_text())
+        model.setdefault("synth", {})["fastspeech2"] = calibrate(s, hand["utterances"][0])
+        VOICE_FILE.write_text(json.dumps(model, ensure_ascii=False, indent=1) + "\n")
+    cal = model["synth"]["fastspeech2"]
+    target = json.loads(Path(a.voice).read_text()) if a.voice else None
+    speaker = json.loads(Path(a.speaker).read_text()) if a.speaker else None
+    shift, scale = voice_mapping(model, target, speaker)
+    if target:
+        print(f"voice: {target['id']} pitch level {shift:+.1f} st from the model, range x{scale:.2f}")
     doc = json.loads(Path(a.input).read_text())
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
@@ -259,17 +282,18 @@ def main() -> None:
         f0_med = view["speakers"][next(iter(view["speakers"]))]["f0_median_hz"]
         for i, utt in enumerate(view["utterances"]):
             name = (utt.get("label") or f"utt{i + 1}").split()[0].lower().strip(".?!,")
-            wav, spans = speak(s, utt, cal)
-            write_wav(out / f"{name}.tts-{prof}.wav", wav)
+            wav, spans = speak(s, utt, cal, shift, scale)
+            fname = f"{name}.tts-{prof}{'-' + target['id'] if target else ''}.wav"
+            write_wav(out / fname, wav)
             hz, db = measure(wav, spans)
             # closed-loop check: does the output follow the targets? (relative to the output's own median)
             tgt = [(sp[0]["pitch_st"], h) for sp, h in zip(spans, hz) if sp[0].get("voiced") and sp[0]["pitch_st"] is not None and h == h]
             if not tgt:
-                print(f"{name}.tts-{prof}.wav  {len(wav) / SR:.2f} s; no pitch targets to check")
+                print(f"{fname}  {len(wav) / SR:.2f} s; no pitch targets to check")
                 continue
             med = np.median([h for _, h in tgt])
             err = [12 * np.log2(h / med) - (t - np.median([t for t, _ in tgt])) for t, h in tgt]
-            print(f"{name}.tts-{prof}.wav  {len(wav) / SR:.2f} s; pitch tracking error {np.median(np.abs(err)):.2f} st median, "
+            print(f"{fname}  {len(wav) / SR:.2f} s; pitch tracking error {np.median(np.abs(err)):.2f} st median, "
                   f"{np.max(np.abs(err)):.2f} max (n={len(err)})")
 
 

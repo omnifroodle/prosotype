@@ -1,0 +1,25 @@
+{
+ "prosotype_profile": "0.1",
+ "id": "reference-high",
+ "kind": "synthetic",
+ "private": false,
+ "created": "2026-10-06",
+ "source": {
+  "defined": "A high adult voice, defined by hand for the reference synthesiser.",
+  "tool": "by hand"
+ },
+ "pitch": {
+  "median_hz": 215.0,
+  "p10_hz": 180.8,
+  "p90_hz": 255.7,
+  "range_st": 6.0
+ },
+ "timbre": {
+  "vocal_tract_cm": 14.6,
+  "hnr_db": 16.0,
+  "jitter_local": 0.01,
+  "shimmer_local": 0.04,
+  "spectral_tilt_db_per_octave": -8.0
+ },
+ "embeddings": {}
+}

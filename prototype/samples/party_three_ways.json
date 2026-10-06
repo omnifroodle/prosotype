@@ -38,7 +38,11 @@
        "loud_db": 0.0
       }
      ],
-     "end_s": 0.17
+     "end_s": 0.17,
+     "chars": [
+      0,
+      6
+     ]
     },
     {
      "text": "going",
@@ -77,7 +81,11 @@
        "loud_db": -1.0
       }
      ],
-     "end_s": 0.47
+     "end_s": 0.47,
+     "chars": [
+      7,
+      12
+     ]
     },
     {
      "text": "to",
@@ -100,7 +108,11 @@
        "loud_db": -2.0
       }
      ],
-     "end_s": 0.575
+     "end_s": 0.575,
+     "chars": [
+      13,
+      15
+     ]
     },
     {
      "text": "the",
@@ -123,7 +135,11 @@
        "loud_db": -2.0
       }
      ],
-     "end_s": 0.66
+     "end_s": 0.66,
+     "chars": [
+      16,
+      19
+     ]
     },
     {
      "text": "party",
@@ -170,7 +186,11 @@
        "loud_db": -1.0
       }
      ],
-     "end_s": 1.03
+     "end_s": 1.03,
+     "chars": [
+      20,
+      25
+     ]
     },
     {
      "text": "tonight",
@@ -217,7 +237,11 @@
        "loud_db": -9.0
       }
      ],
-     "end_s": 1.465
+     "end_s": 1.465,
+     "chars": [
+      26,
+      33
+     ]
     }
    ]
   },
@@ -246,7 +270,11 @@
        "loud_db": 0.0
       }
      ],
-     "end_s": 2.435
+     "end_s": 2.435,
+     "chars": [
+      34,
+      40
+     ]
     },
     {
      "text": "going",
@@ -285,7 +313,11 @@
        "loud_db": -1.0
       }
      ],
-     "end_s": 2.735
+     "end_s": 2.735,
+     "chars": [
+      41,
+      46
+     ]
     },
     {
      "text": "to",
@@ -308,7 +340,11 @@
        "loud_db": -2.0
       }
      ],
-     "end_s": 2.84
+     "end_s": 2.84,
+     "chars": [
+      47,
+      49
+     ]
     },
     {
      "text": "the",
@@ -331,7 +367,11 @@
        "loud_db": -2.0
       }
      ],
-     "end_s": 2.925
+     "end_s": 2.925,
+     "chars": [
+      50,
+      53
+     ]
     },
     {
      "text": "party",
@@ -378,7 +418,11 @@
        "loud_db": -1.0
       }
      ],
-     "end_s": 3.295
+     "end_s": 3.295,
+     "chars": [
+      54,
+      59
+     ]
     },
     {
      "text": "tonight",
@@ -425,7 +469,11 @@
        "loud_db": -6.0
       }
      ],
-     "end_s": 3.78
+     "end_s": 3.78,
+     "chars": [
+      60,
+      67
+     ]
     }
    ]
   },
@@ -454,7 +502,11 @@
        "loud_db": 6.0
       }
      ],
-     "end_s": 4.88
+     "end_s": 4.88,
+     "chars": [
+      68,
+      74
+     ]
     },
     {
      "text": "going",
@@ -493,7 +545,11 @@
        "loud_db": -2.0
       }
      ],
-     "end_s": 5.285
+     "end_s": 5.285,
+     "chars": [
+      75,
+      80
+     ]
     },
     {
      "text": "to",
@@ -516,7 +572,11 @@
        "loud_db": -3.0
       }
      ],
-     "end_s": 5.38
+     "end_s": 5.38,
+     "chars": [
+      81,
+      83
+     ]
     },
     {
      "text": "the",
@@ -539,7 +599,11 @@
        "loud_db": -3.0
       }
      ],
-     "end_s": 5.46
+     "end_s": 5.46,
+     "chars": [
+      84,
+      87
+     ]
     },
     {
      "text": "party",
@@ -586,7 +650,11 @@
        "loud_db": -1.0
       }
      ],
-     "end_s": 5.99
+     "end_s": 5.99,
+     "chars": [
+      88,
+      93
+     ]
     },
     {
      "text": "tonight",
@@ -633,9 +701,14 @@
        "loud_db": -8.0
       }
      ],
-     "end_s": 6.445
+     "end_s": 6.445,
+     "chars": [
+      94,
+      101
+     ]
     }
    ]
   }
- ]
+ ],
+ "text": "you're going to the party tonight\nyou're going to the party tonight\nyou're going to the party tonight"
 }

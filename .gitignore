@@ -14,6 +14,7 @@ __pycache__/
 # Generated
 *.prs
 !vectors/expected/*.prs
+!docs/play/data/*.prs
 prototype/samples/**/*.html
 
 # Downloaded during setup (see prototype/README.md)
@@ -33,3 +34,6 @@ data/timit/
 
 # Montreal Forced Aligner environment, package cache and models (about 2 GB)
 .mfa/
+
+# Voice profiles of real people (personal, like a private key)
+profiles/private/

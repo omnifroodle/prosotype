@@ -1,0 +1,187 @@
+{
+ "prosotype_profile": "0.1",
+ "id": "fastspeech2-ljspeech",
+ "kind": "synthetic",
+ "private": false,
+ "created": "2026-10-06",
+ "source": {
+  "speech_s": 20.99,
+  "phones": 267,
+  "voiced_phones": 189,
+  "tool": "prototype/voiceprofile.py",
+  "transcription": "facebook/wav2vec2-lv-60-espeak-cv-ft@ae45363bf3413b374fecd9dc8bc1df0e24c3b7f4",
+  "generated_from": "samples/smoke/say_natural.json spoken by synthesize.py (measured values)"
+ },
+ "pitch": {
+  "median_hz": 208.8,
+  "p10_hz": 179.3,
+  "p90_hz": 231.0,
+  "range_st": 4.39
+ },
+ "loudness": {
+  "vowel_mean_db": 71.2,
+  "sd_db": 2.51
+ },
+ "timing": {
+  "phones_per_s": 12.72,
+  "median_phone_ms": {
+   "vowel": 89.0,
+   "stop": 81.5,
+   "other consonant": 51.0
+  }
+ },
+ "timbre": {
+  "formant_ceiling_hz": 5500.0,
+  "formants_hz": {
+   "aɪ": [
+    721,
+    1770,
+    2920,
+    3739
+   ],
+   "aʊ": [
+    817,
+    1567,
+    2790,
+    3581
+   ],
+   "eɪ": [
+    460,
+    2183,
+    2837,
+    3836
+   ],
+   "i": [
+    410,
+    2699,
+    3090,
+    4054
+   ],
+   "oʊ": [
+    562,
+    1107,
+    2842,
+    3757
+   ],
+   "u": [
+    385,
+    1621,
+    2822,
+    3787
+   ],
+   "æ": [
+    661,
+    1937,
+    2728,
+    3878
+   ],
+   "ɑ": [
+    682,
+    1352,
+    2605,
+    3467
+   ],
+   "ɔ": [
+    544,
+    979,
+    2831,
+    3463
+   ],
+   "ə": [
+    449,
+    1552,
+    2858,
+    3890
+   ],
+   "ɚ": [
+    481,
+    1536,
+    2192,
+    3381
+   ],
+   "ɛ": [
+    613,
+    1863,
+    2692,
+    3958
+   ],
+   "ɪ": [
+    465,
+    2161,
+    3026,
+    4067
+   ],
+   "ʊ": [
+    458,
+    1175,
+    3505,
+    3879
+   ],
+   "ʌ": [
+    593,
+    1358,
+    2769,
+    3625
+   ]
+  },
+  "formant_tokens": {
+   "aɪ": 9,
+   "aʊ": 3,
+   "eɪ": 6,
+   "i": 10,
+   "oʊ": 5,
+   "u": 1,
+   "æ": 10,
+   "ɑ": 5,
+   "ɔ": 7,
+   "ə": 10,
+   "ɚ": 5,
+   "ɛ": 7,
+   "ɪ": 13,
+   "ʊ": 1,
+   "ʌ": 7
+  },
+  "vowel_tokens": 99,
+  "formant_mean_hz": [
+   558,
+   1744,
+   2814,
+   3776
+  ],
+  "formant_dispersion_hz": 1102.2,
+  "vocal_tract_cm": 15.88,
+  "hnr_db": 13.06,
+  "jitter_local": 0.0193,
+  "shimmer_local": 0.0795,
+  "spectral_tilt_db_per_octave": -6.98
+ },
+ "embeddings": {},
+ "synth": {
+  "fastspeech2": {
+   "base_pitch": 0.12862996757030487,
+   "base_energy": 0.42010366916656494,
+   "kp": 0.15053047268718142,
+   "ke": 0.15581622466123413,
+   "pitch_limits": [
+    -0.8713700324296951,
+    1.428629967570305
+   ],
+   "probe": {
+    "st_per_unit": 6.643173187120112,
+    "db_per_unit": 6.4178169004809185,
+    "pitch_hz": [
+     174.55428705261167,
+     209.19551416289488,
+     256.20054692902613
+    ],
+    "energy_db": [
+     62.69930542445167,
+     71.12989676925102,
+     75.53493922541351
+    ]
+   },
+   "model": "espnet/fastspeech2_conformer@042ba6cbcd94061400d781881084a8b745cd81df",
+   "vocoder": "espnet/fastspeech2_conformer_hifigan@70d3712097eca74aa6782a9f5d7e46203a0f7f04"
+  }
+ }
+}
