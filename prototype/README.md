@@ -77,6 +77,7 @@ The rendered pages are self-contained (with an embedded font subset) and have th
 | `timing_check.py` | Phone timing vs reference boundaries: synthesised speech now, Buckeye once downloaded; summaries in `samples/timing/` |
 | `voiceprofile.py` | Builds and validates voice profiles (`../VOICE-PROFILE.md`, schema in `../profiles/schema/`) |
 | `textmap.py` | Text maps: the character range of each word in the stream (SPEC 4.1) |
+| `script_coverage.py` | Checks the recording script's sound coverage (`../profiles/RECORDING.md`); `--export` writes each part's text |
 | `compare.py` | Builds `../docs/compare.html`, the synthesiser comparison (called by `site.py`) |
 | `player.py` | Builds the reader `../docs/play.html`, the per-sample streams and text maps, and the component's font (called by `site.py`) |
 | `site.py`, `logo.py` | Build the GitHub Pages site and logo in `../docs` |

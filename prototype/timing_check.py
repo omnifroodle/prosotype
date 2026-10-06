@@ -127,6 +127,8 @@ def align(ref: list[dict], hyp: list[dict]) -> list[tuple[dict, dict]]:
 
 
 phone_class = T.phone_class
+# Buckeye's "ah" covers both ʌ and schwa, so identity treats them as one
+SAME = {"ə": "ʌ"}
 
 
 def summarise(rows: list[dict]) -> dict:
@@ -157,11 +159,13 @@ def score(clips: list[tuple[str, np.ndarray, list[dict]]], hyps: dict | None = N
         n_hyp += len(hyp)
         for r, h in align(ref, hyp):
             rows.append({"clip": name, "ref": r["ipa"], "hyp": h["ipa"], "class": phone_class(r["ipa"]),
+                         "same": SAME.get(r["ipa"], r["ipa"]) == SAME.get(h["ipa"], h["ipa"]),
                          "onset_ms": (h["start"] - r["start"]) * 1000,
                          "ref_ms": max(1.0, (r["end"] - r["start"]) * 1000),
                          "hyp_ms": max(1.0, (h["end"] - h["start"]) * 1000)})
     out = {"clips": len(clips), "reference_phones": n_ref, "recognised_phones": n_hyp,
-           "aligned_share": round(len(rows) / max(1, n_ref), 3), "all": summarise(rows)}
+           "aligned_share": round(len(rows) / max(1, n_ref), 3),
+           "identical_share": round(sum(r["same"] for r in rows) / max(1, n_ref), 3), "all": summarise(rows)}
     for c in ("vowel", "stop", "other consonant"):
         out[c] = summarise([r for r in rows if r["class"] == c])
     return out, rows

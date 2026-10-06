@@ -3,6 +3,7 @@
  "reference_phones": 3169,
  "recognised_phones": 3237,
  "aligned_share": 0.952,
+ "identical_share": 0.758,
  "all": {
   "pairs": 3018,
   "onset_error_ms": {
@@ -72,6 +73,7 @@
   "within_one_level_16a": 0.767
  },
  "source": "buckeye",
+ "boundaries": "recogniser",
  "phone_model": "facebook/wav2vec2-lv-60-espeak-cv-ft@ae45363bf3413b374fecd9dc8bc1df0e24c3b7f4",
  "settings": {
   "per_speaker": 10,

@@ -410,13 +410,56 @@ def mfa_phones(path: str, audio: np.ndarray, words: list[dict]) -> list[dict]:
     return out
 
 
-def analyse(path: str, aligner: str = "recogniser", refine: bool = False) -> dict:
-    """One audio file -> segments, words with phones (absolute F0 and dB)."""
+def known_text(path: str, audio: np.ndarray, text: str, gap_s: float = 0.3) -> tuple[list[dict], list[dict]]:
+    """Forced alignment of a known text (a recording script): segments split at
+    pauses of gap_s or more, words keep the text's own spelling and punctuation,
+    phones carry their word index."""
+    import difflib
+
+    import mfa
+
+    res = mfa.align([(path, "S1", audio, SR, text)])[path]
+    tokens = text.split()
+    norm = lambda w: re.sub(r"[^a-z']", "", w.lower().replace("’", "'"))  # noqa: E731
+    shown = {}
+    sm = difflib.SequenceMatcher(a=[norm(w) for _, _, w in res["words"]], b=[norm(t) for t in tokens], autojunk=False)
+    for blk in sm.get_matching_blocks():
+        for k in range(blk.size):
+            shown[blk.a + k] = tokens[blk.b + k]
+    segs, words = [], []
+    for k, (a, b, w) in enumerate(res["words"]):
+        if not segs or a - words[-1]["end"] >= gap_s:
+            segs.append({"text": "", "words": []})
+        word = {"text": shown.get(k, w), "start": a, "end": b, "seg": len(segs) - 1}
+        segs[-1]["words"].append(word)
+        words.append(word)
+    for sg in segs:
+        sg["text"] = " ".join(w["text"] for w in sg["words"])
+    phones = []
+    for ph in res["phones"]:
+        mid = (ph["start"] + ph["end"]) / 2
+        wi = next((i for i, w in enumerate(words) if w["start"] - 1e-6 <= mid <= w["end"] + 1e-6), None)
+        if wi is None and words:
+            wi = int(np.argmin([abs((w["start"] + w["end"]) / 2 - mid) for w in words]))
+        phones.append({"ipa": ph["ipa"], "start": ph["start"], "end": ph["end"], "conf": 1.0, "raw": ph["label"], "word": wi})
+    return segs, words, phones
+
+
+def analyse(path: str, aligner: str = "recogniser", refine: bool = False, text: str | None = None) -> dict:
+    """One audio file -> segments, words with phones (absolute F0 and dB). With a
+    known text, the forced aligner places it and no speech recognition runs."""
     audio = load_audio(path)
-    segs = whisper_words(path)
     ac = Acoustics(audio)
-    words = [dict(w, seg=si) for si, s in enumerate(segs) for w in s["words"]]
-    if aligner == "mfa":
+    if text:
+        segs, words, phones = known_text(path, audio, text)
+        tokens, stats = [], {}
+        aligner = "mfa-known"
+    else:
+        segs = whisper_words(path)
+        words = [dict(w, seg=si) for si, s in enumerate(segs) for w in s["words"]]
+    if aligner == "mfa-known":
+        pass
+    elif aligner == "mfa":
         phones, tokens, stats = (mfa_phones(path, audio, words) if words else []), [], {}
     else:
         logp, tokens, _ = ctc(audio)
@@ -454,12 +497,13 @@ def fill_vowel_pitch(doc: dict, max_ms: float = 80.0, reach_s: float = 0.15) -> 
 
 
 def transcribe(paths: list[str], labels: list[str] | None = None, aligner: str = "recogniser",
-               voice: dict | None = None, refine: bool = False) -> dict:
+               voice: dict | None = None, refine: bool = False, texts: list[str | None] | None = None) -> dict:
     """Audio files of one speaker -> one document. Files follow each other in
     time; speaker baselines are computed over all of them, except that a known
     voice profile (voiceprofile.py) fixes the pitch baseline, so that levels mean
     the same thing across sessions. Loudness stays session-relative (SPEC 8)."""
-    runs = [analyse(p, aligner, refine) for p in paths]
+    texts = texts or [None] * len(paths)
+    runs = [analyse(p, aligner, refine, t) for p, t in zip(paths, texts)]
     phones = [p for r in runs for p in r["phones"] if "db" in p]
     f0s = [p["f0"] for p in phones if p["voiced"] and p["f0"]]
     # Loudness baseline: mean over vowels, so that a typical vowel is 0 dB and
@@ -482,8 +526,9 @@ def transcribe(paths: list[str], labels: list[str] | None = None, aligner: str =
         "source": {"audio": runs[0]["path"] if single else [r["path"] for r in runs],
                    "duration_s": round(sum(r["duration_s"] for r in runs), 3),
                    "word_model": f"{WORD_MODEL}@{WORD_MODEL_REV}",
-                   **({"phone_model": f"{PHONE_MODEL}@{PHONE_MODEL_REV}"} if aligner == "recogniser"
-                      else {"aligner": "Montreal Forced Aligner 3.4.2, english_us_arpa"}),
+                   **({"phone_model": f"{PHONE_MODEL}@{PHONE_MODEL_REV}"} if aligner == "recogniser" and not any(texts)
+                      else {"aligner": "Montreal Forced Aligner 3.4.2, english_us_arpa"
+                            + (" (known text for: " + ", ".join(Path(p).name for p, t in zip(paths, texts) if t) + ")" if any(texts) else "")}),
                    "transcript": "\n".join(" ".join(s["text"] for s in r["segs"]) for r in runs),
                    "raw_phones": "\n".join(" ".join(t["tok"] for t in r["tokens"]) for r in runs),
                    "alignment": {**dict(stats), "top_differences": dict(diffs.most_common(15))}},
@@ -526,6 +571,15 @@ def transcribe(paths: list[str], labels: list[str] | None = None, aligner: str =
     return textmap.add_chars(doc)  # document "text" and each word's "chars" range (SPEC 4.1)
 
 
+def read_texts(args: list[str] | None, n: int) -> list[str | None] | None:
+    """--text values: a file per input, or - for none."""
+    if not args:
+        return None
+    if len(args) != n:
+        raise SystemExit(f"--text needs one entry per input ({n}), got {len(args)}")
+    return [None if t == "-" else Path(t).read_text() for t in args]
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("inputs", nargs="+", help="one or more audio files of the same speaker, in order")
@@ -535,11 +589,13 @@ def main() -> None:
                     help="recogniser: phones as heard by wav2vec2 (default); mfa: dictionary phones of "
                          "Whisper's words, forced-aligned (better timing, SPEC 9.5)")
     ap.add_argument("--voice", help="the speaker's voice profile (voiceprofile.py): fixes the pitch baseline")
+    ap.add_argument("--text", nargs="+", help="known text per input (a file, or - for none): forced-aligned, no recognition")
     ap.add_argument("--refine", action="store_true",
                     help="give vowel+r labels' vowel most of the span, and fill pitch on short unpitched vowels")
     a = ap.parse_args()
     voice = json.loads(Path(a.voice).read_text()) if a.voice else None
-    doc = transcribe(a.inputs, a.label, a.aligner, voice, a.refine)
+    texts = read_texts(a.text, len(a.inputs))
+    doc = transcribe(a.inputs, a.label, a.aligner, voice, a.refine, texts)
     out = a.output or str(Path(a.inputs[0]).with_suffix(".json"))
     Path(out).write_text(json.dumps(doc, ensure_ascii=False, indent=1) + "\n")
     n = sum(len(w["phones"]) for u in doc["utterances"] for w in u["words"])

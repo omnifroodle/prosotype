@@ -338,7 +338,7 @@ def pronunciation(doc: dict) -> dict | None:
 
 
 def build(inputs: list[str], pid: str, synthetic: bool, aligner: str,
-          device: str | None = None, environment: str | None = None) -> dict:
+          device: str | None = None, environment: str | None = None, texts: list[str | None] | None = None) -> dict:
     import transcribe as T
 
     import parselmouth
@@ -349,7 +349,7 @@ def build(inputs: list[str], pid: str, synthetic: bool, aligner: str,
         a = doc["source"]["audio"]
         files = [str(HERE / f) for f in ([a] if isinstance(a, str) else a)]
     else:
-        doc = T.transcribe(inputs, aligner=aligner)
+        doc = T.transcribe(inputs, aligner=aligner, texts=texts)
         audio = np.concatenate([T.load_audio(p) for p in inputs])
         files = inputs
     m = measure(doc, audio, T.SR)
@@ -455,6 +455,7 @@ def main() -> None:
     b.add_argument("-o", "--output", type=Path)
     b.add_argument("--synthetic", action="store_true", help="a synthetic voice (public by default)")
     b.add_argument("--aligner", choices=["recogniser", "mfa"], default="recogniser")
+    b.add_argument("--text", nargs="+", help="known text per input (a file, or - for none); see profiles/RECORDING.md")
     b.add_argument("--device", help="recording device or microphone, for the conditions block")
     b.add_argument("--environment", help="room or setting, for the conditions block")
     s = sub.add_parser("show")
@@ -470,7 +471,8 @@ def main() -> None:
             print(f"{'ok     ' if not errs else 'INVALID'} {f}" + "".join(f"\n    {e}" for e in errs))
         raise SystemExit(1 if bad else 0)
     if a.cmd == "build":
-        p = build(a.inputs, a.id, a.synthetic, a.aligner, a.device, a.environment)
+        import transcribe as T
+        p = build(a.inputs, a.id, a.synthetic, a.aligner, a.device, a.environment, T.read_texts(a.text, len(a.inputs)))
         print(show(p))
         print(f"-> {save(p, a.output)}")
     else:

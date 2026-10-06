@@ -99,7 +99,7 @@ Durations, pitch and loudness of each phone always come from the stream. The oth
 
 ## 7. Recording for a profile
 
-A reading script with known text and planned phone coverage, plus a stretch of free speech, makes profiles complete and comparable. This is planned as `profiles/RECORDING.md`.
+[`profiles/RECORDING.md`](profiles/RECORDING.md) is the recording script (version 0.1) with recording instructions. It has four parts: sound coverage sentences, deliveries (one sentence five ways, moving emphasis, phrasing pairs, trailing endings), a read passage, and free speech. With the script's text known, `voiceprofile.py build --aligner mfa --text …` forced-aligns the scripted parts without speech recognition. `prototype/script_coverage.py` checks the script's coverage. The current version has 81 voiceless stops before stressed vowels and 44 before unstressed ones, and every General American sound at least 5 times.
 
 ## 8. Changelog
 

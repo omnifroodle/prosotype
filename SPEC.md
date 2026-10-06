@@ -587,11 +587,11 @@ Next steps, in order of cost:
 
 | | Onsets within 20 ms | Median onset error | Same 3-bit duration level | Within one level | Duration correlation (log) | Phones identical to hand label |
 |---|---|---|---|---|---|---|
-| Recogniser, uncorrected | 42% | 24 ms | 32% | 76% | 0.58 | 74% |
-| Recogniser, corrected | 65% | 14 ms | 36% | 79% | 0.59 | 74% |
-| MFA on Whisper's words | **78%** | **8 ms** | **47%** | **87%** | **0.72** | **76%** |
+| Recogniser, uncorrected | 42% | 24 ms | 32% | 76% | 0.58 | 76% |
+| Recogniser, corrected | 65% | 14 ms | 36% | 79% | 0.59 | 76% |
+| MFA on Whisper's words | **78%** | **8 ms** | **47%** | **87%** | **0.72** | 76% |
 
-  MFA's phones are dictionary pronunciations, so they cannot show a pronunciation the dictionary lacks. Even so, they match the hand labels slightly more often than the recogniser's, perhaps partly because Buckeye's labels began as dictionary alignments before correction. On the owner's recordings, MFA writes "tonight" correctly in all three takes, where the recogniser misheard it each time (9.2). Two costs: MFA is English-only through its dictionary, and it needs a full utterance plus its words before it can align, which matters for streaming (§8 item 10).
+  MFA's phones are dictionary pronunciations, so they cannot show a pronunciation the dictionary lacks. Even so, they match the hand labels about as often as the recogniser's do (76.3% against 75.8%). Identity counts schwa and ʌ as one, because Buckeye's "ah" label covers both. An earlier version of this table gave MFA 76% and the recogniser 74%: MFA's unstressed AH was mislabelled ʌ, which happened to match Buckeye's "ah". On the owner's recordings, MFA writes "tonight" correctly in all three takes, where the recogniser misheard it each time (9.2). Two costs: MFA is English-only through its dictionary, and it needs a full utterance plus its words before it can align, which matters for streaming (§8 item 10).
 
 - Even with MFA, fewer than half of durations land on the exact 3-bit level. Treat 3-bit durations from automatic transcription as accurate to about ±1 level; 2-bit durations are within reach.
 

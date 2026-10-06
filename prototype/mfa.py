@@ -89,7 +89,8 @@ def align(items: list[tuple[str, str, np.ndarray, int, str]]) -> dict[str, dict]
             for a, b, lab in read_textgrid(tg, "phones"):
                 base = lab.rstrip("012").upper()
                 if base in ARPA:
-                    phones.append({"ipa": ARPA[base], "start": a, "end": b, "label": lab})
+                    ipa = "ə" if lab.upper() == "AH0" else ARPA[base]  # unstressed AH is schwa
+                    phones.append({"ipa": ipa, "start": a, "end": b, "label": lab})
             words = [(a, b, w) for a, b, w in read_textgrid(tg, "words") if w.strip()]
             res[keys[tg.stem]] = {"words": words, "phones": phones}
     return res
