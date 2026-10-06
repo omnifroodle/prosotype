@@ -327,7 +327,7 @@ For a packed stream, the same information travels as a **text map** sidecar, wri
  "utterances": [[[0, 6], [7, 12], [13, 15], [16, 19], [20, 25], [26, 34]]]}
 ```
 
-`utterances[u][w]` is the character range of the *w*-th word that the stream contains in utterance *u*, in stream order. That means it follows 3.10's rules: profiles *b* drop words without phones, and profiles *a* drop a lone empty word. A text map is therefore specific to a profile. A later container version may carry it as an optional block.
+`utterances[u][w]` is the character range of the *w*-th word that the stream contains in utterance *u*, in stream order. That means it follows 3.10's rules: profiles *b* drop words without phones, and profiles *a* drop a lone empty word. A text map is therefore specific to a profile. It may also carry `"labels"`, one optional caption per utterance (such as "question"); a label is left out where it would only repeat the utterance's words. A later container version may carry text maps as an optional block.
 
 ## 5. Standard visual mapping
 
@@ -679,7 +679,25 @@ It sounds robotic by design. It is a reference for what a stream contains, not a
 - **Profiles take effect.** Asked for the FastSpeech 2 voice (209 Hz, 15.9 cm), its output profiles at 208 Hz and 15.6 cm. With no profile it uses the stream's own speaker median: 174 Hz against a 175 Hz target. The vocal-tract estimate rests on few vowels (3–9) because the profiler finds all four formants in only a few of the robotic vowels.
 - **Speed.** It renders 25 s of speech in about 65 ms in Node.
 
-The **player** (`docs/play.html`, built by `prototype/player.py`) loads a packed stream and its text map. It decodes the stream in the browser, speaks it in a chosen voice profile, and highlights each glyph of the mapping B rendering, and each word of the text, while it sounds. Highlights are scheduled on the audio clock at phone boundaries rather than per display frame. A viewer can load their own profile from disk; it never leaves the browser.
+### 11.1 Embedding: `<prosotype-player>`
+
+`js/prosotype-player.mjs` defines a web component that puts the three layers in one element: the binary stream, its standard formatting, and a player.
+
+```html
+<script type="module" src="https://omnifroodle.github.io/prosotype/js/prosotype-player.mjs"></script>
+<prosotype-player src="hand.16a.prs" text="hand.16a.text.json" voice="reference-high.json"></prosotype-player>
+<prosotype-player stream="UFJTARAEZW4tMQ…"></prosotype-player>
+```
+
+- **Stream:** `src` (a `.prs` file, or a JSON-form `.json`) or `stream` (the packed bytes inline, as base64). The footer gives the profile and size and offers the stream as a download.
+- **Formatting:** the element decodes the stream and draws it in mapping B in JavaScript. It uses the same 16a levels and tables as `render.py`, and a WOFF2 subset of Noto Sans (variable weight and width) covering the en-1 table and common extension phones (`js/prosotype-ipa.woff2`, 48 KB, SIL OFL 1.1).
+- **Text:** with a text map (`text`, or a child `<script type="application/json">`), each utterance shows its words and label, and words highlight alongside glyphs.
+- **Player:** Play speaks the whole stream with the reference synthesiser. When there are several utterances, each line also gets its own play button. `voice` names a voice profile; `voices` adds a voice menu; the `voiceProfile` property takes a profile object, such as one a viewer loads from disk.
+- **Events and methods:** `prosotype-phone` fires as each phone sounds (index, phone, utterance, word), and `prosotype-end` fires at the end. `play(utterance?)` and `stop()` control playback. Only one element sounds at a time.
+- **Styling:** it lives in a shadow root, so page CSS cannot break it. It follows light and dark mode, and pages can retheme it with `--prosotype-ink`, `-muted`, `-unvoiced`, `-rule`, `-guide`, `-highlight`, `-highlight-ink`, `-surface` and `-size`. The `compact` attribute gives a smaller version without the footer.
+- **Without JavaScript:** content placed inside the element shows until it upgrades, so a static rendering can sit inside as the fallback.
+
+On the site, the homepage hero is a `<prosotype-player>` with the static rendering inside it as the fallback. The **reader** (`docs/play.html`, built by `prototype/player.py`) shows every sample as an element, with page-level menus that switch all of them between 16a, 12b and 8b and between voice profiles. A viewer can also load their own profile from disk; it never leaves the browser.
 
 ## Appendix A. Verified background
 

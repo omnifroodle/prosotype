@@ -64,8 +64,18 @@ def build(doc: dict, profile: pack.Profile) -> dict:
     dec = pack.decode(pack.from_bytes(pack.to_bytes(pack.encode(doc, profile))))
     got = [len(u["words"]) for u in dec["utterances"]]
     assert got == [len(ws) for ws in words], (got, [len(ws) for ws in words])
-    return {"prosotype_text": "0.1", "profile": profile.name, "text": doc["text"],
-            "utterances": [[w["chars"] for w in ws] for ws in words]}
+    out = {"prosotype_text": "0.1", "profile": profile.name, "text": doc["text"],
+           "utterances": [[w["chars"] for w in ws] for ws in words]}
+    # optional per-utterance labels, kept only where they say more than the words
+    labels = []
+    for u, ws in zip(doc["utterances"], words):
+        said = doc["text"][ws[0]["chars"][0]:ws[-1]["chars"][1]] if ws else ""
+        lab = u.get("label")
+        redundant = lab and said.strip(" .?!").startswith(lab.strip(" .?!"))  # the text itself, or a cut of it
+        labels.append(lab if lab and not redundant else None)
+    if any(labels):
+        out["labels"] = labels
+    return out
 
 
 def main() -> None:

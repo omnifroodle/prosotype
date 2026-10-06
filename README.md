@@ -2,7 +2,7 @@
 
 Speech written in the International Phonetic Alphabet, with how it was said (pitch, length and loudness) set into the type itself.
 
-**Site:** https://omnifroodle.github.io/prosotype/ · **Player:** https://omnifroodle.github.io/prosotype/play.html
+**Site:** https://omnifroodle.github.io/prosotype/ · **Reader:** https://omnifroodle.github.io/prosotype/play.html
 
 ProsoType has three parts:
 
@@ -18,7 +18,7 @@ This repository holds the output of the viability phase:
 | [PLAN.md](PLAN.md) | The plan and the decisions this phase worked from |
 | [prototype/](prototype) | Python prototype: `pack.py`, `render.py`, `transcribe.py`, `bitrate.py`, `site.py` |
 | [vectors/](vectors) | Conformance test vectors for the packed stream (SPEC.md §3.10) |
-| [js/](js) | An independent decoder written from the spec, the reference synthesiser (`synth.mjs`) and a command-line speaker (`speak.mjs`) |
+| [js/](js) | An independent decoder written from the spec, the reference synthesiser (`synth.mjs`), the `<prosotype-player>` web component and its font, and a command-line speaker (`speak.mjs`) |
 | [profiles/](profiles) | Voice profiles of synthetic voices (people's profiles stay private and are never committed) |
 | [docs/](docs) | The GitHub Pages site, built by `prototype/site.py`; logo by `prototype/logo.py` |
 

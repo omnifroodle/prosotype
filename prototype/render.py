@@ -58,7 +58,8 @@ def pitch_colour(level: int, dark: bool) -> str:
 # --- font --------------------------------------------------------------------
 
 
-def font_face(text: str) -> str:
+def font_woff2(text: str) -> bytes:
+    """A WOFF2 subset of Noto Sans (variable weight and width) covering text."""
     opts = subset.Options()
     opts.flavor = "woff2"
     opts.layout_features = ["*"]
@@ -71,7 +72,11 @@ def font_face(text: str) -> str:
     buf = io.BytesIO()
     font.flavor = "woff2"
     font.save(buf)
-    b64 = base64.b64encode(buf.getvalue()).decode("ascii")
+    return buf.getvalue()
+
+
+def font_face(text: str) -> str:
+    b64 = base64.b64encode(font_woff2(text)).decode("ascii")
     return (
         "@font-face{font-family:'ProsoType IPA';"
         f"src:url(data:font/woff2;base64,{b64}) format('woff2');"

@@ -75,6 +75,7 @@ PAGE = """<!doctype html>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ProsoType</title>
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<script type="module" src="js/prosotype-player.mjs"></script>
 <meta name="description" content="Speech written in IPA, with pitch, duration and loudness set into the type. Specification and prototype from the viability phase.">
 <style>
 {fontface}
@@ -141,8 +142,8 @@ footer{{margin-top:72px;font-size:14px;color:var(--muted);border-top:1px solid v
 </header>
 
 <section class="card takes" aria-label="Three deliveries, transcribed automatically">
-{hero}
-<p class="legend-line">One speaker, three takes, transcribed automatically from audio. Height is pitch (the faint line is the speaker's median), width is length, weight is loudness. Unvoiced sounds are grey.</p>
+<prosotype-player src="play/data/recorded.16a.prs" text="play/data/recorded.16a.text.json">{hero}</prosotype-player>
+<p class="legend-line">One speaker, three takes, transcribed automatically from audio. Height is pitch (the faint line is the speaker's median), width is length, weight is loudness. Unvoiced sounds are grey. Press play to hear the stream spoken by the reference synthesiser (the recordings themselves are not published).</p>
 </section>
 
 <h2>The idea</h2>
@@ -185,7 +186,7 @@ footer{{margin-top:72px;font-size:14px;color:var(--muted);border-top:1px solid v
 <h2>Read more</h2>
 <ul class="links">
 <li><a href="{repo}/blob/main/SPEC.md"><strong>Specification</strong><span>Data model, packed stream, visual mapping, accessibility, findings.</span></a></li>
-<li><a href="play.html"><strong>Player</strong><span>Hear a stream spoken by the reference synthesiser, in a choice of voice profiles, with each phone and word highlighted.</span></a></li>
+<li><a href="play.html"><strong>Reader</strong><span>Every sample, decoded and spoken in your browser in a choice of voice profiles, with each phone and word highlighted; and how to embed it.</span></a></li>
 <li><a href="renders/recorded_three_ways.html"><strong>Interactive render</strong><span>The recorded takes in both mappings, with theme and greyscale toggles.</span></a></li>
 <li><a href="renders/synthetic.html"><strong>Synthetic speech render</strong><span>A 26-second paragraph from macOS speech synthesis.</span></a></li>
 <li><a href="{repo}/tree/main/prototype"><strong>Prototype</strong><span>Python: pack, render, transcribe, size report.</span></a></li>
