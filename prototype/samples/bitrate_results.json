@@ -14,12 +14,12 @@
     "kind": "packed",
     "name": "16a",
     "bytes": 162,
-    "zlib": 171,
+    "zlib": 173,
     "xz": 224,
     "symbols": 81,
     "bytes_per_word": 8.526315789473685,
     "bit_s": 154.34083601286173,
-    "zlib_bytes_per_word": 9.0,
+    "zlib_bytes_per_word": 9.105263157894736,
     "xz_bytes_per_word": 11.789473684210526
    },
    {
@@ -38,12 +38,12 @@
     "kind": "packed",
     "name": "12a",
     "bytes": 122,
-    "zlib": 131,
+    "zlib": 133,
     "xz": 184,
     "symbols": 81,
     "bytes_per_word": 6.421052631578948,
     "bit_s": 116.23198761462427,
-    "zlib_bytes_per_word": 6.894736842105263,
+    "zlib_bytes_per_word": 7.0,
     "xz_bytes_per_word": 9.68421052631579
    },
    {
@@ -62,12 +62,12 @@
     "kind": "packed",
     "name": "8a",
     "bytes": 81,
-    "zlib": 87,
+    "zlib": 86,
     "xz": 140,
     "symbols": 81,
     "bytes_per_word": 4.2631578947368425,
     "bit_s": 77.17041800643086,
-    "zlib_bytes_per_word": 4.578947368421052,
+    "zlib_bytes_per_word": 4.526315789473684,
     "xz_bytes_per_word": 7.368421052631579
    },
    {
@@ -171,73 +171,73 @@
     "kind": "packed",
     "name": "16a",
     "bytes": 760,
-    "zlib": 640,
-    "xz": 712,
+    "zlib": 645,
+    "xz": 724,
     "symbols": 380,
     "bytes_per_word": 8.735632183908047,
     "bit_s": 236.59428749319014,
-    "zlib_bytes_per_word": 7.35632183908046,
-    "xz_bytes_per_word": 8.183908045977011
+    "zlib_bytes_per_word": 7.413793103448276,
+    "xz_bytes_per_word": 8.32183908045977
    },
    {
     "kind": "packed",
     "name": "16b",
     "bytes": 608,
-    "zlib": 568,
-    "xz": 644,
+    "zlib": 565,
+    "xz": 652,
     "symbols": 304,
     "bytes_per_word": 6.988505747126437,
     "bit_s": 189.2754299945521,
-    "zlib_bytes_per_word": 6.528735632183908,
-    "xz_bytes_per_word": 7.402298850574713
+    "zlib_bytes_per_word": 6.494252873563219,
+    "xz_bytes_per_word": 7.494252873563219
    },
    {
     "kind": "packed",
     "name": "12a",
     "bytes": 570,
-    "zlib": 506,
-    "xz": 584,
+    "zlib": 500,
+    "xz": 592,
     "symbols": 380,
     "bytes_per_word": 6.551724137931035,
     "bit_s": 177.4457156198926,
-    "zlib_bytes_per_word": 5.816091954022989,
-    "xz_bytes_per_word": 6.712643678160919
+    "zlib_bytes_per_word": 5.747126436781609,
+    "xz_bytes_per_word": 6.804597701149425
    },
    {
     "kind": "packed",
     "name": "12b",
     "bytes": 456,
     "zlib": 467,
-    "xz": 520,
+    "xz": 516,
     "symbols": 304,
     "bytes_per_word": 5.241379310344827,
     "bit_s": 141.9565724959141,
     "zlib_bytes_per_word": 5.367816091954023,
-    "xz_bytes_per_word": 5.977011494252873
+    "xz_bytes_per_word": 5.931034482758621
    },
    {
     "kind": "packed",
     "name": "8a",
     "bytes": 380,
     "zlib": 326,
-    "xz": 416,
+    "xz": 412,
     "symbols": 380,
     "bytes_per_word": 4.367816091954023,
     "bit_s": 118.29714374659507,
     "zlib_bytes_per_word": 3.7471264367816093,
-    "xz_bytes_per_word": 4.781609195402299
+    "xz_bytes_per_word": 4.735632183908046
    },
    {
     "kind": "packed",
     "name": "8b",
     "bytes": 304,
-    "zlib": 286,
-    "xz": 368,
+    "zlib": 287,
+    "xz": 364,
     "symbols": 304,
     "bytes_per_word": 3.4942528735632186,
     "bit_s": 94.63771499727605,
-    "zlib_bytes_per_word": 3.2873563218390807,
-    "xz_bytes_per_word": 4.2298850574712645
+    "zlib_bytes_per_word": 3.2988505747126435,
+    "xz_bytes_per_word": 4.183908045977011
    },
    {
     "kind": "text",

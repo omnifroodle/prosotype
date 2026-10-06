@@ -110,12 +110,7 @@ def align(ref: list[dict], hyp: list[dict]) -> list[tuple[dict, dict]]:
     return pairs[::-1]
 
 
-def phone_class(ipa: str) -> str:
-    if ipa in T.VOWELS:
-        return "vowel"
-    if ipa in T.STOPS or ipa == "ʔ":
-        return "stop"
-    return "other consonant"
+phone_class = T.phone_class
 
 
 def summarise(rows: list[dict]) -> dict:

@@ -5,8 +5,8 @@
  "source": {
   "audio": "samples/smoke/say_natural.wav",
   "duration_s": 25.698,
-  "word_model": "mlx-community/whisper-large-v3-turbo",
-  "phone_model": "facebook/wav2vec2-lv-60-espeak-cv-ft",
+  "word_model": "mlx-community/whisper-large-v3-turbo@a4aaeec0636e6fef84abdcbe3544cb2bf7e9f6fb",
+  "phone_model": "facebook/wav2vec2-lv-60-espeak-cv-ft@ae45363bf3413b374fecd9dc8bc1df0e24c3b7f4",
   "transcript": "I wasn't sure about the trip at first. The weather looked terrible all week. And we'd already cancelled twice. But on Saturday morning the sky cleared. So we packed the car and drove up the coast. We stopped for coffee in a tiny town with one street and a bakery that sold out by 9. By the afternoon we were walking along the cliffs. Watching the waves crash below us. Honestly. It was the best day I've had in months. And I can't wait to go back.",
   "raw_phones": "aɪ w ʌ z ə n t ʃ ɔːɹ ɹ ɐ b aʊ t ð ə t ɹ ɪ p æ t f ɜː s t ð ə w ɛ ð ɚ l ʊ k t t ɛ ɹ ɪ b əl ɔː l w iː k æ n d w iː d ɔː l ɹ ɛ d i k æ n s ɪ t w ɑːɹ s b ʌ ɾ ɔ n s æ ɾ ɚ d eɪ m ɔːɹ n ɪ ŋ ð ə s k aɪ k l ɪ d s oʊ w iː p æ k t ð ə k ɑːɹ ɹ æ n d d ɹ oʊ v ʌ p ð ə k oʊ s t w iː s t ɑː p t f ɔːɹ k ɑː f i ɪ n d ɐ t aɪ n i t aʊ n w ɪ ð w ʌ n s t ɹ i t æ n d ɐ ʌ b eɪ k ɚ ɹ i ð æ t s oʊ l d aʊ t b aɪ n aɪ n b aɪ ð ɪ æ f t ɚ n uː n w iː w ɜː w ɑː k ɪ ŋ ɐ l ɔ ŋ ð ə k l ɪ f s w ɑː tʃ ɪ ŋ ð ə w eɪ v z k ɹ æ ʃ b ᵻ l oʊ s ɑː n ɪ s t l i ɪ t w ʌ z ð ə b ɛ s t d aɪ f æ d ɪ n m aɪ n f æ n d aɪ k æ n t w eɪ t t ə ɡ oʊ b æ k",
   "alignment": {
@@ -39,8 +39,8 @@
  },
  "speakers": {
   "S1": {
-   "f0_median_hz": 175.6,
-   "loudness_mean_db": 79.2
+   "f0_median_hz": 175.0,
+   "loudness_mean_db": 79.8
   }
  },
  "utterances": [
@@ -54,16 +54,16 @@
      "phones": [
       {
        "ipa": "aɪ",
-       "start_s": 0.02,
-       "dur_ms": 140.0,
+       "start_s": 0.006,
+       "dur_ms": 129.0,
        "voiced": true,
-       "pitch_st": 0.6,
-       "loud_db": 0.13,
+       "pitch_st": 0.76,
+       "loud_db": -0.13,
        "conf": 0.878
       }
      ],
-     "start_s": 0.02,
-     "end_s": 0.16
+     "start_s": 0.006,
+     "end_s": 0.135
     },
     {
      "text": "wasn't",
@@ -71,61 +71,61 @@
      "phones": [
       {
        "ipa": "w",
-       "start_s": 0.16,
-       "dur_ms": 60.0,
+       "start_s": 0.135,
+       "dur_ms": 71.0,
        "voiced": true,
-       "pitch_st": 0.89,
-       "loud_db": 0.64,
+       "pitch_st": 0.59,
+       "loud_db": -0.71,
        "conf": 0.825
       },
       {
        "ipa": "ʌ",
-       "start_s": 0.22,
-       "dur_ms": 100.0,
+       "start_s": 0.206,
+       "dur_ms": 89.0,
        "voiced": true,
-       "pitch_st": 1.3,
-       "loud_db": 0.26,
+       "pitch_st": 1.41,
+       "loud_db": 0.24,
        "conf": 0.933
       },
       {
        "ipa": "z",
-       "start_s": 0.32,
-       "dur_ms": 60.0,
+       "start_s": 0.295,
+       "dur_ms": 71.0,
        "voiced": true,
-       "pitch_st": 0.66,
-       "loud_db": -8.4,
+       "pitch_st": -0.39,
+       "loud_db": -7.27,
        "conf": 0.946
       },
       {
        "ipa": "ə",
-       "start_s": 0.38,
-       "dur_ms": 40.0,
+       "start_s": 0.366,
+       "dur_ms": 29.0,
        "voiced": true,
-       "pitch_st": 1.7,
-       "loud_db": 1.2,
+       "pitch_st": 2.19,
+       "loud_db": -1.17,
        "conf": 0.962
       },
       {
        "ipa": "n",
-       "start_s": 0.42,
-       "dur_ms": 60.0,
+       "start_s": 0.395,
+       "dur_ms": 48.0,
        "voiced": true,
-       "pitch_st": 0.28,
-       "loud_db": -0.5,
+       "pitch_st": 1.28,
+       "loud_db": 1.09,
        "conf": 0.768
       },
       {
        "ipa": "t",
-       "start_s": 0.48,
-       "dur_ms": 60.0,
-       "voiced": false,
-       "pitch_st": null,
-       "loud_db": -7.98,
+       "start_s": 0.443,
+       "dur_ms": 72.0,
+       "voiced": true,
+       "pitch_st": -0.24,
+       "loud_db": -5.13,
        "conf": 0.94
       }
      ],
-     "start_s": 0.16,
-     "end_s": 0.54
+     "start_s": 0.135,
+     "end_s": 0.515
     },
     {
      "text": "sure",
@@ -133,34 +133,34 @@
      "phones": [
       {
        "ipa": "ʃ",
-       "start_s": 0.54,
-       "dur_ms": 80.0,
+       "start_s": 0.515,
+       "dur_ms": 91.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -2.7,
+       "loud_db": -4.59,
        "conf": 0.929
       },
       {
        "ipa": "ɔ",
-       "start_s": 0.62,
-       "dur_ms": 40.0,
+       "start_s": 0.606,
+       "dur_ms": 29.0,
        "voiced": true,
-       "pitch_st": 1.24,
-       "loud_db": 1.61,
+       "pitch_st": 1.88,
+       "loud_db": 0.97,
        "conf": 0.224
       },
       {
        "ipa": "ɹ",
-       "start_s": 0.66,
-       "dur_ms": 80.0,
+       "start_s": 0.635,
+       "dur_ms": 91.0,
        "voiced": true,
-       "pitch_st": 0.68,
-       "loud_db": 0.99,
+       "pitch_st": 0.85,
+       "loud_db": 0.48,
        "conf": 0.224
       }
      ],
-     "start_s": 0.54,
-     "end_s": 0.74
+     "start_s": 0.515,
+     "end_s": 0.726
     },
     {
      "text": "about",
@@ -168,43 +168,43 @@
      "phones": [
       {
        "ipa": "ɐ",
-       "start_s": 0.74,
-       "dur_ms": 80.0,
+       "start_s": 0.726,
+       "dur_ms": 57.0,
        "voiced": true,
-       "pitch_st": -1.12,
-       "loud_db": -2.18,
+       "pitch_st": 0.15,
+       "loud_db": -0.47,
        "conf": 0.502
       },
       {
        "ipa": "b",
-       "start_s": 0.82,
-       "dur_ms": 40.0,
+       "start_s": 0.783,
+       "dur_ms": 63.0,
        "voiced": true,
-       "pitch_st": -0.5,
-       "loud_db": -1.14,
+       "pitch_st": -1.42,
+       "loud_db": -4.68,
        "conf": 0.948
       },
       {
        "ipa": "aʊ",
-       "start_s": 0.86,
-       "dur_ms": 140.0,
+       "start_s": 0.846,
+       "dur_ms": 117.0,
        "voiced": true,
-       "pitch_st": -2.09,
-       "loud_db": -0.46,
+       "pitch_st": -1.9,
+       "loud_db": -0.04,
        "conf": 0.749
       },
       {
        "ipa": "t",
-       "start_s": 1.0,
-       "dur_ms": 40.0,
-       "voiced": false,
-       "pitch_st": null,
-       "loud_db": -19.58,
+       "start_s": 0.963,
+       "dur_ms": 52.0,
+       "voiced": true,
+       "pitch_st": -2.1,
+       "loud_db": -7.22,
        "conf": 0.685
       }
      ],
-     "start_s": 0.74,
-     "end_s": 1.04
+     "start_s": 0.726,
+     "end_s": 1.015
     },
     {
      "text": "the",
@@ -212,25 +212,25 @@
      "phones": [
       {
        "ipa": "ð",
-       "start_s": 1.04,
-       "dur_ms": 20.0,
-       "voiced": true,
-       "pitch_st": 0.2,
-       "loud_db": -5.7,
+       "start_s": 1.015,
+       "dur_ms": 31.0,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -13.58,
        "conf": 0.987
       },
       {
        "ipa": "ə",
-       "start_s": 1.06,
-       "dur_ms": 100.0,
+       "start_s": 1.046,
+       "dur_ms": 77.0,
        "voiced": true,
-       "pitch_st": -2.22,
-       "loud_db": -2.21,
+       "pitch_st": -1.03,
+       "loud_db": -1.19,
        "conf": 0.972
       }
      ],
-     "start_s": 1.04,
-     "end_s": 1.16
+     "start_s": 1.015,
+     "end_s": 1.123
     },
     {
      "text": "trip",
@@ -238,43 +238,43 @@
      "phones": [
       {
        "ipa": "t",
-       "start_s": 1.16,
-       "dur_ms": 80.0,
+       "start_s": 1.123,
+       "dur_ms": 92.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -10.19,
+       "loud_db": -11.7,
        "conf": 0.969
       },
       {
        "ipa": "ɹ",
-       "start_s": 1.24,
-       "dur_ms": 40.0,
+       "start_s": 1.215,
+       "dur_ms": 51.0,
        "voiced": true,
-       "pitch_st": 1.95,
-       "loud_db": 0.23,
+       "pitch_st": 2.63,
+       "loud_db": -2.83,
        "conf": 0.99
       },
       {
        "ipa": "ɪ",
-       "start_s": 1.28,
-       "dur_ms": 100.0,
+       "start_s": 1.266,
+       "dur_ms": 77.0,
        "voiced": true,
-       "pitch_st": 1.22,
-       "loud_db": -1.38,
+       "pitch_st": 1.46,
+       "loud_db": 0.17,
        "conf": 0.93
       },
       {
        "ipa": "p",
-       "start_s": 1.38,
-       "dur_ms": 60.0,
+       "start_s": 1.343,
+       "dur_ms": 83.0,
        "voiced": true,
-       "pitch_st": 0.87,
-       "loud_db": -4.52,
+       "pitch_st": 0.75,
+       "loud_db": -8.44,
        "conf": 0.984
       }
      ],
-     "start_s": 1.16,
-     "end_s": 1.44
+     "start_s": 1.123,
+     "end_s": 1.426
     },
     {
      "text": "at",
@@ -282,25 +282,25 @@
      "phones": [
       {
        "ipa": "æ",
-       "start_s": 1.44,
-       "dur_ms": 80.0,
+       "start_s": 1.426,
+       "dur_ms": 57.0,
        "voiced": true,
-       "pitch_st": -1.74,
-       "loud_db": -2.93,
+       "pitch_st": -0.6,
+       "loud_db": -0.85,
        "conf": 0.244
       },
       {
        "ipa": "t",
-       "start_s": 1.52,
-       "dur_ms": 80.0,
+       "start_s": 1.483,
+       "dur_ms": 92.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -29.51,
+       "loud_db": -14.74,
        "conf": 0.957
       }
      ],
-     "start_s": 1.44,
-     "end_s": 1.6
+     "start_s": 1.426,
+     "end_s": 1.575
     },
     {
      "text": "first.",
@@ -308,42 +308,42 @@
      "phones": [
       {
        "ipa": "f",
-       "start_s": 1.6,
-       "dur_ms": 60.0,
-       "voiced": true,
-       "pitch_st": -0.42,
-       "loud_db": -3.88,
+       "start_s": 1.575,
+       "dur_ms": 71.0,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -7.68,
        "conf": 0.993
       },
       {
        "ipa": "ɜ",
-       "start_s": 1.66,
-       "dur_ms": 220.0,
+       "start_s": 1.646,
+       "dur_ms": 209.0,
        "voiced": true,
-       "pitch_st": -6.05,
-       "loud_db": -1.9,
+       "pitch_st": -5.14,
+       "loud_db": -2.02,
        "conf": 0.612
       },
       {
        "ipa": "s",
-       "start_s": 1.88,
-       "dur_ms": 100.0,
+       "start_s": 1.855,
+       "dur_ms": 88.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -18.7,
+       "loud_db": -15.66,
        "conf": 0.986
       },
       {
        "ipa": "t",
-       "start_s": 1.98,
-       "dur_ms": 40.0,
+       "start_s": 1.943,
+       "dur_ms": 77.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -33.97,
+       "loud_db": -27.25,
        "conf": 0.861
       }
      ],
-     "start_s": 1.6,
+     "start_s": 1.575,
      "end_s": 2.02
     }
    ]
@@ -358,25 +358,25 @@
      "phones": [
       {
        "ipa": "ð",
-       "start_s": 2.26,
-       "dur_ms": 40.0,
-       "voiced": true,
-       "pitch_st": 0.76,
-       "loud_db": -6.55,
+       "start_s": 2.235,
+       "dur_ms": 51.0,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -13.16,
        "conf": 0.723
       },
       {
        "ipa": "ə",
-       "start_s": 2.3,
-       "dur_ms": 100.0,
+       "start_s": 2.286,
+       "dur_ms": 89.0,
        "voiced": true,
-       "pitch_st": -0.8,
-       "loud_db": 0.06,
+       "pitch_st": -0.38,
+       "loud_db": -0.46,
        "conf": 0.97
       }
      ],
-     "start_s": 2.26,
-     "end_s": 2.4
+     "start_s": 2.235,
+     "end_s": 2.375
     },
     {
      "text": "weather",
@@ -384,43 +384,43 @@
      "phones": [
       {
        "ipa": "w",
-       "start_s": 2.4,
-       "dur_ms": 60.0,
+       "start_s": 2.375,
+       "dur_ms": 71.0,
        "voiced": true,
-       "pitch_st": 0.95,
-       "loud_db": 1.15,
+       "pitch_st": 0.11,
+       "loud_db": -0.1,
        "conf": 0.978
       },
       {
        "ipa": "ɛ",
-       "start_s": 2.46,
-       "dur_ms": 100.0,
+       "start_s": 2.446,
+       "dur_ms": 89.0,
        "voiced": true,
-       "pitch_st": 2.49,
-       "loud_db": -0.24,
+       "pitch_st": 2.6,
+       "loud_db": -0.03,
        "conf": 0.924
       },
       {
        "ipa": "ð",
-       "start_s": 2.56,
-       "dur_ms": 40.0,
+       "start_s": 2.535,
+       "dur_ms": 51.0,
        "voiced": true,
-       "pitch_st": 1.94,
-       "loud_db": -0.71,
+       "pitch_st": 1.56,
+       "loud_db": -3.45,
        "conf": 0.99
       },
       {
        "ipa": "ɚ",
-       "start_s": 2.6,
-       "dur_ms": 100.0,
+       "start_s": 2.586,
+       "dur_ms": 89.0,
        "voiced": true,
-       "pitch_st": 1.07,
-       "loud_db": 0.88,
+       "pitch_st": 1.9,
+       "loud_db": 0.48,
        "conf": 0.856
       }
      ],
-     "start_s": 2.4,
-     "end_s": 2.7
+     "start_s": 2.375,
+     "end_s": 2.675
     },
     {
      "text": "looked",
@@ -428,43 +428,43 @@
      "phones": [
       {
        "ipa": "l",
-       "start_s": 2.7,
-       "dur_ms": 40.0,
+       "start_s": 2.675,
+       "dur_ms": 51.0,
        "voiced": true,
-       "pitch_st": 0.8,
-       "loud_db": 0.89,
+       "pitch_st": 0.41,
+       "loud_db": -0.13,
        "conf": 0.986
       },
       {
        "ipa": "ʊ",
-       "start_s": 2.74,
-       "dur_ms": 100.0,
+       "start_s": 2.726,
+       "dur_ms": 77.0,
        "voiced": true,
-       "pitch_st": 1.31,
-       "loud_db": -1.5,
+       "pitch_st": 1.37,
+       "loud_db": 0.04,
        "conf": 0.73
       },
       {
        "ipa": "k",
-       "start_s": 2.84,
+       "start_s": 2.803,
        "dur_ms": 20.0,
-       "voiced": false,
-       "pitch_st": null,
-       "loud_db": -30.91,
+       "voiced": true,
+       "pitch_st": 0.73,
+       "loud_db": -9.0,
        "conf": 0.986
       },
       {
        "ipa": "t",
-       "start_s": 2.86,
+       "start_s": 2.823,
        "dur_ms": 80.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -26.24,
+       "loud_db": -26.51,
        "conf": 0.841
       }
      ],
-     "start_s": 2.7,
-     "end_s": 2.94
+     "start_s": 2.675,
+     "end_s": 2.903
     },
     {
      "text": "terrible",
@@ -472,70 +472,70 @@
      "phones": [
       {
        "ipa": "t",
-       "start_s": 2.94,
-       "dur_ms": 80.0,
-       "voiced": true,
-       "pitch_st": 1.83,
-       "loud_db": -3.07,
+       "start_s": 2.903,
+       "dur_ms": 103.0,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -6.99,
        "conf": 0.973
       },
       {
        "ipa": "ɛ",
-       "start_s": 3.02,
-       "dur_ms": 100.0,
+       "start_s": 3.006,
+       "dur_ms": 89.0,
        "voiced": true,
-       "pitch_st": 0.73,
-       "loud_db": 1.08,
+       "pitch_st": 1.21,
+       "loud_db": 0.59,
        "conf": 0.855
       },
       {
        "ipa": "ɹ",
-       "start_s": 3.12,
-       "dur_ms": 40.0,
+       "start_s": 3.095,
+       "dur_ms": 51.0,
        "voiced": true,
-       "pitch_st": 1.1,
-       "loud_db": 0.93,
+       "pitch_st": 0.84,
+       "loud_db": 0.26,
        "conf": 0.843
       },
       {
        "ipa": "ɪ",
-       "start_s": 3.16,
-       "dur_ms": 80.0,
+       "start_s": 3.146,
+       "dur_ms": 57.0,
        "voiced": true,
-       "pitch_st": 1.01,
-       "loud_db": -0.57,
+       "pitch_st": 1.22,
+       "loud_db": 0.12,
        "conf": 0.356
       },
       {
        "ipa": "b",
-       "start_s": 3.24,
-       "dur_ms": 40.0,
+       "start_s": 3.203,
+       "dur_ms": 63.0,
        "voiced": true,
-       "pitch_st": 0.39,
-       "loud_db": -4.52,
+       "pitch_st": -0.02,
+       "loud_db": -4.21,
        "conf": 0.959
       },
       {
        "ipa": "ə",
-       "start_s": 3.28,
-       "dur_ms": 80.0,
+       "start_s": 3.266,
+       "dur_ms": 69.0,
        "voiced": true,
-       "pitch_st": 1.36,
-       "loud_db": 0.97,
+       "pitch_st": 1.37,
+       "loud_db": 0.11,
        "conf": 0.826
       },
       {
        "ipa": "l",
-       "start_s": 3.36,
-       "dur_ms": 80.0,
+       "start_s": 3.335,
+       "dur_ms": 91.0,
        "voiced": true,
-       "pitch_st": -0.09,
-       "loud_db": 1.04,
+       "pitch_st": 1.26,
+       "loud_db": 0.35,
        "conf": 0.826
       }
      ],
-     "start_s": 2.94,
-     "end_s": 3.44
+     "start_s": 2.903,
+     "end_s": 3.426
     },
     {
      "text": "all",
@@ -543,25 +543,25 @@
      "phones": [
       {
        "ipa": "ɔ",
-       "start_s": 3.44,
-       "dur_ms": 100.0,
+       "start_s": 3.426,
+       "dur_ms": 89.0,
        "voiced": true,
-       "pitch_st": -0.72,
-       "loud_db": 1.53,
+       "pitch_st": -0.77,
+       "loud_db": 0.95,
        "conf": 0.299
       },
       {
        "ipa": "l",
-       "start_s": 3.54,
+       "start_s": 3.515,
        "dur_ms": 80.0,
        "voiced": true,
-       "pitch_st": -0.55,
-       "loud_db": -0.37,
+       "pitch_st": 0.08,
+       "loud_db": -0.17,
        "conf": 0.857
       }
      ],
-     "start_s": 3.44,
-     "end_s": 3.62
+     "start_s": 3.426,
+     "end_s": 3.595
     },
     {
      "text": "week.",
@@ -569,33 +569,33 @@
      "phones": [
       {
        "ipa": "w",
-       "start_s": 3.62,
-       "dur_ms": 60.0,
+       "start_s": 3.595,
+       "dur_ms": 71.0,
        "voiced": true,
-       "pitch_st": -1.46,
-       "loud_db": 0.72,
+       "pitch_st": -1.37,
+       "loud_db": -0.77,
        "conf": 0.976
       },
       {
        "ipa": "i",
-       "start_s": 3.68,
-       "dur_ms": 280.0,
+       "start_s": 3.666,
+       "dur_ms": 257.0,
        "voiced": true,
-       "pitch_st": -6.49,
-       "loud_db": -1.39,
+       "pitch_st": -5.45,
+       "loud_db": -1.19,
        "conf": 0.791
       },
       {
        "ipa": "k",
-       "start_s": 3.96,
-       "dur_ms": 20.0,
+       "start_s": 3.923,
+       "dur_ms": 57.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -34.06,
+       "loud_db": -33.56,
        "conf": 0.984
       }
      ],
-     "start_s": 3.62,
+     "start_s": 3.595,
      "end_s": 3.98
     }
    ]
@@ -610,34 +610,34 @@
      "phones": [
       {
        "ipa": "æ",
-       "start_s": 4.18,
-       "dur_ms": 100.0,
+       "start_s": 4.166,
+       "dur_ms": 89.0,
        "voiced": true,
-       "pitch_st": -0.71,
-       "loud_db": -0.99,
+       "pitch_st": -0.6,
+       "loud_db": -3.05,
        "conf": 0.928
       },
       {
        "ipa": "n",
-       "start_s": 4.28,
-       "dur_ms": 20.0,
+       "start_s": 4.255,
+       "dur_ms": 8.0,
        "voiced": true,
-       "pitch_st": -1.17,
-       "loud_db": 2.25,
+       "pitch_st": -0.64,
+       "loud_db": 0.73,
        "conf": 0.991
       },
       {
        "ipa": "d",
-       "start_s": 4.3,
-       "dur_ms": 60.0,
+       "start_s": 4.263,
+       "dur_ms": 72.0,
        "voiced": true,
-       "pitch_st": -1.71,
-       "loud_db": 1.96,
+       "pitch_st": -1.21,
+       "loud_db": 1.49,
        "conf": 0.637
       }
      ],
-     "start_s": 4.18,
-     "end_s": 4.36
+     "start_s": 4.166,
+     "end_s": 4.335
     },
     {
      "text": "we'd",
@@ -645,34 +645,34 @@
      "phones": [
       {
        "ipa": "w",
-       "start_s": 4.36,
-       "dur_ms": 40.0,
+       "start_s": 4.335,
+       "dur_ms": 51.0,
        "voiced": true,
-       "pitch_st": -0.26,
-       "loud_db": 1.32,
+       "pitch_st": -1.49,
+       "loud_db": 0.48,
        "conf": 0.983
       },
       {
        "ipa": "i",
-       "start_s": 4.4,
-       "dur_ms": 140.0,
+       "start_s": 4.386,
+       "dur_ms": 117.0,
        "voiced": true,
-       "pitch_st": 3.16,
-       "loud_db": 2.03,
+       "pitch_st": 3.21,
+       "loud_db": 1.9,
        "conf": 0.671
       },
       {
        "ipa": "d",
-       "start_s": 4.54,
-       "dur_ms": 60.0,
+       "start_s": 4.503,
+       "dur_ms": 83.0,
        "voiced": true,
-       "pitch_st": 0.71,
-       "loud_db": -0.13,
+       "pitch_st": 1.43,
+       "loud_db": -0.72,
        "conf": 0.457
       }
      ],
-     "start_s": 4.36,
-     "end_s": 4.6
+     "start_s": 4.335,
+     "end_s": 4.586
     },
     {
      "text": "already",
@@ -680,61 +680,61 @@
      "phones": [
       {
        "ipa": "ɔ",
-       "start_s": 4.6,
-       "dur_ms": 80.0,
+       "start_s": 4.586,
+       "dur_ms": 69.0,
        "voiced": true,
-       "pitch_st": 0.14,
-       "loud_db": 1.45,
+       "pitch_st": 0.44,
+       "loud_db": 0.89,
        "conf": 0.351
       },
       {
        "ipa": "l",
-       "start_s": 4.68,
+       "start_s": 4.655,
        "dur_ms": 80.0,
        "voiced": true,
-       "pitch_st": -0.04,
-       "loud_db": 0.12,
+       "pitch_st": 0.02,
+       "loud_db": -0.05,
        "conf": 0.888
       },
       {
        "ipa": "ɹ",
-       "start_s": 4.76,
-       "dur_ms": 60.0,
+       "start_s": 4.735,
+       "dur_ms": 71.0,
        "voiced": true,
-       "pitch_st": 0.55,
-       "loud_db": 0.97,
+       "pitch_st": 0.21,
+       "loud_db": -0.02,
        "conf": 0.987
       },
       {
        "ipa": "ɛ",
-       "start_s": 4.82,
-       "dur_ms": 100.0,
+       "start_s": 4.806,
+       "dur_ms": 77.0,
        "voiced": true,
-       "pitch_st": 0.8,
-       "loud_db": -0.12,
+       "pitch_st": 0.72,
+       "loud_db": 0.25,
        "conf": 0.874
       },
       {
        "ipa": "d",
-       "start_s": 4.92,
-       "dur_ms": 20.0,
+       "start_s": 4.883,
+       "dur_ms": 43.0,
        "voiced": true,
-       "pitch_st": 1.86,
-       "loud_db": -0.18,
+       "pitch_st": 0.91,
+       "loud_db": -2.57,
        "conf": 0.581
       },
       {
        "ipa": "i",
-       "start_s": 4.94,
-       "dur_ms": 120.0,
+       "start_s": 4.926,
+       "dur_ms": 97.0,
        "voiced": true,
-       "pitch_st": 1.3,
-       "loud_db": -0.83,
+       "pitch_st": 1.74,
+       "loud_db": 0.26,
        "conf": 0.975
       }
      ],
-     "start_s": 4.6,
-     "end_s": 5.06
+     "start_s": 4.586,
+     "end_s": 5.023
     },
     {
      "text": "cancelled",
@@ -742,52 +742,52 @@
      "phones": [
       {
        "ipa": "k",
-       "start_s": 5.06,
-       "dur_ms": 80.0,
+       "start_s": 5.023,
+       "dur_ms": 103.0,
        "voiced": true,
-       "pitch_st": 1.95,
-       "loud_db": -2.58,
+       "pitch_st": 2.01,
+       "loud_db": -6.2,
        "conf": 0.981
       },
       {
        "ipa": "æ",
-       "start_s": 5.14,
-       "dur_ms": 100.0,
+       "start_s": 5.126,
+       "dur_ms": 89.0,
        "voiced": true,
-       "pitch_st": 1.67,
-       "loud_db": 1.18,
+       "pitch_st": 1.83,
+       "loud_db": 0.59,
        "conf": 0.943
       },
       {
        "ipa": "n",
-       "start_s": 5.24,
+       "start_s": 5.215,
        "dur_ms": 80.0,
        "voiced": true,
-       "pitch_st": 0.94,
-       "loud_db": -0.66,
+       "pitch_st": 1.38,
+       "loud_db": 0.13,
        "conf": 0.997
       },
       {
        "ipa": "s",
-       "start_s": 5.32,
-       "dur_ms": 80.0,
+       "start_s": 5.295,
+       "dur_ms": 91.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -8.02,
+       "loud_db": -12.01,
        "conf": 0.967
       },
       {
        "ipa": "ɪ",
-       "start_s": 5.4,
-       "dur_ms": 160.0,
+       "start_s": 5.386,
+       "dur_ms": 137.0,
        "voiced": true,
-       "pitch_st": -0.88,
-       "loud_db": -1.25,
+       "pitch_st": -0.17,
+       "loud_db": -0.75,
        "conf": 0.247
       }
      ],
-     "start_s": 5.06,
-     "end_s": 5.56
+     "start_s": 5.023,
+     "end_s": 5.523
     },
     {
      "text": "twice.",
@@ -795,51 +795,51 @@
      "phones": [
       {
        "ipa": "t",
-       "start_s": 5.56,
-       "dur_ms": 100.0,
+       "start_s": 5.523,
+       "dur_ms": 112.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -9.21,
+       "loud_db": -14.67,
        "conf": 0.529
       },
       {
        "ipa": "w",
-       "start_s": 5.66,
-       "dur_ms": 40.0,
+       "start_s": 5.635,
+       "dur_ms": 51.0,
        "voiced": true,
-       "pitch_st": -0.98,
-       "loud_db": 1.06,
+       "pitch_st": -0.2,
+       "loud_db": -1.02,
        "conf": 0.856
       },
       {
        "ipa": "ɑ",
-       "start_s": 5.7,
-       "dur_ms": 140.0,
+       "start_s": 5.686,
+       "dur_ms": 129.0,
        "voiced": true,
-       "pitch_st": -4.33,
-       "loud_db": 0.4,
+       "pitch_st": -2.84,
+       "loud_db": 0.05,
        "conf": 0.216
       },
       {
        "ipa": "ɹ",
-       "start_s": 5.84,
+       "start_s": 5.815,
        "dur_ms": 140.0,
        "voiced": true,
-       "pitch_st": -8.3,
-       "loud_db": -4.38,
+       "pitch_st": -7.73,
+       "loud_db": -3.86,
        "conf": 0.216
       },
       {
        "ipa": "s",
-       "start_s": 5.98,
-       "dur_ms": 80.0,
+       "start_s": 5.955,
+       "dur_ms": 105.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -21.42,
+       "loud_db": -18.88,
        "conf": 0.84
       }
      ],
-     "start_s": 5.56,
+     "start_s": 5.523,
      "end_s": 6.06
     }
    ]
@@ -854,34 +854,34 @@
      "phones": [
       {
        "ipa": "b",
-       "start_s": 6.28,
-       "dur_ms": 100.0,
+       "start_s": 6.243,
+       "dur_ms": 123.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -7.95,
+       "loud_db": -13.42,
        "conf": 0.892
       },
       {
        "ipa": "ʌ",
-       "start_s": 6.38,
-       "dur_ms": 60.0,
+       "start_s": 6.366,
+       "dur_ms": 49.0,
        "voiced": true,
-       "pitch_st": 1.53,
-       "loud_db": 0.62,
+       "pitch_st": 1.43,
+       "loud_db": 0.21,
        "conf": 0.915
       },
       {
        "ipa": "ɾ",
-       "start_s": 6.44,
-       "dur_ms": 60.0,
+       "start_s": 6.415,
+       "dur_ms": 71.0,
        "voiced": true,
-       "pitch_st": 1.7,
-       "loud_db": -0.04,
+       "pitch_st": 1.71,
+       "loud_db": -0.99,
        "conf": 0.608
       }
      ],
-     "start_s": 6.28,
-     "end_s": 6.5
+     "start_s": 6.243,
+     "end_s": 6.486
     },
     {
      "text": "on",
@@ -889,25 +889,25 @@
      "phones": [
       {
        "ipa": "ɔ",
-       "start_s": 6.5,
-       "dur_ms": 100.0,
+       "start_s": 6.486,
+       "dur_ms": 89.0,
        "voiced": true,
-       "pitch_st": 0.51,
-       "loud_db": 1.4,
+       "pitch_st": 0.83,
+       "loud_db": 0.59,
        "conf": 0.406
       },
       {
        "ipa": "n",
-       "start_s": 6.6,
+       "start_s": 6.575,
        "dur_ms": 80.0,
        "voiced": true,
-       "pitch_st": -1.26,
-       "loud_db": -1.98,
+       "pitch_st": -0.57,
+       "loud_db": -0.47,
        "conf": 0.977
       }
      ],
-     "start_s": 6.5,
-     "end_s": 6.68
+     "start_s": 6.486,
+     "end_s": 6.655
     },
     {
      "text": "Saturday",
@@ -915,61 +915,61 @@
      "phones": [
       {
        "ipa": "s",
-       "start_s": 6.68,
-       "dur_ms": 120.0,
-       "voiced": true,
-       "pitch_st": 3.04,
-       "loud_db": -3.0,
+       "start_s": 6.655,
+       "dur_ms": 131.0,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -4.92,
        "conf": 0.979
       },
       {
        "ipa": "æ",
-       "start_s": 6.8,
-       "dur_ms": 100.0,
+       "start_s": 6.786,
+       "dur_ms": 89.0,
        "voiced": true,
-       "pitch_st": 2.74,
-       "loud_db": 0.17,
+       "pitch_st": 2.73,
+       "loud_db": -0.02,
        "conf": 0.925
       },
       {
        "ipa": "ɾ",
-       "start_s": 6.9,
-       "dur_ms": 40.0,
+       "start_s": 6.875,
+       "dur_ms": 51.0,
        "voiced": true,
-       "pitch_st": 1.93,
-       "loud_db": -0.54,
+       "pitch_st": 2.35,
+       "loud_db": -1.95,
        "conf": 0.92
       },
       {
        "ipa": "ɚ",
-       "start_s": 6.94,
-       "dur_ms": 80.0,
+       "start_s": 6.926,
+       "dur_ms": 57.0,
        "voiced": true,
-       "pitch_st": 1.53,
-       "loud_db": -0.44,
+       "pitch_st": 1.94,
+       "loud_db": 0.25,
        "conf": 0.804
       },
       {
        "ipa": "d",
-       "start_s": 7.02,
-       "dur_ms": 40.0,
+       "start_s": 6.983,
+       "dur_ms": 63.0,
        "voiced": true,
-       "pitch_st": 1.84,
-       "loud_db": 0.07,
+       "pitch_st": 1.44,
+       "loud_db": -1.98,
        "conf": 0.934
       },
       {
        "ipa": "eɪ",
-       "start_s": 7.06,
-       "dur_ms": 140.0,
+       "start_s": 7.046,
+       "dur_ms": 129.0,
        "voiced": true,
-       "pitch_st": 0.86,
-       "loud_db": 2.42,
+       "pitch_st": 1.2,
+       "loud_db": 1.51,
        "conf": 0.94
       }
      ],
-     "start_s": 6.68,
-     "end_s": 7.2
+     "start_s": 6.655,
+     "end_s": 7.175
     },
     {
      "text": "morning",
@@ -977,61 +977,61 @@
      "phones": [
       {
        "ipa": "m",
-       "start_s": 7.2,
-       "dur_ms": 40.0,
+       "start_s": 7.175,
+       "dur_ms": 51.0,
        "voiced": true,
-       "pitch_st": -0.21,
-       "loud_db": 2.77,
+       "pitch_st": -0.2,
+       "loud_db": 2.6,
        "conf": 0.998
       },
       {
        "ipa": "ɔ",
-       "start_s": 7.24,
-       "dur_ms": 70.0,
+       "start_s": 7.226,
+       "dur_ms": 59.0,
        "voiced": true,
-       "pitch_st": 0.52,
-       "loud_db": 1.79,
+       "pitch_st": -0.06,
+       "loud_db": 1.32,
        "conf": 0.352
       },
       {
        "ipa": "ɹ",
-       "start_s": 7.31,
+       "start_s": 7.285,
        "dur_ms": 70.0,
        "voiced": true,
-       "pitch_st": 1.08,
-       "loud_db": 1.77,
+       "pitch_st": 0.9,
+       "loud_db": 0.87,
        "conf": 0.352
       },
       {
        "ipa": "n",
-       "start_s": 7.38,
-       "dur_ms": 40.0,
+       "start_s": 7.355,
+       "dur_ms": 51.0,
        "voiced": true,
-       "pitch_st": 1.96,
-       "loud_db": 2.52,
+       "pitch_st": 1.66,
+       "loud_db": 1.96,
        "conf": 0.993
       },
       {
        "ipa": "ɪ",
-       "start_s": 7.42,
-       "dur_ms": 60.0,
+       "start_s": 7.406,
+       "dur_ms": 49.0,
        "voiced": true,
-       "pitch_st": 1.74,
-       "loud_db": 2.72,
+       "pitch_st": 2.06,
+       "loud_db": 1.74,
        "conf": 0.91
       },
       {
        "ipa": "ŋ",
-       "start_s": 7.48,
+       "start_s": 7.455,
        "dur_ms": 40.0,
        "voiced": true,
-       "pitch_st": 0.53,
-       "loud_db": 3.22,
+       "pitch_st": 1.52,
+       "loud_db": 2.79,
        "conf": 0.977
       }
      ],
-     "start_s": 7.2,
-     "end_s": 7.52
+     "start_s": 7.175,
+     "end_s": 7.495
     },
     {
      "text": "the",
@@ -1039,25 +1039,25 @@
      "phones": [
       {
        "ipa": "ð",
-       "start_s": 7.52,
-       "dur_ms": 40.0,
+       "start_s": 7.495,
+       "dur_ms": 51.0,
        "voiced": true,
-       "pitch_st": -0.9,
-       "loud_db": 1.7,
+       "pitch_st": -0.04,
+       "loud_db": 1.66,
        "conf": 0.988
       },
       {
        "ipa": "ə",
-       "start_s": 7.56,
-       "dur_ms": 80.0,
+       "start_s": 7.546,
+       "dur_ms": 69.0,
        "voiced": true,
-       "pitch_st": -2.88,
-       "loud_db": -1.89,
+       "pitch_st": -2.05,
+       "loud_db": -0.95,
        "conf": 0.965
       }
      ],
-     "start_s": 7.52,
-     "end_s": 7.64
+     "start_s": 7.495,
+     "end_s": 7.615
     },
     {
      "text": "sky",
@@ -1065,34 +1065,34 @@
      "phones": [
       {
        "ipa": "s",
-       "start_s": 7.64,
-       "dur_ms": 80.0,
+       "start_s": 7.615,
+       "dur_ms": 68.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -17.5,
+       "loud_db": -14.34,
        "conf": 0.993
       },
       {
        "ipa": "k",
-       "start_s": 7.72,
-       "dur_ms": 60.0,
-       "voiced": true,
-       "pitch_st": 0.88,
-       "loud_db": -1.37,
+       "start_s": 7.683,
+       "dur_ms": 83.0,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -5.22,
        "conf": 0.907
       },
       {
        "ipa": "aɪ",
-       "start_s": 7.78,
-       "dur_ms": 180.0,
+       "start_s": 7.766,
+       "dur_ms": 157.0,
        "voiced": true,
-       "pitch_st": -1.32,
-       "loud_db": -1.17,
+       "pitch_st": -1.17,
+       "loud_db": -0.63,
        "conf": 0.862
       }
      ],
-     "start_s": 7.64,
-     "end_s": 7.96
+     "start_s": 7.615,
+     "end_s": 7.923
     },
     {
      "text": "cleared.",
@@ -1100,42 +1100,42 @@
      "phones": [
       {
        "ipa": "k",
-       "start_s": 7.96,
-       "dur_ms": 80.0,
+       "start_s": 7.923,
+       "dur_ms": 92.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -11.85,
+       "loud_db": -17.45,
        "conf": 0.986
       },
       {
        "ipa": "l",
-       "start_s": 8.04,
-       "dur_ms": 60.0,
+       "start_s": 8.015,
+       "dur_ms": 71.0,
        "voiced": true,
-       "pitch_st": -1.11,
-       "loud_db": 1.21,
+       "pitch_st": -0.08,
+       "loud_db": -0.72,
        "conf": 0.945
       },
       {
        "ipa": "ɪ",
-       "start_s": 8.1,
-       "dur_ms": 280.0,
+       "start_s": 8.086,
+       "dur_ms": 257.0,
        "voiced": true,
-       "pitch_st": -6.59,
-       "loud_db": -0.68,
+       "pitch_st": -5.6,
+       "loud_db": -0.57,
        "conf": 0.261
       },
       {
        "ipa": "d",
-       "start_s": 8.38,
-       "dur_ms": 20.0,
+       "start_s": 8.343,
+       "dur_ms": 57.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -27.37,
+       "loud_db": -15.27,
        "conf": 0.649
       }
      ],
-     "start_s": 7.96,
+     "start_s": 7.923,
      "end_s": 8.4
     }
    ]
@@ -1150,25 +1150,25 @@
      "phones": [
       {
        "ipa": "s",
-       "start_s": 8.64,
-       "dur_ms": 120.0,
+       "start_s": 8.615,
+       "dur_ms": 131.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -7.03,
+       "loud_db": -11.14,
        "conf": 0.975
       },
       {
        "ipa": "oʊ",
-       "start_s": 8.76,
-       "dur_ms": 140.0,
+       "start_s": 8.746,
+       "dur_ms": 129.0,
        "voiced": true,
-       "pitch_st": 1.78,
-       "loud_db": 1.12,
+       "pitch_st": 1.99,
+       "loud_db": 0.71,
        "conf": 0.712
       }
      ],
-     "start_s": 8.64,
-     "end_s": 8.9
+     "start_s": 8.615,
+     "end_s": 8.875
     },
     {
      "text": "we",
@@ -1176,25 +1176,25 @@
      "phones": [
       {
        "ipa": "w",
-       "start_s": 8.9,
-       "dur_ms": 20.0,
+       "start_s": 8.875,
+       "dur_ms": 31.0,
        "voiced": true,
-       "pitch_st": 0.73,
-       "loud_db": 0.92,
+       "pitch_st": 1.07,
+       "loud_db": -0.88,
        "conf": 0.891
       },
       {
        "ipa": "i",
-       "start_s": 8.92,
-       "dur_ms": 120.0,
+       "start_s": 8.906,
+       "dur_ms": 97.0,
        "voiced": true,
-       "pitch_st": -0.07,
-       "loud_db": -0.09,
+       "pitch_st": 0.34,
+       "loud_db": 0.91,
        "conf": 0.351
       }
      ],
-     "start_s": 8.9,
-     "end_s": 9.04
+     "start_s": 8.875,
+     "end_s": 9.003
     },
     {
      "text": "packed",
@@ -1202,43 +1202,43 @@
      "phones": [
       {
        "ipa": "p",
-       "start_s": 9.04,
-       "dur_ms": 100.0,
+       "start_s": 9.003,
+       "dur_ms": 123.0,
        "voiced": true,
-       "pitch_st": 1.56,
-       "loud_db": -3.36,
+       "pitch_st": 1.62,
+       "loud_db": -6.11,
        "conf": 0.967
       },
       {
        "ipa": "æ",
-       "start_s": 9.14,
-       "dur_ms": 120.0,
+       "start_s": 9.126,
+       "dur_ms": 97.0,
        "voiced": true,
-       "pitch_st": 0.42,
-       "loud_db": -0.57,
+       "pitch_st": 0.52,
+       "loud_db": -0.03,
        "conf": 0.941
       },
       {
        "ipa": "k",
-       "start_s": 9.26,
+       "start_s": 9.223,
        "dur_ms": 40.0,
-       "voiced": false,
-       "pitch_st": null,
-       "loud_db": -22.71,
+       "voiced": true,
+       "pitch_st": 0.24,
+       "loud_db": -4.72,
        "conf": 0.9
       },
       {
        "ipa": "t",
-       "start_s": 9.3,
-       "dur_ms": 60.0,
+       "start_s": 9.263,
+       "dur_ms": 72.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -20.78,
+       "loud_db": -26.16,
        "conf": 0.925
       }
      ],
-     "start_s": 9.04,
-     "end_s": 9.36
+     "start_s": 9.003,
+     "end_s": 9.335
     },
     {
      "text": "the",
@@ -1246,25 +1246,25 @@
      "phones": [
       {
        "ipa": "ð",
-       "start_s": 9.36,
-       "dur_ms": 20.0,
-       "voiced": true,
-       "pitch_st": 0.0,
-       "loud_db": -4.19,
+       "start_s": 9.335,
+       "dur_ms": 31.0,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -11.31,
        "conf": 0.994
       },
       {
        "ipa": "ə",
-       "start_s": 9.38,
-       "dur_ms": 100.0,
+       "start_s": 9.366,
+       "dur_ms": 77.0,
        "voiced": true,
-       "pitch_st": -2.1,
-       "loud_db": -2.97,
+       "pitch_st": -1.19,
+       "loud_db": -1.66,
        "conf": 0.971
       }
      ],
-     "start_s": 9.36,
-     "end_s": 9.48
+     "start_s": 9.335,
+     "end_s": 9.443
     },
     {
      "text": "car",
@@ -1272,34 +1272,34 @@
      "phones": [
       {
        "ipa": "k",
-       "start_s": 9.48,
-       "dur_ms": 80.0,
+       "start_s": 9.443,
+       "dur_ms": 103.0,
        "voiced": true,
-       "pitch_st": 1.77,
-       "loud_db": -3.91,
+       "pitch_st": 1.83,
+       "loud_db": -7.84,
        "conf": 0.984
       },
       {
        "ipa": "ɑ",
-       "start_s": 9.56,
-       "dur_ms": 70.0,
+       "start_s": 9.546,
+       "dur_ms": 59.0,
        "voiced": true,
-       "pitch_st": 0.57,
-       "loud_db": 1.19,
+       "pitch_st": 0.74,
+       "loud_db": 0.67,
        "conf": 0.61
       },
       {
        "ipa": "ɹ",
-       "start_s": 9.63,
-       "dur_ms": 110.0,
+       "start_s": 9.605,
+       "dur_ms": 121.0,
        "voiced": true,
-       "pitch_st": 0.29,
-       "loud_db": 0.69,
+       "pitch_st": 0.4,
+       "loud_db": 0.11,
        "conf": 0.61
       }
      ],
-     "start_s": 9.48,
-     "end_s": 9.74
+     "start_s": 9.443,
+     "end_s": 9.726
     },
     {
      "text": "and",
@@ -1307,34 +1307,34 @@
      "phones": [
       {
        "ipa": "æ",
-       "start_s": 9.74,
-       "dur_ms": 60.0,
+       "start_s": 9.726,
+       "dur_ms": 49.0,
        "voiced": true,
-       "pitch_st": -1.73,
-       "loud_db": 0.73,
+       "pitch_st": -0.63,
+       "loud_db": -0.04,
        "conf": 0.865
       },
       {
        "ipa": "n",
-       "start_s": 9.8,
-       "dur_ms": 20.0,
+       "start_s": 9.775,
+       "dur_ms": 8.0,
        "voiced": true,
-       "pitch_st": -2.32,
-       "loud_db": 2.12,
+       "pitch_st": -1.83,
+       "loud_db": 0.14,
        "conf": 0.995
       },
       {
        "ipa": "d",
-       "start_s": 9.82,
+       "start_s": 9.783,
        "dur_ms": 60.0,
        "voiced": true,
-       "pitch_st": -2.72,
-       "loud_db": 0.2,
+       "pitch_st": -2.26,
+       "loud_db": 1.22,
        "conf": 0.73
       }
      ],
-     "start_s": 9.74,
-     "end_s": 9.88
+     "start_s": 9.726,
+     "end_s": 9.843
     },
     {
      "text": "drove",
@@ -1342,43 +1342,43 @@
      "phones": [
       {
        "ipa": "d",
-       "start_s": 9.88,
-       "dur_ms": 20.0,
-       "voiced": false,
-       "pitch_st": null,
-       "loud_db": -8.21,
+       "start_s": 9.843,
+       "dur_ms": 32.0,
+       "voiced": true,
+       "pitch_st": -2.76,
+       "loud_db": -1.97,
        "conf": 0.959
       },
       {
        "ipa": "ɹ",
-       "start_s": 9.9,
-       "dur_ms": 60.0,
+       "start_s": 9.875,
+       "dur_ms": 71.0,
        "voiced": true,
-       "pitch_st": 0.86,
-       "loud_db": 0.24,
+       "pitch_st": 0.93,
+       "loud_db": -1.83,
        "conf": 0.712
       },
       {
        "ipa": "oʊ",
-       "start_s": 9.96,
-       "dur_ms": 120.0,
+       "start_s": 9.946,
+       "dur_ms": 109.0,
        "voiced": true,
-       "pitch_st": 0.61,
-       "loud_db": 0.28,
+       "pitch_st": 0.75,
+       "loud_db": 0.27,
        "conf": 0.672
       },
       {
        "ipa": "v",
-       "start_s": 10.08,
-       "dur_ms": 60.0,
+       "start_s": 10.055,
+       "dur_ms": 71.0,
        "voiced": true,
-       "pitch_st": 0.28,
-       "loud_db": -1.64,
+       "pitch_st": -0.08,
+       "loud_db": -3.63,
        "conf": 0.992
       }
      ],
-     "start_s": 9.88,
-     "end_s": 10.14
+     "start_s": 9.843,
+     "end_s": 10.126
     },
     {
      "text": "up",
@@ -1386,25 +1386,25 @@
      "phones": [
       {
        "ipa": "ʌ",
-       "start_s": 10.14,
-       "dur_ms": 100.0,
+       "start_s": 10.126,
+       "dur_ms": 77.0,
        "voiced": true,
-       "pitch_st": 0.08,
-       "loud_db": -1.82,
+       "pitch_st": 0.2,
+       "loud_db": -0.27,
        "conf": 0.917
       },
       {
        "ipa": "p",
-       "start_s": 10.24,
-       "dur_ms": 60.0,
+       "start_s": 10.203,
+       "dur_ms": 72.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -22.98,
+       "loud_db": -14.66,
        "conf": 0.981
       }
      ],
-     "start_s": 10.14,
-     "end_s": 10.3
+     "start_s": 10.126,
+     "end_s": 10.275
     },
     {
      "text": "the",
@@ -1412,25 +1412,25 @@
      "phones": [
       {
        "ipa": "ð",
-       "start_s": 10.3,
-       "dur_ms": 20.0,
-       "voiced": true,
-       "pitch_st": -0.17,
-       "loud_db": -5.35,
+       "start_s": 10.275,
+       "dur_ms": 31.0,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -13.09,
        "conf": 0.993
       },
       {
        "ipa": "ə",
-       "start_s": 10.32,
-       "dur_ms": 100.0,
+       "start_s": 10.306,
+       "dur_ms": 77.0,
        "voiced": true,
-       "pitch_st": -2.32,
-       "loud_db": -2.76,
+       "pitch_st": -1.33,
+       "loud_db": -1.58,
        "conf": 0.974
       }
      ],
-     "start_s": 10.3,
-     "end_s": 10.42
+     "start_s": 10.275,
+     "end_s": 10.383
     },
     {
      "text": "coast.",
@@ -1438,42 +1438,42 @@
      "phones": [
       {
        "ipa": "k",
-       "start_s": 10.42,
-       "dur_ms": 120.0,
+       "start_s": 10.383,
+       "dur_ms": 143.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -3.96,
+       "loud_db": -6.85,
        "conf": 0.985
       },
       {
        "ipa": "oʊ",
-       "start_s": 10.54,
-       "dur_ms": 220.0,
+       "start_s": 10.526,
+       "dur_ms": 209.0,
        "voiced": true,
-       "pitch_st": -7.41,
-       "loud_db": -1.67,
+       "pitch_st": -6.38,
+       "loud_db": -1.77,
        "conf": 0.678
       },
       {
        "ipa": "s",
-       "start_s": 10.76,
-       "dur_ms": 120.0,
+       "start_s": 10.735,
+       "dur_ms": 108.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -17.9,
+       "loud_db": -13.87,
        "conf": 0.986
       },
       {
        "ipa": "t",
-       "start_s": 10.88,
-       "dur_ms": 20.0,
+       "start_s": 10.843,
+       "dur_ms": 57.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -35.17,
+       "loud_db": -28.99,
        "conf": 0.98
       }
      ],
-     "start_s": 10.42,
+     "start_s": 10.383,
      "end_s": 10.9
     }
    ]
@@ -1488,25 +1488,25 @@
      "phones": [
       {
        "ipa": "w",
-       "start_s": 11.12,
-       "dur_ms": 60.0,
-       "voiced": true,
-       "pitch_st": 1.27,
-       "loud_db": -1.72,
+       "start_s": 11.095,
+       "dur_ms": 71.0,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -5.31,
        "conf": 0.99
       },
       {
        "ipa": "i",
-       "start_s": 11.18,
-       "dur_ms": 100.0,
+       "start_s": 11.166,
+       "dur_ms": 89.0,
        "voiced": true,
-       "pitch_st": 0.72,
-       "loud_db": 1.37,
+       "pitch_st": 1.33,
+       "loud_db": 1.58,
        "conf": 0.732
       }
      ],
-     "start_s": 11.12,
-     "end_s": 11.28
+     "start_s": 11.095,
+     "end_s": 11.255
     },
     {
      "text": "stopped",
@@ -1514,52 +1514,52 @@
      "phones": [
       {
        "ipa": "s",
-       "start_s": 11.28,
-       "dur_ms": 100.0,
+       "start_s": 11.255,
+       "dur_ms": 88.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -13.19,
+       "loud_db": -9.96,
        "conf": 0.985
       },
       {
        "ipa": "t",
-       "start_s": 11.38,
-       "dur_ms": 60.0,
-       "voiced": true,
-       "pitch_st": 1.75,
-       "loud_db": -0.86,
+       "start_s": 11.343,
+       "dur_ms": 83.0,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -4.65,
        "conf": 0.993
       },
       {
        "ipa": "ɑ",
-       "start_s": 11.44,
-       "dur_ms": 140.0,
+       "start_s": 11.426,
+       "dur_ms": 117.0,
        "voiced": true,
-       "pitch_st": 3.76,
-       "loud_db": -0.39,
+       "pitch_st": 2.8,
+       "loud_db": 0.17,
        "conf": 0.609
       },
       {
        "ipa": "p",
-       "start_s": 11.58,
+       "start_s": 11.543,
        "dur_ms": 40.0,
-       "voiced": false,
-       "pitch_st": null,
-       "loud_db": -27.03,
+       "voiced": true,
+       "pitch_st": 4.95,
+       "loud_db": -6.54,
        "conf": 0.986
       },
       {
        "ipa": "t",
-       "start_s": 11.62,
-       "dur_ms": 60.0,
+       "start_s": 11.583,
+       "dur_ms": 72.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -31.18,
+       "loud_db": -29.1,
        "conf": 0.956
       }
      ],
-     "start_s": 11.28,
-     "end_s": 11.68
+     "start_s": 11.255,
+     "end_s": 11.655
     },
     {
      "text": "for",
@@ -1567,34 +1567,34 @@
      "phones": [
       {
        "ipa": "f",
-       "start_s": 11.68,
-       "dur_ms": 40.0,
-       "voiced": true,
-       "pitch_st": 1.55,
-       "loud_db": -11.92,
+       "start_s": 11.655,
+       "dur_ms": 51.0,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -20.14,
        "conf": 0.982
       },
       {
        "ipa": "ɔ",
-       "start_s": 11.72,
-       "dur_ms": 60.0,
+       "start_s": 11.706,
+       "dur_ms": 49.0,
        "voiced": true,
-       "pitch_st": -0.61,
-       "loud_db": -0.27,
+       "pitch_st": 0.25,
+       "loud_db": -1.76,
        "conf": 0.331
       },
       {
        "ipa": "ɹ",
-       "start_s": 11.78,
-       "dur_ms": 60.0,
+       "start_s": 11.755,
+       "dur_ms": 48.0,
        "voiced": true,
-       "pitch_st": -1.34,
-       "loud_db": -6.51,
+       "pitch_st": -1.08,
+       "loud_db": -1.72,
        "conf": 0.331
       }
      ],
-     "start_s": 11.68,
-     "end_s": 11.84
+     "start_s": 11.655,
+     "end_s": 11.803
     },
     {
      "text": "coffee",
@@ -1602,43 +1602,43 @@
      "phones": [
       {
        "ipa": "k",
-       "start_s": 11.84,
-       "dur_ms": 80.0,
-       "voiced": true,
-       "pitch_st": 1.01,
-       "loud_db": -4.96,
+       "start_s": 11.803,
+       "dur_ms": 103.0,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -8.9,
        "conf": 0.987
       },
       {
        "ipa": "ɑ",
-       "start_s": 11.92,
-       "dur_ms": 140.0,
+       "start_s": 11.906,
+       "dur_ms": 129.0,
        "voiced": true,
-       "pitch_st": 0.7,
-       "loud_db": -0.13,
+       "pitch_st": 0.69,
+       "loud_db": -0.09,
        "conf": 0.504
       },
       {
        "ipa": "f",
-       "start_s": 12.06,
-       "dur_ms": 60.0,
+       "start_s": 12.035,
+       "dur_ms": 71.0,
        "voiced": true,
-       "pitch_st": 2.47,
-       "loud_db": -4.81,
+       "pitch_st": 0.91,
+       "loud_db": -9.7,
        "conf": 0.965
       },
       {
        "ipa": "i",
-       "start_s": 12.12,
+       "start_s": 12.106,
        "dur_ms": 120.0,
        "voiced": true,
-       "pitch_st": 1.09,
-       "loud_db": 2.46,
+       "pitch_st": 1.49,
+       "loud_db": 1.81,
        "conf": 0.939
       }
      ],
-     "start_s": 11.84,
-     "end_s": 12.24
+     "start_s": 11.803,
+     "end_s": 12.226
     },
     {
      "text": "in",
@@ -1646,34 +1646,34 @@
      "phones": [
       {
        "ipa": "ɪ",
-       "start_s": 12.24,
-       "dur_ms": 60.0,
+       "start_s": 12.226,
+       "dur_ms": 49.0,
        "voiced": true,
-       "pitch_st": -0.99,
-       "loud_db": 1.46,
+       "pitch_st": -0.21,
+       "loud_db": 0.76,
        "conf": 0.929
       },
       {
        "ipa": "n",
-       "start_s": 12.3,
-       "dur_ms": 20.0,
+       "start_s": 12.275,
+       "dur_ms": 8.0,
        "voiced": true,
-       "pitch_st": -1.78,
-       "loud_db": 2.31,
+       "pitch_st": -1.09,
+       "loud_db": 0.86,
        "conf": 0.994
       },
       {
        "ipa": "d",
-       "start_s": 12.32,
-       "dur_ms": 20.0,
+       "start_s": 12.283,
+       "dur_ms": 43.0,
        "voiced": true,
-       "pitch_st": -2.42,
-       "loud_db": 1.98,
+       "pitch_st": -1.52,
+       "loud_db": 1.43,
        "conf": 0.534
       }
      ],
-     "start_s": 12.24,
-     "end_s": 12.34
+     "start_s": 12.226,
+     "end_s": 12.326
     },
     {
      "text": "a",
@@ -1681,16 +1681,16 @@
      "phones": [
       {
        "ipa": "ɐ",
-       "start_s": 12.34,
-       "dur_ms": 120.0,
+       "start_s": 12.326,
+       "dur_ms": 97.0,
        "voiced": true,
-       "pitch_st": -4.08,
-       "loud_db": -1.96,
+       "pitch_st": -3.57,
+       "loud_db": -0.58,
        "conf": 0.79
       }
      ],
-     "start_s": 12.34,
-     "end_s": 12.46
+     "start_s": 12.326,
+     "end_s": 12.423
     },
     {
      "text": "tiny",
@@ -1698,43 +1698,43 @@
      "phones": [
       {
        "ipa": "t",
-       "start_s": 12.46,
-       "dur_ms": 80.0,
-       "voiced": true,
-       "pitch_st": 1.19,
-       "loud_db": -3.88,
+       "start_s": 12.423,
+       "dur_ms": 103.0,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -7.82,
        "conf": 0.979
       },
       {
        "ipa": "aɪ",
-       "start_s": 12.54,
-       "dur_ms": 140.0,
+       "start_s": 12.526,
+       "dur_ms": 129.0,
        "voiced": true,
-       "pitch_st": 0.75,
-       "loud_db": 1.39,
+       "pitch_st": 0.88,
+       "loud_db": 0.59,
        "conf": 0.891
       },
       {
        "ipa": "n",
-       "start_s": 12.68,
-       "dur_ms": 40.0,
+       "start_s": 12.655,
+       "dur_ms": 51.0,
        "voiced": true,
-       "pitch_st": 0.49,
-       "loud_db": 2.95,
+       "pitch_st": 0.77,
+       "loud_db": 2.18,
        "conf": 0.989
       },
       {
        "ipa": "i",
-       "start_s": 12.72,
-       "dur_ms": 120.0,
+       "start_s": 12.706,
+       "dur_ms": 97.0,
        "voiced": true,
-       "pitch_st": -0.19,
-       "loud_db": -0.48,
+       "pitch_st": 0.11,
+       "loud_db": 0.78,
        "conf": 0.956
       }
      ],
-     "start_s": 12.46,
-     "end_s": 12.84
+     "start_s": 12.423,
+     "end_s": 12.803
     },
     {
      "text": "town",
@@ -1742,34 +1742,34 @@
      "phones": [
       {
        "ipa": "t",
-       "start_s": 12.84,
-       "dur_ms": 80.0,
-       "voiced": true,
-       "pitch_st": 1.04,
-       "loud_db": -3.66,
+       "start_s": 12.803,
+       "dur_ms": 103.0,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -7.45,
        "conf": 0.969
       },
       {
        "ipa": "aʊ",
-       "start_s": 12.92,
-       "dur_ms": 140.0,
+       "start_s": 12.906,
+       "dur_ms": 129.0,
        "voiced": true,
-       "pitch_st": -1.03,
-       "loud_db": 1.37,
+       "pitch_st": -0.85,
+       "loud_db": 0.58,
        "conf": 0.766
       },
       {
        "ipa": "n",
-       "start_s": 13.06,
+       "start_s": 13.035,
        "dur_ms": 60.0,
        "voiced": true,
-       "pitch_st": -1.92,
-       "loud_db": 2.82,
+       "pitch_st": -1.06,
+       "loud_db": 2.16,
        "conf": 0.989
       }
      ],
-     "start_s": 12.84,
-     "end_s": 13.12
+     "start_s": 12.803,
+     "end_s": 13.095
     },
     {
      "text": "with",
@@ -1777,34 +1777,34 @@
      "phones": [
       {
        "ipa": "w",
-       "start_s": 13.12,
-       "dur_ms": 40.0,
+       "start_s": 13.095,
+       "dur_ms": 51.0,
        "voiced": true,
-       "pitch_st": -2.38,
-       "loud_db": 1.42,
+       "pitch_st": -2.24,
+       "loud_db": 1.28,
        "conf": 0.974
       },
       {
        "ipa": "ɪ",
-       "start_s": 13.16,
-       "dur_ms": 80.0,
+       "start_s": 13.146,
+       "dur_ms": 69.0,
        "voiced": true,
-       "pitch_st": -3.41,
-       "loud_db": -0.06,
+       "pitch_st": -2.61,
+       "loud_db": 0.34,
        "conf": 0.901
       },
       {
        "ipa": "ð",
-       "start_s": 13.24,
+       "start_s": 13.215,
        "dur_ms": 80.0,
-       "voiced": false,
-       "pitch_st": null,
-       "loud_db": -11.58,
+       "voiced": true,
+       "pitch_st": -4.07,
+       "loud_db": -11.73,
        "conf": 0.907
       }
      ],
-     "start_s": 13.12,
-     "end_s": 13.32
+     "start_s": 13.095,
+     "end_s": 13.295
     },
     {
      "text": "one",
@@ -1812,34 +1812,34 @@
      "phones": [
       {
        "ipa": "w",
-       "start_s": 13.32,
-       "dur_ms": 60.0,
+       "start_s": 13.295,
+       "dur_ms": 71.0,
        "voiced": true,
-       "pitch_st": -1.33,
-       "loud_db": 0.82,
+       "pitch_st": -1.36,
+       "loud_db": -1.12,
        "conf": 0.981
       },
       {
        "ipa": "ʌ",
-       "start_s": 13.38,
-       "dur_ms": 100.0,
+       "start_s": 13.366,
+       "dur_ms": 89.0,
        "voiced": true,
-       "pitch_st": -0.34,
-       "loud_db": 1.65,
+       "pitch_st": -0.75,
+       "loud_db": 0.95,
        "conf": 0.635
       },
       {
        "ipa": "n",
-       "start_s": 13.48,
+       "start_s": 13.455,
        "dur_ms": 80.0,
        "voiced": true,
-       "pitch_st": -1.06,
-       "loud_db": 0.17,
+       "pitch_st": -0.2,
+       "loud_db": 0.89,
        "conf": 0.996
       }
      ],
-     "start_s": 13.32,
-     "end_s": 13.56
+     "start_s": 13.295,
+     "end_s": 13.535
     },
     {
      "text": "street",
@@ -1847,52 +1847,52 @@
      "phones": [
       {
        "ipa": "s",
-       "start_s": 13.56,
-       "dur_ms": 100.0,
+       "start_s": 13.535,
+       "dur_ms": 88.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -12.94,
+       "loud_db": -11.3,
        "conf": 0.987
       },
       {
        "ipa": "t",
-       "start_s": 13.66,
-       "dur_ms": 20.0,
+       "start_s": 13.623,
+       "dur_ms": 32.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -10.57,
+       "loud_db": -18.98,
        "conf": 0.989
       },
       {
        "ipa": "ɹ",
-       "start_s": 13.68,
-       "dur_ms": 60.0,
+       "start_s": 13.655,
+       "dur_ms": 71.0,
        "voiced": true,
-       "pitch_st": 1.33,
-       "loud_db": 0.47,
+       "pitch_st": 2.02,
+       "loud_db": -1.83,
        "conf": 0.808
       },
       {
        "ipa": "i",
-       "start_s": 13.74,
-       "dur_ms": 120.0,
+       "start_s": 13.726,
+       "dur_ms": 97.0,
        "voiced": true,
-       "pitch_st": -0.01,
-       "loud_db": 0.68,
+       "pitch_st": 0.1,
+       "loud_db": 1.39,
        "conf": 0.524
       },
       {
        "ipa": "t",
-       "start_s": 13.86,
-       "dur_ms": 60.0,
+       "start_s": 13.823,
+       "dur_ms": 83.0,
        "voiced": true,
-       "pitch_st": -0.17,
-       "loud_db": -2.61,
+       "pitch_st": -0.59,
+       "loud_db": -4.81,
        "conf": 0.835
       }
      ],
-     "start_s": 13.56,
-     "end_s": 13.92
+     "start_s": 13.535,
+     "end_s": 13.906
     },
     {
      "text": "and",
@@ -1900,43 +1900,43 @@
      "phones": [
       {
        "ipa": "æ",
-       "start_s": 13.92,
-       "dur_ms": 80.0,
+       "start_s": 13.906,
+       "dur_ms": 69.0,
        "voiced": true,
-       "pitch_st": -0.24,
-       "loud_db": 1.02,
+       "pitch_st": -0.13,
+       "loud_db": 0.3,
        "conf": 0.938
       },
       {
        "ipa": "n",
-       "start_s": 14.0,
-       "dur_ms": 20.0,
+       "start_s": 13.975,
+       "dur_ms": 8.0,
        "voiced": true,
-       "pitch_st": -0.58,
-       "loud_db": 2.36,
+       "pitch_st": -0.27,
+       "loud_db": 0.42,
        "conf": 0.978
       },
       {
        "ipa": "d",
-       "start_s": 14.02,
-       "dur_ms": 20.0,
+       "start_s": 13.983,
+       "dur_ms": 43.0,
        "voiced": true,
-       "pitch_st": -1.35,
-       "loud_db": 2.51,
+       "pitch_st": -0.39,
+       "loud_db": 1.41,
        "conf": 0.818
       },
       {
        "ipa": "ɐ",
-       "start_s": 14.04,
+       "start_s": 14.026,
        "dur_ms": 20.0,
        "voiced": true,
-       "pitch_st": -2.41,
-       "loud_db": 1.89,
+       "pitch_st": -1.29,
+       "loud_db": 1.6,
        "conf": 0.39
       }
      ],
-     "start_s": 13.92,
-     "end_s": 14.06
+     "start_s": 13.906,
+     "end_s": 14.046
     },
     {
      "text": "a",
@@ -1944,16 +1944,16 @@
      "phones": [
       {
        "ipa": "ʌ",
-       "start_s": 14.06,
-       "dur_ms": 100.0,
+       "start_s": 14.046,
+       "dur_ms": 77.0,
        "voiced": true,
-       "pitch_st": -3.96,
-       "loud_db": -2.23,
+       "pitch_st": -3.48,
+       "loud_db": -0.54,
        "conf": 0.347
       }
      ],
-     "start_s": 14.06,
-     "end_s": 14.16
+     "start_s": 14.046,
+     "end_s": 14.123
     },
     {
      "text": "bakery",
@@ -1961,61 +1961,61 @@
      "phones": [
       {
        "ipa": "b",
-       "start_s": 14.16,
-       "dur_ms": 60.0,
+       "start_s": 14.123,
+       "dur_ms": 83.0,
        "voiced": true,
-       "pitch_st": 0.03,
-       "loud_db": -1.29,
+       "pitch_st": -2.74,
+       "loud_db": -4.85,
        "conf": 0.731
       },
       {
        "ipa": "eɪ",
-       "start_s": 14.22,
-       "dur_ms": 140.0,
+       "start_s": 14.206,
+       "dur_ms": 117.0,
        "voiced": true,
-       "pitch_st": 0.23,
-       "loud_db": -0.67,
+       "pitch_st": 0.29,
+       "loud_db": 0.16,
        "conf": 0.951
       },
       {
        "ipa": "k",
-       "start_s": 14.36,
-       "dur_ms": 60.0,
+       "start_s": 14.323,
+       "dur_ms": 83.0,
        "voiced": true,
-       "pitch_st": 1.65,
-       "loud_db": -4.95,
+       "pitch_st": 1.71,
+       "loud_db": -9.4,
        "conf": 0.985
       },
       {
        "ipa": "ɚ",
-       "start_s": 14.42,
-       "dur_ms": 60.0,
+       "start_s": 14.406,
+       "dur_ms": 49.0,
        "voiced": true,
-       "pitch_st": 0.48,
-       "loud_db": 1.39,
+       "pitch_st": 1.01,
+       "loud_db": 0.59,
        "conf": 0.82
       },
       {
        "ipa": "ɹ",
-       "start_s": 14.48,
-       "dur_ms": 60.0,
+       "start_s": 14.455,
+       "dur_ms": 71.0,
        "voiced": true,
-       "pitch_st": 0.69,
-       "loud_db": 1.33,
+       "pitch_st": 0.72,
+       "loud_db": 0.69,
        "conf": 0.99
       },
       {
        "ipa": "i",
-       "start_s": 14.54,
-       "dur_ms": 120.0,
+       "start_s": 14.526,
+       "dur_ms": 109.0,
        "voiced": true,
-       "pitch_st": -1.22,
-       "loud_db": 0.67,
+       "pitch_st": -1.1,
+       "loud_db": 0.75,
        "conf": 0.972
       }
      ],
-     "start_s": 14.16,
-     "end_s": 14.66
+     "start_s": 14.123,
+     "end_s": 14.635
     },
     {
      "text": "that",
@@ -2023,34 +2023,34 @@
      "phones": [
       {
        "ipa": "ð",
-       "start_s": 14.66,
-       "dur_ms": 60.0,
+       "start_s": 14.635,
+       "dur_ms": 71.0,
        "voiced": true,
-       "pitch_st": -1.46,
-       "loud_db": -1.18,
+       "pitch_st": -1.42,
+       "loud_db": -3.45,
        "conf": 0.99
       },
       {
        "ipa": "æ",
-       "start_s": 14.72,
-       "dur_ms": 80.0,
+       "start_s": 14.706,
+       "dur_ms": 57.0,
        "voiced": true,
-       "pitch_st": -3.27,
-       "loud_db": -0.84,
+       "pitch_st": -2.38,
+       "loud_db": 0.18,
        "conf": 0.837
       },
       {
        "ipa": "t",
-       "start_s": 14.8,
-       "dur_ms": 40.0,
+       "start_s": 14.763,
+       "dur_ms": 52.0,
        "voiced": true,
-       "pitch_st": -3.38,
-       "loud_db": -17.92,
+       "pitch_st": -3.58,
+       "loud_db": -5.51,
        "conf": 0.871
       }
      ],
-     "start_s": 14.66,
-     "end_s": 14.84
+     "start_s": 14.635,
+     "end_s": 14.815
     },
     {
      "text": "sold",
@@ -2058,43 +2058,43 @@
      "phones": [
       {
        "ipa": "s",
-       "start_s": 14.84,
-       "dur_ms": 100.0,
+       "start_s": 14.815,
+       "dur_ms": 111.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -4.59,
+       "loud_db": -7.88,
        "conf": 0.956
       },
       {
        "ipa": "oʊ",
-       "start_s": 14.94,
-       "dur_ms": 100.0,
+       "start_s": 14.926,
+       "dur_ms": 89.0,
        "voiced": true,
-       "pitch_st": 0.12,
-       "loud_db": 1.43,
+       "pitch_st": 0.33,
+       "loud_db": 0.9,
        "conf": 0.733
       },
       {
        "ipa": "l",
-       "start_s": 15.04,
-       "dur_ms": 80.0,
+       "start_s": 15.015,
+       "dur_ms": 68.0,
        "voiced": true,
-       "pitch_st": -0.16,
-       "loud_db": -0.8,
+       "pitch_st": 0.01,
+       "loud_db": 0.27,
        "conf": 0.889
       },
       {
        "ipa": "d",
-       "start_s": 15.12,
-       "dur_ms": 60.0,
+       "start_s": 15.083,
+       "dur_ms": 83.0,
        "voiced": true,
-       "pitch_st": -0.75,
-       "loud_db": -0.19,
+       "pitch_st": -0.66,
+       "loud_db": -2.09,
        "conf": 0.973
       }
      ],
-     "start_s": 14.84,
-     "end_s": 15.18
+     "start_s": 14.815,
+     "end_s": 15.166
     },
     {
      "text": "out",
@@ -2102,25 +2102,25 @@
      "phones": [
       {
        "ipa": "aʊ",
-       "start_s": 15.18,
-       "dur_ms": 120.0,
+       "start_s": 15.166,
+       "dur_ms": 97.0,
        "voiced": true,
-       "pitch_st": -1.33,
-       "loud_db": -0.22,
+       "pitch_st": -1.28,
+       "loud_db": 0.1,
        "conf": 0.854
       },
       {
        "ipa": "t",
-       "start_s": 15.3,
+       "start_s": 15.263,
        "dur_ms": 80.0,
-       "voiced": false,
-       "pitch_st": null,
-       "loud_db": -16.65,
+       "voiced": true,
+       "pitch_st": -1.14,
+       "loud_db": -6.37,
        "conf": 0.938
       }
      ],
-     "start_s": 15.18,
-     "end_s": 15.38
+     "start_s": 15.166,
+     "end_s": 15.343
     },
     {
      "text": "by",
@@ -2128,43 +2128,43 @@
      "phones": [
       {
        "ipa": "b",
-       "start_s": 15.38,
-       "dur_ms": 40.0,
+       "start_s": 15.343,
+       "dur_ms": 63.0,
        "voiced": true,
-       "pitch_st": -0.35,
-       "loud_db": -0.46,
+       "pitch_st": 0.26,
+       "loud_db": -5.29,
        "conf": 0.933
       },
       {
        "ipa": "aɪ",
-       "start_s": 15.42,
-       "dur_ms": 140.0,
+       "start_s": 15.406,
+       "dur_ms": 129.0,
        "voiced": true,
-       "pitch_st": -2.1,
-       "loud_db": 1.55,
+       "pitch_st": -2.02,
+       "loud_db": 0.63,
        "conf": 0.941
       },
       {
        "ipa": "n",
-       "start_s": 15.56,
-       "dur_ms": 60.0,
+       "start_s": 15.535,
+       "dur_ms": 71.0,
        "voiced": true,
-       "pitch_st": -2.49,
-       "loud_db": 2.02,
+       "pitch_st": -2.38,
+       "loud_db": 1.82,
        "conf": 0.997
       },
       {
        "ipa": "aɪ",
-       "start_s": 15.62,
-       "dur_ms": 260.0,
+       "start_s": 15.606,
+       "dur_ms": 249.0,
        "voiced": true,
-       "pitch_st": -5.99,
-       "loud_db": -0.75,
+       "pitch_st": -5.04,
+       "loud_db": -1.09,
        "conf": 0.863
       }
      ],
-     "start_s": 15.38,
-     "end_s": 15.88
+     "start_s": 15.343,
+     "end_s": 15.855
     },
     {
      "text": "9.",
@@ -2172,15 +2172,15 @@
      "phones": [
       {
        "ipa": "n",
-       "start_s": 15.88,
-       "dur_ms": 60.0,
+       "start_s": 15.855,
+       "dur_ms": 85.0,
        "voiced": true,
-       "pitch_st": -8.33,
-       "loud_db": -8.13,
+       "pitch_st": -8.85,
+       "loud_db": -7.27,
        "conf": 0.993
       }
      ],
-     "start_s": 15.88,
+     "start_s": 15.855,
      "end_s": 15.94
     }
    ]
@@ -2195,25 +2195,25 @@
      "phones": [
       {
        "ipa": "b",
-       "start_s": 16.12,
-       "dur_ms": 120.0,
+       "start_s": 16.083,
+       "dur_ms": 143.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -6.0,
+       "loud_db": -9.8,
        "conf": 0.939
       },
       {
        "ipa": "aɪ",
-       "start_s": 16.24,
-       "dur_ms": 140.0,
+       "start_s": 16.226,
+       "dur_ms": 129.0,
        "voiced": true,
-       "pitch_st": -1.36,
-       "loud_db": -0.54,
+       "pitch_st": -1.07,
+       "loud_db": -0.53,
        "conf": 0.937
       }
      ],
-     "start_s": 16.12,
-     "end_s": 16.38
+     "start_s": 16.083,
+     "end_s": 16.355
     },
     {
      "text": "the",
@@ -2221,25 +2221,25 @@
      "phones": [
       {
        "ipa": "ð",
-       "start_s": 16.38,
-       "dur_ms": 40.0,
+       "start_s": 16.355,
+       "dur_ms": 51.0,
        "voiced": true,
-       "pitch_st": 0.53,
-       "loud_db": -0.16,
+       "pitch_st": -0.32,
+       "loud_db": -3.5,
        "conf": 0.992
       },
       {
        "ipa": "ɪ",
-       "start_s": 16.42,
+       "start_s": 16.406,
        "dur_ms": 120.0,
        "voiced": true,
-       "pitch_st": 0.37,
-       "loud_db": 1.51,
+       "pitch_st": 0.5,
+       "loud_db": 1.02,
        "conf": 0.509
       }
      ],
-     "start_s": 16.38,
-     "end_s": 16.54
+     "start_s": 16.355,
+     "end_s": 16.526
     },
     {
      "text": "afternoon",
@@ -2247,70 +2247,70 @@
      "phones": [
       {
        "ipa": "æ",
-       "start_s": 16.54,
-       "dur_ms": 100.0,
+       "start_s": 16.526,
+       "dur_ms": 89.0,
        "voiced": true,
-       "pitch_st": 0.72,
-       "loud_db": -1.2,
+       "pitch_st": 0.62,
+       "loud_db": -0.86,
        "conf": 0.942
       },
       {
        "ipa": "f",
-       "start_s": 16.64,
-       "dur_ms": 40.0,
-       "voiced": false,
-       "pitch_st": null,
-       "loud_db": -23.33,
+       "start_s": 16.615,
+       "dur_ms": 28.0,
+       "voiced": true,
+       "pitch_st": 0.81,
+       "loud_db": -10.01,
        "conf": 0.972
       },
       {
        "ipa": "t",
-       "start_s": 16.68,
-       "dur_ms": 60.0,
+       "start_s": 16.643,
+       "dur_ms": 83.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -6.25,
+       "loud_db": -12.0,
        "conf": 0.97
       },
       {
        "ipa": "ɚ",
-       "start_s": 16.74,
-       "dur_ms": 80.0,
+       "start_s": 16.726,
+       "dur_ms": 69.0,
        "voiced": true,
-       "pitch_st": 0.62,
-       "loud_db": 2.13,
+       "pitch_st": 1.58,
+       "loud_db": 0.82,
        "conf": 0.779
       },
       {
        "ipa": "n",
-       "start_s": 16.82,
-       "dur_ms": 60.0,
+       "start_s": 16.795,
+       "dur_ms": 71.0,
        "voiced": true,
-       "pitch_st": 1.53,
-       "loud_db": 3.12,
+       "pitch_st": 0.42,
+       "loud_db": 2.56,
        "conf": 0.996
       },
       {
        "ipa": "u",
-       "start_s": 16.88,
-       "dur_ms": 120.0,
+       "start_s": 16.866,
+       "dur_ms": 109.0,
        "voiced": true,
-       "pitch_st": 4.76,
-       "loud_db": 2.51,
+       "pitch_st": 4.83,
+       "loud_db": 1.93,
        "conf": 0.906
       },
       {
        "ipa": "n",
-       "start_s": 17.0,
+       "start_s": 16.975,
        "dur_ms": 80.0,
        "voiced": true,
-       "pitch_st": 3.85,
-       "loud_db": 2.81,
+       "pitch_st": 4.69,
+       "loud_db": 2.28,
        "conf": 0.99
       }
      ],
-     "start_s": 16.54,
-     "end_s": 17.08
+     "start_s": 16.526,
+     "end_s": 17.055
     },
     {
      "text": "we",
@@ -2318,25 +2318,25 @@
      "phones": [
       {
        "ipa": "w",
-       "start_s": 17.08,
-       "dur_ms": 40.0,
+       "start_s": 17.055,
+       "dur_ms": 51.0,
        "voiced": true,
-       "pitch_st": -0.43,
-       "loud_db": 1.93,
+       "pitch_st": 0.92,
+       "loud_db": 1.29,
        "conf": 0.985
       },
       {
        "ipa": "i",
-       "start_s": 17.12,
-       "dur_ms": 100.0,
+       "start_s": 17.106,
+       "dur_ms": 89.0,
        "voiced": true,
-       "pitch_st": -0.94,
-       "loud_db": 1.82,
+       "pitch_st": -0.73,
+       "loud_db": 1.59,
        "conf": 0.688
       }
      ],
-     "start_s": 17.08,
-     "end_s": 17.22
+     "start_s": 17.055,
+     "end_s": 17.195
     },
     {
      "text": "were",
@@ -2344,25 +2344,25 @@
      "phones": [
       {
        "ipa": "w",
-       "start_s": 17.22,
-       "dur_ms": 20.0,
+       "start_s": 17.195,
+       "dur_ms": 31.0,
        "voiced": true,
-       "pitch_st": -1.62,
-       "loud_db": 0.69,
+       "pitch_st": -1.21,
+       "loud_db": -0.46,
        "conf": 0.868
       },
       {
        "ipa": "ɜ",
-       "start_s": 17.24,
-       "dur_ms": 120.0,
+       "start_s": 17.226,
+       "dur_ms": 109.0,
        "voiced": true,
        "pitch_st": -1.54,
-       "loud_db": 0.23,
+       "loud_db": -0.06,
        "conf": 0.459
       }
      ],
-     "start_s": 17.22,
-     "end_s": 17.36
+     "start_s": 17.195,
+     "end_s": 17.335
     },
     {
      "text": "walking",
@@ -2370,52 +2370,52 @@
      "phones": [
       {
        "ipa": "w",
-       "start_s": 17.36,
-       "dur_ms": 60.0,
+       "start_s": 17.335,
+       "dur_ms": 71.0,
        "voiced": true,
-       "pitch_st": -0.97,
-       "loud_db": 0.81,
+       "pitch_st": -1.36,
+       "loud_db": -0.46,
        "conf": 0.986
       },
       {
        "ipa": "ɑ",
-       "start_s": 17.42,
-       "dur_ms": 120.0,
+       "start_s": 17.406,
+       "dur_ms": 97.0,
        "voiced": true,
-       "pitch_st": 0.08,
-       "loud_db": -0.58,
+       "pitch_st": -0.24,
+       "loud_db": 0.34,
        "conf": 0.376
       },
       {
        "ipa": "k",
-       "start_s": 17.54,
-       "dur_ms": 60.0,
-       "voiced": true,
-       "pitch_st": 1.81,
-       "loud_db": -4.42,
+       "start_s": 17.503,
+       "dur_ms": 83.0,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -8.0,
        "conf": 0.982
       },
       {
        "ipa": "ɪ",
-       "start_s": 17.6,
-       "dur_ms": 60.0,
+       "start_s": 17.586,
+       "dur_ms": 49.0,
        "voiced": true,
-       "pitch_st": 0.99,
-       "loud_db": 2.45,
+       "pitch_st": 1.48,
+       "loud_db": 1.39,
        "conf": 0.911
       },
       {
        "ipa": "ŋ",
-       "start_s": 17.66,
-       "dur_ms": 60.0,
+       "start_s": 17.635,
+       "dur_ms": 71.0,
        "voiced": true,
-       "pitch_st": -0.44,
-       "loud_db": 2.38,
+       "pitch_st": 0.54,
+       "loud_db": 1.99,
        "conf": 0.948
       }
      ],
-     "start_s": 17.36,
-     "end_s": 17.72
+     "start_s": 17.335,
+     "end_s": 17.706
     },
     {
      "text": "along",
@@ -2423,43 +2423,43 @@
      "phones": [
       {
        "ipa": "ɐ",
-       "start_s": 17.72,
-       "dur_ms": 80.0,
+       "start_s": 17.706,
+       "dur_ms": 69.0,
        "voiced": true,
-       "pitch_st": -1.9,
-       "loud_db": 0.63,
+       "pitch_st": -1.92,
+       "loud_db": 0.3,
        "conf": 0.612
       },
       {
        "ipa": "l",
-       "start_s": 17.8,
-       "dur_ms": 40.0,
+       "start_s": 17.775,
+       "dur_ms": 51.0,
        "voiced": true,
-       "pitch_st": -0.2,
-       "loud_db": 0.82,
+       "pitch_st": -0.7,
+       "loud_db": -0.13,
        "conf": 0.991
       },
       {
        "ipa": "ɔ",
-       "start_s": 17.84,
-       "dur_ms": 120.0,
+       "start_s": 17.826,
+       "dur_ms": 109.0,
        "voiced": true,
-       "pitch_st": 0.27,
-       "loud_db": 1.62,
+       "pitch_st": -0.06,
+       "loud_db": 0.9,
        "conf": 0.318
       },
       {
        "ipa": "ŋ",
-       "start_s": 17.96,
+       "start_s": 17.935,
        "dur_ms": 60.0,
        "voiced": true,
-       "pitch_st": -0.01,
-       "loud_db": 2.39,
+       "pitch_st": 0.41,
+       "loud_db": 1.84,
        "conf": 0.982
       }
      ],
-     "start_s": 17.72,
-     "end_s": 18.02
+     "start_s": 17.706,
+     "end_s": 17.995
     },
     {
      "text": "the",
@@ -2467,25 +2467,25 @@
      "phones": [
       {
        "ipa": "ð",
-       "start_s": 18.02,
-       "dur_ms": 20.0,
+       "start_s": 17.995,
+       "dur_ms": 31.0,
        "voiced": true,
-       "pitch_st": -1.21,
-       "loud_db": 1.28,
+       "pitch_st": -0.46,
+       "loud_db": 1.04,
        "conf": 0.991
       },
       {
        "ipa": "ə",
-       "start_s": 18.04,
-       "dur_ms": 100.0,
+       "start_s": 18.026,
+       "dur_ms": 77.0,
        "voiced": true,
-       "pitch_st": -2.9,
-       "loud_db": -3.6,
+       "pitch_st": -2.19,
+       "loud_db": -1.53,
        "conf": 0.974
       }
      ],
-     "start_s": 18.02,
-     "end_s": 18.14
+     "start_s": 17.995,
+     "end_s": 18.103
     },
     {
      "text": "cliffs.",
@@ -2493,51 +2493,51 @@
      "phones": [
       {
        "ipa": "k",
-       "start_s": 18.14,
-       "dur_ms": 80.0,
-       "voiced": true,
-       "pitch_st": 1.61,
-       "loud_db": -10.79,
+       "start_s": 18.103,
+       "dur_ms": 92.0,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -18.29,
        "conf": 0.981
       },
       {
        "ipa": "l",
-       "start_s": 18.22,
-       "dur_ms": 60.0,
+       "start_s": 18.195,
+       "dur_ms": 71.0,
        "voiced": true,
-       "pitch_st": -1.19,
-       "loud_db": 0.89,
+       "pitch_st": -0.04,
+       "loud_db": -0.89,
        "conf": 0.988
       },
       {
        "ipa": "ɪ",
-       "start_s": 18.28,
-       "dur_ms": 180.0,
+       "start_s": 18.266,
+       "dur_ms": 169.0,
        "voiced": true,
-       "pitch_st": -6.73,
-       "loud_db": -1.8,
+       "pitch_st": -5.92,
+       "loud_db": -1.71,
        "conf": 0.89
       },
       {
        "ipa": "f",
-       "start_s": 18.46,
+       "start_s": 18.435,
        "dur_ms": 80.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -22.56,
+       "loud_db": -23.56,
        "conf": 0.968
       },
       {
        "ipa": "s",
-       "start_s": 18.54,
-       "dur_ms": 80.0,
+       "start_s": 18.515,
+       "dur_ms": 105.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -21.43,
+       "loud_db": -21.9,
        "conf": 0.982
       }
      ],
-     "start_s": 18.14,
+     "start_s": 18.103,
      "end_s": 18.62
     }
    ]
@@ -2552,52 +2552,52 @@
      "phones": [
       {
        "ipa": "w",
-       "start_s": 18.86,
-       "dur_ms": 100.0,
+       "start_s": 18.835,
+       "dur_ms": 111.0,
        "voiced": true,
-       "pitch_st": -0.56,
-       "loud_db": -1.01,
+       "pitch_st": -0.54,
+       "loud_db": -2.94,
        "conf": 0.972
       },
       {
        "ipa": "ɑ",
-       "start_s": 18.96,
-       "dur_ms": 120.0,
+       "start_s": 18.946,
+       "dur_ms": 97.0,
        "voiced": true,
-       "pitch_st": 2.12,
-       "loud_db": -0.27,
+       "pitch_st": 1.16,
+       "loud_db": 0.53,
        "conf": 0.384
       },
       {
        "ipa": "tʃ",
-       "start_s": 19.08,
-       "dur_ms": 80.0,
+       "start_s": 19.043,
+       "dur_ms": 103.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -5.56,
+       "loud_db": -7.16,
        "conf": 0.703
       },
       {
        "ipa": "ɪ",
-       "start_s": 19.16,
-       "dur_ms": 60.0,
+       "start_s": 19.146,
+       "dur_ms": 49.0,
        "voiced": true,
-       "pitch_st": 3.35,
-       "loud_db": 2.3,
+       "pitch_st": 3.69,
+       "loud_db": 1.0,
        "conf": 0.92
       },
       {
        "ipa": "ŋ",
-       "start_s": 19.22,
+       "start_s": 19.195,
        "dur_ms": 60.0,
        "voiced": true,
-       "pitch_st": 2.15,
-       "loud_db": 3.33,
+       "pitch_st": 3.0,
+       "loud_db": 2.67,
        "conf": 0.914
       }
      ],
-     "start_s": 18.86,
-     "end_s": 19.28
+     "start_s": 18.835,
+     "end_s": 19.255
     },
     {
      "text": "the",
@@ -2605,25 +2605,25 @@
      "phones": [
       {
        "ipa": "ð",
-       "start_s": 19.28,
-       "dur_ms": 20.0,
+       "start_s": 19.255,
+       "dur_ms": 31.0,
        "voiced": true,
-       "pitch_st": 0.53,
-       "loud_db": 1.79,
+       "pitch_st": 1.58,
+       "loud_db": 2.04,
        "conf": 0.99
       },
       {
        "ipa": "ə",
-       "start_s": 19.3,
-       "dur_ms": 100.0,
+       "start_s": 19.286,
+       "dur_ms": 89.0,
        "voiced": true,
-       "pitch_st": -0.84,
-       "loud_db": 0.32,
+       "pitch_st": -0.01,
+       "loud_db": 0.22,
        "conf": 0.799
       }
      ],
-     "start_s": 19.28,
-     "end_s": 19.4
+     "start_s": 19.255,
+     "end_s": 19.375
     },
     {
      "text": "waves",
@@ -2631,43 +2631,43 @@
      "phones": [
       {
        "ipa": "w",
-       "start_s": 19.4,
-       "dur_ms": 60.0,
+       "start_s": 19.375,
+       "dur_ms": 71.0,
        "voiced": true,
-       "pitch_st": 0.04,
-       "loud_db": 0.44,
+       "pitch_st": -0.94,
+       "loud_db": -0.84,
        "conf": 0.987
       },
       {
        "ipa": "eɪ",
-       "start_s": 19.46,
-       "dur_ms": 120.0,
+       "start_s": 19.446,
+       "dur_ms": 109.0,
        "voiced": true,
-       "pitch_st": 0.41,
-       "loud_db": 0.8,
+       "pitch_st": 0.44,
+       "loud_db": 0.54,
        "conf": 0.932
       },
       {
        "ipa": "v",
-       "start_s": 19.58,
+       "start_s": 19.555,
        "dur_ms": 60.0,
        "voiced": true,
-       "pitch_st": -1.51,
-       "loud_db": -9.86,
+       "pitch_st": -0.66,
+       "loud_db": -5.58,
        "conf": 0.954
       },
       {
        "ipa": "z",
-       "start_s": 19.64,
-       "dur_ms": 100.0,
+       "start_s": 19.615,
+       "dur_ms": 88.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -19.18,
+       "loud_db": -17.45,
        "conf": 0.774
       }
      ],
-     "start_s": 19.4,
-     "end_s": 19.74
+     "start_s": 19.375,
+     "end_s": 19.703
     },
     {
      "text": "crash",
@@ -2675,43 +2675,43 @@
      "phones": [
       {
        "ipa": "k",
-       "start_s": 19.74,
-       "dur_ms": 60.0,
+       "start_s": 19.703,
+       "dur_ms": 72.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -13.48,
+       "loud_db": -18.65,
        "conf": 0.99
       },
       {
        "ipa": "ɹ",
-       "start_s": 19.8,
-       "dur_ms": 60.0,
+       "start_s": 19.775,
+       "dur_ms": 71.0,
        "voiced": true,
-       "pitch_st": 1.51,
-       "loud_db": -0.21,
+       "pitch_st": 1.99,
+       "loud_db": -2.38,
        "conf": 0.824
       },
       {
        "ipa": "æ",
-       "start_s": 19.86,
-       "dur_ms": 140.0,
+       "start_s": 19.846,
+       "dur_ms": 129.0,
        "voiced": true,
-       "pitch_st": 0.85,
-       "loud_db": -0.5,
+       "pitch_st": 0.99,
+       "loud_db": -0.59,
        "conf": 0.9
       },
       {
        "ipa": "ʃ",
-       "start_s": 20.0,
-       "dur_ms": 120.0,
+       "start_s": 19.975,
+       "dur_ms": 108.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -9.34,
+       "loud_db": -7.57,
        "conf": 0.943
       }
      ],
-     "start_s": 19.74,
-     "end_s": 20.12
+     "start_s": 19.703,
+     "end_s": 20.083
     },
     {
      "text": "below",
@@ -2719,43 +2719,43 @@
      "phones": [
       {
        "ipa": "b",
-       "start_s": 20.12,
-       "dur_ms": 40.0,
-       "voiced": true,
-       "pitch_st": 0.88,
-       "loud_db": -1.81,
+       "start_s": 20.083,
+       "dur_ms": 63.0,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -7.68,
        "conf": 0.913
       },
       {
        "ipa": "ɪ",
-       "start_s": 20.16,
-       "dur_ms": 80.0,
+       "start_s": 20.146,
+       "dur_ms": 69.0,
        "voiced": true,
-       "pitch_st": -0.49,
-       "loud_db": 1.08,
+       "pitch_st": 0.17,
+       "loud_db": 0.6,
        "conf": 0.503
       },
       {
        "ipa": "l",
-       "start_s": 20.24,
-       "dur_ms": 40.0,
+       "start_s": 20.215,
+       "dur_ms": 51.0,
        "voiced": true,
-       "pitch_st": -0.51,
-       "loud_db": 0.84,
+       "pitch_st": -0.62,
+       "loud_db": 0.06,
        "conf": 0.99
       },
       {
        "ipa": "oʊ",
-       "start_s": 20.28,
-       "dur_ms": 300.0,
+       "start_s": 20.266,
+       "dur_ms": 289.0,
        "voiced": true,
-       "pitch_st": -5.05,
-       "loud_db": -0.67,
+       "pitch_st": -3.24,
+       "loud_db": -0.93,
        "conf": 0.778
       }
      ],
-     "start_s": 20.12,
-     "end_s": 20.58
+     "start_s": 20.083,
+     "end_s": 20.555
     },
     {
      "text": "us.",
@@ -2763,15 +2763,15 @@
      "phones": [
       {
        "ipa": "s",
-       "start_s": 20.58,
-       "dur_ms": 100.0,
+       "start_s": 20.555,
+       "dur_ms": 125.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -20.47,
+       "loud_db": -18.41,
        "conf": 0.934
       }
      ],
-     "start_s": 20.58,
+     "start_s": 20.555,
      "end_s": 20.68
     }
    ]
@@ -2786,69 +2786,69 @@
      "phones": [
       {
        "ipa": "ɑ",
-       "start_s": 20.9,
-       "dur_ms": 160.0,
+       "start_s": 20.886,
+       "dur_ms": 149.0,
        "voiced": true,
-       "pitch_st": 1.68,
-       "loud_db": 1.01,
+       "pitch_st": 2.03,
+       "loud_db": -0.03,
        "conf": 0.44
       },
       {
        "ipa": "n",
-       "start_s": 21.06,
-       "dur_ms": 40.0,
+       "start_s": 21.035,
+       "dur_ms": 51.0,
        "voiced": true,
-       "pitch_st": -1.08,
-       "loud_db": 2.03,
+       "pitch_st": 0.44,
+       "loud_db": 1.41,
        "conf": 0.996
       },
       {
        "ipa": "ɪ",
-       "start_s": 21.1,
-       "dur_ms": 80.0,
+       "start_s": 21.086,
+       "dur_ms": 69.0,
        "voiced": true,
-       "pitch_st": -2.05,
-       "loud_db": -0.72,
+       "pitch_st": -1.96,
+       "loud_db": -0.16,
        "conf": 0.562
       },
       {
        "ipa": "s",
-       "start_s": 21.18,
-       "dur_ms": 60.0,
+       "start_s": 21.155,
+       "dur_ms": 48.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -14.42,
+       "loud_db": -8.7,
        "conf": 0.991
       },
       {
        "ipa": "t",
-       "start_s": 21.24,
-       "dur_ms": 40.0,
-       "voiced": true,
-       "pitch_st": -3.78,
-       "loud_db": -7.1,
+       "start_s": 21.203,
+       "dur_ms": 52.0,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -17.07,
        "conf": 0.979
       },
       {
        "ipa": "l",
-       "start_s": 21.28,
-       "dur_ms": 40.0,
+       "start_s": 21.255,
+       "dur_ms": 51.0,
        "voiced": true,
-       "pitch_st": -3.85,
-       "loud_db": -0.31,
+       "pitch_st": -3.62,
+       "loud_db": -2.26,
        "conf": 0.974
       },
       {
        "ipa": "i",
-       "start_s": 21.32,
-       "dur_ms": 160.0,
+       "start_s": 21.306,
+       "dur_ms": 174.0,
        "voiced": true,
-       "pitch_st": -7.75,
-       "loud_db": -3.22,
+       "pitch_st": -7.48,
+       "loud_db": -3.56,
        "conf": 0.935
       }
      ],
-     "start_s": 20.9,
+     "start_s": 20.886,
      "end_s": 21.48
     }
    ]
@@ -2863,25 +2863,25 @@
      "phones": [
       {
        "ipa": "ɪ",
-       "start_s": 21.68,
-       "dur_ms": 100.0,
+       "start_s": 21.666,
+       "dur_ms": 77.0,
        "voiced": true,
-       "pitch_st": 0.23,
-       "loud_db": -1.09,
+       "pitch_st": 0.53,
+       "loud_db": -2.21,
        "conf": 0.731
       },
       {
        "ipa": "t",
-       "start_s": 21.78,
-       "dur_ms": 60.0,
+       "start_s": 21.743,
+       "dur_ms": 72.0,
        "voiced": true,
-       "pitch_st": -0.37,
-       "loud_db": -10.13,
+       "pitch_st": -1.08,
+       "loud_db": -4.79,
        "conf": 0.932
       }
      ],
-     "start_s": 21.68,
-     "end_s": 21.84
+     "start_s": 21.666,
+     "end_s": 21.815
     },
     {
      "text": "was",
@@ -2889,34 +2889,34 @@
      "phones": [
       {
        "ipa": "w",
-       "start_s": 21.84,
-       "dur_ms": 40.0,
+       "start_s": 21.815,
+       "dur_ms": 51.0,
        "voiced": true,
-       "pitch_st": 0.23,
-       "loud_db": -0.32,
+       "pitch_st": 0.13,
+       "loud_db": -2.89,
        "conf": 0.989
       },
       {
        "ipa": "ʌ",
-       "start_s": 21.88,
-       "dur_ms": 60.0,
+       "start_s": 21.866,
+       "dur_ms": 49.0,
        "voiced": true,
-       "pitch_st": -1.03,
-       "loud_db": -0.07,
+       "pitch_st": 0.01,
+       "loud_db": 0.17,
        "conf": 0.953
       },
       {
        "ipa": "z",
-       "start_s": 21.94,
+       "start_s": 21.915,
        "dur_ms": 80.0,
        "voiced": true,
-       "pitch_st": -3.05,
-       "loud_db": -12.48,
+       "pitch_st": -2.94,
+       "loud_db": -7.62,
        "conf": 0.954
       }
      ],
-     "start_s": 21.84,
-     "end_s": 22.02
+     "start_s": 21.815,
+     "end_s": 21.995
     },
     {
      "text": "the",
@@ -2924,25 +2924,25 @@
      "phones": [
       {
        "ipa": "ð",
-       "start_s": 22.02,
-       "dur_ms": 40.0,
-       "voiced": true,
-       "pitch_st": 0.64,
-       "loud_db": -3.41,
+       "start_s": 21.995,
+       "dur_ms": 51.0,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -8.43,
        "conf": 0.994
       },
       {
        "ipa": "ə",
-       "start_s": 22.06,
-       "dur_ms": 100.0,
+       "start_s": 22.046,
+       "dur_ms": 77.0,
        "voiced": true,
-       "pitch_st": -1.68,
-       "loud_db": -3.11,
+       "pitch_st": -0.63,
+       "loud_db": -1.54,
        "conf": 0.976
       }
      ],
-     "start_s": 22.02,
-     "end_s": 22.16
+     "start_s": 21.995,
+     "end_s": 22.123
     },
     {
      "text": "best",
@@ -2950,43 +2950,43 @@
      "phones": [
       {
        "ipa": "b",
-       "start_s": 22.16,
-       "dur_ms": 40.0,
+       "start_s": 22.123,
+       "dur_ms": 63.0,
        "voiced": true,
-       "pitch_st": 1.01,
-       "loud_db": -1.78,
+       "pitch_st": -1.57,
+       "loud_db": -6.85,
        "conf": 0.913
       },
       {
        "ipa": "ɛ",
-       "start_s": 22.2,
-       "dur_ms": 100.0,
+       "start_s": 22.186,
+       "dur_ms": 89.0,
        "voiced": true,
-       "pitch_st": 2.03,
-       "loud_db": 0.5,
+       "pitch_st": 1.92,
+       "loud_db": 0.32,
        "conf": 0.91
       },
       {
        "ipa": "s",
-       "start_s": 22.3,
-       "dur_ms": 60.0,
-       "voiced": false,
-       "pitch_st": null,
-       "loud_db": -10.01,
+       "start_s": 22.275,
+       "dur_ms": 48.0,
+       "voiced": true,
+       "pitch_st": 1.89,
+       "loud_db": -4.29,
        "conf": 0.868
       },
       {
        "ipa": "t",
-       "start_s": 22.36,
+       "start_s": 22.323,
        "dur_ms": 80.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -20.74,
+       "loud_db": -16.94,
        "conf": 0.888
       }
      ],
-     "start_s": 22.16,
-     "end_s": 22.44
+     "start_s": 22.123,
+     "end_s": 22.403
     },
     {
      "text": "day",
@@ -2994,16 +2994,16 @@
      "phones": [
       {
        "ipa": "d",
-       "start_s": 22.44,
-       "dur_ms": 220.0,
+       "start_s": 22.403,
+       "dur_ms": 243.0,
        "voiced": true,
-       "pitch_st": 0.84,
-       "loud_db": 0.88,
+       "pitch_st": 0.9,
+       "loud_db": -0.46,
        "conf": 0.912
       }
      ],
-     "start_s": 22.44,
-     "end_s": 22.66
+     "start_s": 22.403,
+     "end_s": 22.646
     },
     {
      "text": "I've",
@@ -3011,16 +3011,16 @@
      "phones": [
       {
        "ipa": "aɪ",
-       "start_s": 22.66,
-       "dur_ms": 120.0,
+       "start_s": 22.646,
+       "dur_ms": 109.0,
        "voiced": true,
-       "pitch_st": -0.15,
-       "loud_db": -0.58,
+       "pitch_st": 0.12,
+       "loud_db": -0.52,
        "conf": 0.926
       }
      ],
-     "start_s": 22.66,
-     "end_s": 22.78
+     "start_s": 22.646,
+     "end_s": 22.755
     },
     {
      "text": "had",
@@ -3028,34 +3028,34 @@
      "phones": [
       {
        "ipa": "f",
-       "start_s": 22.78,
-       "dur_ms": 80.0,
+       "start_s": 22.755,
+       "dur_ms": 91.0,
        "voiced": true,
-       "pitch_st": 0.53,
-       "loud_db": -3.15,
+       "pitch_st": -0.12,
+       "loud_db": -5.42,
        "conf": 0.666
       },
       {
        "ipa": "æ",
-       "start_s": 22.86,
-       "dur_ms": 80.0,
+       "start_s": 22.846,
+       "dur_ms": 57.0,
        "voiced": true,
-       "pitch_st": -0.87,
-       "loud_db": 0.15,
+       "pitch_st": -0.06,
+       "loud_db": 0.45,
        "conf": 0.921
       },
       {
        "ipa": "d",
-       "start_s": 22.94,
-       "dur_ms": 40.0,
+       "start_s": 22.903,
+       "dur_ms": 63.0,
        "voiced": true,
-       "pitch_st": -0.39,
-       "loud_db": -1.15,
+       "pitch_st": -0.89,
+       "loud_db": -2.05,
        "conf": 0.706
       }
      ],
-     "start_s": 22.78,
-     "end_s": 22.98
+     "start_s": 22.755,
+     "end_s": 22.966
     },
     {
      "text": "in",
@@ -3063,25 +3063,25 @@
      "phones": [
       {
        "ipa": "ɪ",
-       "start_s": 22.98,
-       "dur_ms": 80.0,
+       "start_s": 22.966,
+       "dur_ms": 69.0,
        "voiced": true,
-       "pitch_st": -0.92,
-       "loud_db": 1.82,
+       "pitch_st": -0.4,
+       "loud_db": 0.89,
        "conf": 0.913
       },
       {
        "ipa": "n",
-       "start_s": 23.06,
+       "start_s": 23.035,
        "dur_ms": 80.0,
        "voiced": true,
-       "pitch_st": -1.78,
-       "loud_db": 3.4,
+       "pitch_st": -1.65,
+       "loud_db": 2.55,
        "conf": 0.989
       }
      ],
-     "start_s": 22.98,
-     "end_s": 23.14
+     "start_s": 22.966,
+     "end_s": 23.115
     },
     {
      "text": "months.",
@@ -3089,42 +3089,42 @@
      "phones": [
       {
        "ipa": "m",
-       "start_s": 23.14,
-       "dur_ms": 60.0,
+       "start_s": 23.115,
+       "dur_ms": 71.0,
        "voiced": true,
-       "pitch_st": -2.28,
-       "loud_db": 1.98,
+       "pitch_st": -1.99,
+       "loud_db": 1.94,
        "conf": 0.995
       },
       {
        "ipa": "aɪ",
-       "start_s": 23.2,
-       "dur_ms": 200.0,
+       "start_s": 23.186,
+       "dur_ms": 189.0,
        "voiced": true,
-       "pitch_st": -5.76,
-       "loud_db": -0.37,
+       "pitch_st": -4.8,
+       "loud_db": -0.7,
        "conf": 0.715
       },
       {
        "ipa": "n",
-       "start_s": 23.4,
+       "start_s": 23.375,
        "dur_ms": 80.0,
        "voiced": true,
-       "pitch_st": -8.79,
-       "loud_db": -7.72,
+       "pitch_st": -8.57,
+       "loud_db": -5.85,
        "conf": 0.995
       },
       {
        "ipa": "f",
-       "start_s": 23.48,
-       "dur_ms": 180.0,
+       "start_s": 23.455,
+       "dur_ms": 205.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -21.9,
+       "loud_db": -22.33,
        "conf": 0.951
       }
      ],
-     "start_s": 23.14,
+     "start_s": 23.115,
      "end_s": 23.66
     }
    ]
@@ -3139,34 +3139,34 @@
      "phones": [
       {
        "ipa": "æ",
-       "start_s": 23.88,
-       "dur_ms": 100.0,
+       "start_s": 23.866,
+       "dur_ms": 89.0,
        "voiced": true,
-       "pitch_st": -0.69,
-       "loud_db": -0.43,
+       "pitch_st": -0.61,
+       "loud_db": -2.37,
        "conf": 0.925
       },
       {
        "ipa": "n",
-       "start_s": 23.98,
-       "dur_ms": 20.0,
+       "start_s": 23.955,
+       "dur_ms": 8.0,
        "voiced": true,
-       "pitch_st": -1.12,
-       "loud_db": 2.34,
+       "pitch_st": -0.63,
+       "loud_db": 1.0,
        "conf": 0.995
       },
       {
        "ipa": "d",
-       "start_s": 24.0,
-       "dur_ms": 100.0,
+       "start_s": 23.963,
+       "dur_ms": 123.0,
        "voiced": true,
-       "pitch_st": -1.01,
-       "loud_db": 0.09,
+       "pitch_st": -0.99,
+       "loud_db": 0.14,
        "conf": 0.975
       }
      ],
-     "start_s": 23.88,
-     "end_s": 24.1
+     "start_s": 23.866,
+     "end_s": 24.086
     },
     {
      "text": "I",
@@ -3174,16 +3174,16 @@
      "phones": [
       {
        "ipa": "aɪ",
-       "start_s": 24.1,
-       "dur_ms": 140.0,
+       "start_s": 24.086,
+       "dur_ms": 117.0,
        "voiced": true,
-       "pitch_st": -0.65,
-       "loud_db": -1.24,
+       "pitch_st": -0.64,
+       "loud_db": -0.45,
        "conf": 0.938
       }
      ],
-     "start_s": 24.1,
-     "end_s": 24.24
+     "start_s": 24.086,
+     "end_s": 24.203
     },
     {
      "text": "can't",
@@ -3191,43 +3191,43 @@
      "phones": [
       {
        "ipa": "k",
-       "start_s": 24.24,
-       "dur_ms": 80.0,
-       "voiced": true,
-       "pitch_st": 1.95,
-       "loud_db": -4.46,
+       "start_s": 24.203,
+       "dur_ms": 103.0,
+       "voiced": false,
+       "pitch_st": null,
+       "loud_db": -8.19,
        "conf": 0.986
       },
       {
        "ipa": "æ",
-       "start_s": 24.32,
-       "dur_ms": 100.0,
+       "start_s": 24.306,
+       "dur_ms": 89.0,
        "voiced": true,
-       "pitch_st": 0.97,
-       "loud_db": 1.18,
+       "pitch_st": 1.02,
+       "loud_db": 0.6,
        "conf": 0.858
       },
       {
        "ipa": "n",
-       "start_s": 24.42,
-       "dur_ms": 60.0,
+       "start_s": 24.395,
+       "dur_ms": 48.0,
        "voiced": true,
-       "pitch_st": 1.25,
-       "loud_db": -0.69,
+       "pitch_st": 1.32,
+       "loud_db": 0.47,
        "conf": 0.848
       },
       {
        "ipa": "t",
-       "start_s": 24.48,
-       "dur_ms": 80.0,
+       "start_s": 24.443,
+       "dur_ms": 92.0,
        "voiced": true,
-       "pitch_st": -0.44,
-       "loud_db": -7.56,
+       "pitch_st": 0.51,
+       "loud_db": -5.94,
        "conf": 0.977
       }
      ],
-     "start_s": 24.24,
-     "end_s": 24.56
+     "start_s": 24.203,
+     "end_s": 24.535
     },
     {
      "text": "wait",
@@ -3235,34 +3235,34 @@
      "phones": [
       {
        "ipa": "w",
-       "start_s": 24.56,
-       "dur_ms": 40.0,
+       "start_s": 24.535,
+       "dur_ms": 51.0,
        "voiced": true,
-       "pitch_st": 0.48,
-       "loud_db": 0.49,
+       "pitch_st": -0.09,
+       "loud_db": -1.39,
        "conf": 0.985
       },
       {
        "ipa": "eɪ",
-       "start_s": 24.6,
-       "dur_ms": 120.0,
+       "start_s": 24.586,
+       "dur_ms": 97.0,
        "voiced": true,
-       "pitch_st": 0.97,
-       "loud_db": 0.21,
+       "pitch_st": 0.83,
+       "loud_db": 0.48,
        "conf": 0.93
       },
       {
        "ipa": "t",
-       "start_s": 24.72,
+       "start_s": 24.683,
        "dur_ms": 40.0,
-       "voiced": false,
-       "pitch_st": null,
-       "loud_db": -17.72,
+       "voiced": true,
+       "pitch_st": 1.34,
+       "loud_db": -2.98,
        "conf": 0.788
       }
      ],
-     "start_s": 24.56,
-     "end_s": 24.76
+     "start_s": 24.535,
+     "end_s": 24.723
     },
     {
      "text": "to",
@@ -3270,25 +3270,25 @@
      "phones": [
       {
        "ipa": "t",
-       "start_s": 24.76,
-       "dur_ms": 60.0,
+       "start_s": 24.723,
+       "dur_ms": 83.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -5.66,
+       "loud_db": -10.65,
        "conf": 0.974
       },
       {
        "ipa": "ə",
-       "start_s": 24.82,
-       "dur_ms": 80.0,
+       "start_s": 24.806,
+       "dur_ms": 57.0,
        "voiced": true,
-       "pitch_st": -1.38,
-       "loud_db": -2.95,
+       "pitch_st": 1.03,
+       "loud_db": -1.19,
        "conf": 0.954
       }
      ],
-     "start_s": 24.76,
-     "end_s": 24.9
+     "start_s": 24.723,
+     "end_s": 24.863
     },
     {
      "text": "go",
@@ -3296,25 +3296,25 @@
      "phones": [
       {
        "ipa": "ɡ",
-       "start_s": 24.9,
-       "dur_ms": 60.0,
+       "start_s": 24.863,
+       "dur_ms": 83.0,
        "voiced": true,
-       "pitch_st": 0.57,
-       "loud_db": -3.71,
+       "pitch_st": -1.93,
+       "loud_db": -7.48,
        "conf": 0.933
       },
       {
        "ipa": "oʊ",
-       "start_s": 24.96,
-       "dur_ms": 180.0,
+       "start_s": 24.946,
+       "dur_ms": 157.0,
        "voiced": true,
-       "pitch_st": -1.2,
-       "loud_db": -0.57,
+       "pitch_st": -0.49,
+       "loud_db": -0.14,
        "conf": 0.684
       }
      ],
-     "start_s": 24.9,
-     "end_s": 25.14
+     "start_s": 24.863,
+     "end_s": 25.103
     },
     {
      "text": "back.",
@@ -3322,33 +3322,33 @@
      "phones": [
       {
        "ipa": "b",
-       "start_s": 25.14,
-       "dur_ms": 60.0,
+       "start_s": 25.103,
+       "dur_ms": 83.0,
        "voiced": true,
-       "pitch_st": -1.52,
-       "loud_db": -0.64,
+       "pitch_st": -1.83,
+       "loud_db": -4.05,
        "conf": 0.923
       },
       {
        "ipa": "æ",
-       "start_s": 25.2,
-       "dur_ms": 260.0,
+       "start_s": 25.186,
+       "dur_ms": 237.0,
        "voiced": true,
-       "pitch_st": -6.88,
-       "loud_db": -2.3,
+       "pitch_st": -6.56,
+       "loud_db": -2.02,
        "conf": 0.872
       },
       {
        "ipa": "k",
-       "start_s": 25.46,
-       "dur_ms": 20.0,
+       "start_s": 25.423,
+       "dur_ms": 57.0,
        "voiced": false,
        "pitch_st": null,
-       "loud_db": -32.88,
+       "loud_db": -32.76,
        "conf": 0.953
       }
      ],
-     "start_s": 25.14,
+     "start_s": 25.103,
      "end_s": 25.48
     }
    ]

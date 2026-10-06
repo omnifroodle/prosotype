@@ -566,7 +566,7 @@ The proxy run on synthesised speech (`samples/timing/synth.json`) gave similar d
 
 Next steps, in order of cost:
 
-- Apply the per-class onset correction in `transcribe.py`. This is cheap and validated on held-out speakers.
+- **Done:** `transcribe.py` now moves each onset earlier by its class's lag (vowels 14 ms, stops 37 ms, other consonants 25 ms). On all 8 speakers, onsets within 20 ms rise from 42% to 65% (median absolute error 24 → 14 ms), and durations on the right 3-bit level from 32% to 36%. The uncorrected summary is kept as `samples/timing/buckeye-uncorrected.json`. All transcribed samples were regenerated; phones and sizes are unchanged.
 - Until boundaries improve, treat 3-bit durations from automatic transcription as accurate only to about ±1 level.
 - Then move to finer boundaries: a forced aligner run on the recognised words, such as the Montreal Forced Aligner (10 ms resolution, with acoustic models trained for alignment), re-checked with this harness.
 
@@ -575,7 +575,7 @@ Next steps, in order of cost:
 | Question | Call | Reason |
 |---|---|---|
 | Encoding size | **Adjust** | Size alone is not a distinguishing claim: phonetic vocoders and neural codecs reach similar rates (Appendix B). The raw fixed-width claim holds at 12 and 8 bits with the start flag, but not at 16 bits, and not against compressed text. Make 12b or 16b the reference profile and option (b) the standard boundary. If "smaller than compressed text" matters, the next step is entropy coding (pitch as deltas, phone n-grams) rather than wider symbols. |
-| Transcription | **Adjust** | Words and pitch are dependable. Phones are good in clear speech but degrade at quiet utterance ends. Durations are now measured against hand labels (9.5): onsets lag about 22 ms, a lag a simple correction removes, and only 32% of durations are on the right 3-bit level, against 58% at 2 bits. Next steps: the 30–60 s natural recording, forced alignment for finer boundaries (9.5), and either a stronger phone model or a dictionary-constrained decode for low-confidence spans. |
+| Transcription | **Adjust** | Words and pitch are dependable. Phones are good in clear speech but degrade at quiet utterance ends. Durations are now measured against hand labels (9.5): onsets lagged about 22 ms, a lag the transcriber now corrects, and only 32% of durations are on the right 3-bit level, against 58% at 2 bits. Next steps: the 30–60 s natural recording, forced alignment for finer boundaries (9.5), and either a stronger phone model or a dictionary-constrained decode for low-confidence spans. |
 | Resynthesis | **Adjust** | A stream alone can be spoken back and keeps a question's rise at 16a. Durations from the recogniser hurt intelligibility more than quantisation does (9.4), so fix the timing before trusting duration levels. |
 | Rendering | **Go** | Mapping B separates all three deliveries in light, dark and greyscale, meets the contrast and size floors, and has precedent. |
 

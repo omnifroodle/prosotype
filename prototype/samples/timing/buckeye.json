@@ -6,70 +6,70 @@
  "all": {
   "pairs": 3018,
   "onset_error_ms": {
-   "median_signed": 22.0,
-   "median_abs": 23.9,
-   "p90_abs": 61.2
+   "median_signed": 0.0,
+   "median_abs": 14.0,
+   "p90_abs": 44.0
   },
-  "onsets_within_20ms": 0.424,
+  "onsets_within_20ms": 0.647,
   "duration_ms": {
    "ref_median": 72.5,
-   "hyp_median": 60.0
+   "hyp_median": 71.0
   },
   "duration_ratio_median": 0.99,
-  "duration_log_correlation": 0.579,
-  "same_level_16a": 0.32,
-  "within_one_level_16a": 0.756
+  "duration_log_correlation": 0.59,
+  "same_level_16a": 0.355,
+  "within_one_level_16a": 0.79
  },
  "vowel": {
   "pairs": 1234,
   "onset_error_ms": {
-   "median_signed": 14.1,
-   "median_abs": 16.8,
-   "p90_abs": 44.3
+   "median_signed": 0.1,
+   "median_abs": 12.1,
+   "p90_abs": 36.4
   },
-  "onsets_within_20ms": 0.583,
+  "onsets_within_20ms": 0.714,
   "duration_ms": {
    "ref_median": 83.1,
-   "hyp_median": 100.0
+   "hyp_median": 89.0
   },
-  "duration_ratio_median": 1.17,
-  "duration_log_correlation": 0.691,
-  "same_level_16a": 0.356,
-  "within_one_level_16a": 0.771
+  "duration_ratio_median": 1.01,
+  "duration_log_correlation": 0.705,
+  "same_level_16a": 0.416,
+  "within_one_level_16a": 0.834
  },
  "stop": {
   "pairs": 570,
   "onset_error_ms": {
-   "median_signed": 37.3,
-   "median_abs": 37.7,
-   "p90_abs": 74.3
+   "median_signed": 0.6,
+   "median_abs": 14.9,
+   "p90_abs": 43.8
   },
-  "onsets_within_20ms": 0.177,
+  "onsets_within_20ms": 0.609,
   "duration_ms": {
    "ref_median": 72.3,
-   "hyp_median": 60.0
+   "hyp_median": 68.0
   },
-  "duration_ratio_median": 0.72,
-  "duration_log_correlation": 0.36,
-  "same_level_16a": 0.246,
-  "within_one_level_16a": 0.698
+  "duration_ratio_median": 1.0,
+  "duration_log_correlation": 0.376,
+  "same_level_16a": 0.342,
+  "within_one_level_16a": 0.744
  },
  "other consonant": {
   "pairs": 1214,
   "onset_error_ms": {
-   "median_signed": 25.0,
-   "median_abs": 26.9,
-   "p90_abs": 63.1
+   "median_signed": -0.4,
+   "median_abs": 15.2,
+   "p90_abs": 46.2
   },
-  "onsets_within_20ms": 0.379,
+  "onsets_within_20ms": 0.597,
   "duration_ms": {
    "ref_median": 62.9,
    "hyp_median": 60.0
   },
-  "duration_ratio_median": 0.84,
-  "duration_log_correlation": 0.53,
-  "same_level_16a": 0.319,
-  "within_one_level_16a": 0.769
+  "duration_ratio_median": 0.95,
+  "duration_log_correlation": 0.48,
+  "same_level_16a": 0.298,
+  "within_one_level_16a": 0.767
  },
  "source": "buckeye",
  "phone_model": "facebook/wav2vec2-lv-60-espeak-cv-ft@ae45363bf3413b374fecd9dc8bc1df0e24c3b7f4",
