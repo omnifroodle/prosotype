@@ -723,6 +723,20 @@ Proposal: a **HOLD** event, meaning "the previous phone continues", with its own
 - **Rendering:** each continuation is drawn as the length mark `ː`, at its own height and weight, after the glyph. A drawn-out sound shows its contour, the way conversation analysis writes elongation with colons ("wo::::h").
 - **Transcription:** the transcriber would split long phones at pitch movements, using the pitch track inside the phone rather than one median.
 - **Relation to 12.1:** with relative duration, "drawn out" is judged against the speaker's own expected duration, so HOLD starts at a point that suits each speaker.
+- **Which phones:** any phone with a continuous sound can be held, not only vowels:
+  - nasals ("mmmm", "nnnno")
+  - fricatives ("shhhh", "sssso")
+  - approximants ("llllook", "rrrright")
+  - syllabic consonants
+  - the fricative part of an affricate
+
+  A stop cannot be drawn out as sound, but its closure can be held ("t…ime", a stutter's blocked "k-k-kind"). That is silence inside a word, which v1 forbids (§2). A HOLD on a stop would mean a held closure: silent, or a voice bar for voiced stops.
+- **Pauses do not need HOLD.** A long pause already chains several PAUSE symbols (§3.5), so a 10 s silence costs four symbols and keeps its length to within about 2%. What pauses lack is separate:
+  - silence *inside* a word (a held closure, as above, or a broken-off word, "sev… seventeen")
+  - telling silent pauses from breaths (item 6) and from filled pauses ("um", which are phones)
+  - deciding whether pauses join speaker-relative duration (12.1)
+
+  Pauses should probably stay absolute: conversation analysis times them in seconds because the actual length of a gap matters, for example when a reply is late.
 
 ## Appendix A. Verified background
 
