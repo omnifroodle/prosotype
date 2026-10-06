@@ -453,6 +453,7 @@ Several files of one speaker can be passed together. They share one set of basel
 7. **English only.** The phone table, CMUdict and the label clean-up are all English-specific. No out-of-table (ESC) phones occurred in any sample, but the table has seen fewer than 400 phones.
 8. **Option (b) drops words with no recognised phones,** and packed timestamps drift by accumulated quantisation error (3.7).
 9. **Rendering is only judged by the authors.** No reader has seen it. Prior work with deaf and hard-of-hearing readers suggests B-style captions are understood (Appendix A), but the IPA form is untested by design (see the readability note above).
+10. **Streaming is not specified.** The container header gives the symbol count and the speaker's median pitch and loudness up front, so a live stream cannot start before the speech ends. A streaming framing would need an open-ended count and a running or replaced baseline. Each symbol is complete once its phone ends, so the format itself adds about one phone of delay (median 70 ms in Buckeye). Measured on an Apple-silicon Mac for a 2.6 s utterance, after warm-up: phone recogniser 59 ms, pitch and loudness 2 ms, synthesis 185 ms (for 1.2 s of output), Whisper words 1.6 s, MFA alignment 34 s (mostly process start-up). The recogniser path can stream; Whisper and MFA need whole utterances. For an anonymity use, the header's absolute pitch and loudness reveal the speaker's voice and must not be sent.
 
 ## 9. Findings
 
@@ -575,7 +576,7 @@ Next steps, in order of cost:
 | Recogniser, corrected | 65% | 14 ms | 36% | 79% | 0.59 | 74% |
 | MFA on Whisper's words | **78%** | **8 ms** | **47%** | **87%** | **0.72** | **76%** |
 
-  MFA's phones are dictionary pronunciations, so they cannot show a pronunciation the dictionary lacks. Even so, they match the hand labels slightly more often than the recogniser's, perhaps partly because Buckeye's labels began as dictionary alignments before correction. On the owner's recordings, MFA writes "tonight" correctly in all three takes, where the recogniser misheard it each time (9.2). Two costs: MFA is English-only through its dictionary, and it needs a full utterance plus its words before it can align, which matters for streaming (§8).
+  MFA's phones are dictionary pronunciations, so they cannot show a pronunciation the dictionary lacks. Even so, they match the hand labels slightly more often than the recogniser's, perhaps partly because Buckeye's labels began as dictionary alignments before correction. On the owner's recordings, MFA writes "tonight" correctly in all three takes, where the recogniser misheard it each time (9.2). Two costs: MFA is English-only through its dictionary, and it needs a full utterance plus its words before it can align, which matters for streaming (§8 item 10).
 
 - Even with MFA, fewer than half of durations land on the exact 3-bit level. Treat 3-bit durations from automatic transcription as accurate to about ±1 level; 2-bit durations are within reach.
 
