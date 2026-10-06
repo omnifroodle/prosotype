@@ -698,6 +698,7 @@ Container version 1 (§3) is stable and has conformance vectors. Version 2 colle
 | 6 | BREATH event | pending evidence | Audible in-breaths and sighs, now lost in pauses or misheard as `h`. Payload: duration and an in/out bit. Rendering after conversation analysis (`.hhh` in, `hhh` out). Needs breath detection in the transcriber first. |
 | 7 | Voice quality per phone | pending evidence | Creaky, breathy or whispered phonation as a delivery cue: creak at phrase ends, boredom, sarcasm. The 16-bit symbol has no spare bits, so this needs a field trade-off or an event. |
 | 8 | Phrase boundary marker | pending evidence | Phrase boundaries without pauses ("Let's eat, Grandpa"), as distinct from silence. Decide after the scripted phrasing pairs show whether boundaries without pauses carry meaning that the stream loses. |
+| 9 | Cut-off marker | pending evidence | A word broken off abruptly ("I wa-", "sev- seventeen"), which conversation analysis writes with a dash. It is an abrupt ending, not a short duration: an event or a flag on the last phone. See 12.3. |
 
 ### 12.1 Speaker-relative duration
 
@@ -737,6 +738,16 @@ Proposal: a **HOLD** event, meaning "the previous phone continues", with its own
   - deciding whether pauses join speaker-relative duration (12.1)
 
   Pauses should probably stay absolute: conversation analysis times them in seconds because the actual length of a gap matters, for example when a reply is late.
+
+### 12.3 Clipped and fast speech
+
+The short end of duration has the same kind of problem as the long end:
+
+- **Below the floor.** In 16a the shortest level decodes as 30 ms, and anything under about 37 ms falls into it. In 12a/12b the floor is 45 ms. In 3,018 hand-labelled Buckeye phones, 6% are under 30 ms and 21% under 45 ms: 10% of "other" consonants, and 59% of taps (`ɾ`, median 29 ms). A clipped sound and an ordinary short one end up the same, and 12-bit profiles lengthen a fifth of all phones.
+- **Relative to the speaker.** With speaker-relative duration (12.1), "clipped" means short *for this speaker and this kind of sound*, so the scale should reach below the expected duration as far as it reaches above it. The Buckeye distribution, and the owner's read against free speech, set how far.
+- **Faster stretches.** A rushed aside ("— you know —") is a run of phones that are all short for the speaker. Relative durations show it without a new symbol: a reader or synthesiser sees the local tempo from the durations themselves.
+- **Missing sounds.** Sounds dropped in fast speech ("probly", "gonna") are simply absent from what the recogniser hears, which is correct. The forced aligner instead writes the dictionary form and gives every dictionary phone at least 30 ms (three 10 ms frames), so it can invent sounds that were not said and lengthen clipped ones. This is a reason to keep the recogniser, or a mix of the two, for fast speech.
+- **Cut-offs** are item 9: an abrupt end, not a duration.
 
 ## Appendix A. Verified background
 
