@@ -1,0 +1,76 @@
+{
+ "clips": 14,
+ "reference_phones": 343,
+ "recognised_phones": 317,
+ "aligned_share": 0.901,
+ "all": {
+  "pairs": 309,
+  "onset_error_ms": {
+   "median_signed": 56.3,
+   "median_abs": 56.4,
+   "p90_abs": 85.3
+  },
+  "onsets_within_20ms": 0.042,
+  "duration_ms": {
+   "ref_median": 69.7,
+   "hyp_median": 70.0
+  },
+  "duration_ratio_median": 0.98,
+  "duration_log_correlation": 0.561,
+  "same_level_16a": 0.434,
+  "within_one_level_16a": 0.841
+ },
+ "vowel": {
+  "pairs": 131,
+  "onset_error_ms": {
+   "median_signed": 55.8,
+   "median_abs": 56.1,
+   "p90_abs": 83.6
+  },
+  "onsets_within_20ms": 0.031,
+  "duration_ms": {
+   "ref_median": 104.5,
+   "hyp_median": 100.0
+  },
+  "duration_ratio_median": 0.96,
+  "duration_log_correlation": 0.293,
+  "same_level_16a": 0.504,
+  "within_one_level_16a": 0.84
+ },
+ "stop": {
+  "pairs": 69,
+  "onset_error_ms": {
+   "median_signed": 58.2,
+   "median_abs": 58.4,
+   "p90_abs": 100.6
+  },
+  "onsets_within_20ms": 0.058,
+  "duration_ms": {
+   "ref_median": 58.0,
+   "hyp_median": 60.0
+  },
+  "duration_ratio_median": 0.86,
+  "duration_log_correlation": 0.201,
+  "same_level_16a": 0.29,
+  "within_one_level_16a": 0.812
+ },
+ "other consonant": {
+  "pairs": 109,
+  "onset_error_ms": {
+   "median_signed": 54.9,
+   "median_abs": 54.9,
+   "p90_abs": 85.0
+  },
+  "onsets_within_20ms": 0.046,
+  "duration_ms": {
+   "ref_median": 58.0,
+   "hyp_median": 40.0
+  },
+  "duration_ratio_median": 0.98,
+  "duration_log_correlation": 0.552,
+  "same_level_16a": 0.44,
+  "within_one_level_16a": 0.862
+ },
+ "source": "synth",
+ "phone_model": "facebook/wav2vec2-lv-60-espeak-cv-ft@ae45363bf3413b374fecd9dc8bc1df0e24c3b7f4"
+}

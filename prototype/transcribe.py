@@ -30,6 +30,7 @@ Single speaker ("S1"). Utterances are Whisper segments (labelled by file).
 from __future__ import annotations
 
 import argparse
+import functools
 import json
 import math
 import os
@@ -105,9 +106,9 @@ def whisper_words(path: str) -> list[dict]:
 # --- 2. phones -----------------------------------------------------------------
 
 
-def ctc(audio: np.ndarray) -> tuple[np.ndarray, list[dict], int]:
-    """Frame log-posteriors and greedy CTC tokens [{tok, id, f0, f1, conf}]
-    (f0..f1 inclusive frames of the spike)."""
+@functools.lru_cache(maxsize=1)
+def phone_model():
+    """Feature extractor, model, vocab and device, loaded once per process."""
     import torch
     from huggingface_hub import hf_hub_download
     from transformers import Wav2Vec2FeatureExtractor, Wav2Vec2ForCTC
@@ -115,9 +116,18 @@ def ctc(audio: np.ndarray) -> tuple[np.ndarray, list[dict], int]:
     fe = Wav2Vec2FeatureExtractor.from_pretrained(PHONE_MODEL, revision=PHONE_MODEL_REV)
     model = Wav2Vec2ForCTC.from_pretrained(PHONE_MODEL, revision=PHONE_MODEL_REV).eval()
     vocab = json.loads(Path(hf_hub_download(PHONE_MODEL, "vocab.json", revision=PHONE_MODEL_REV)).read_text())
-    id2tok = {i: t for t, i in vocab.items()}
     device = "mps" if torch.backends.mps.is_available() else "cpu"
     model.to(device)
+    return fe, model, vocab, device
+
+
+def ctc(audio: np.ndarray) -> tuple[np.ndarray, list[dict], int]:
+    """Frame log-posteriors and greedy CTC tokens [{tok, id, f0, f1, conf}]
+    (f0..f1 inclusive frames of the spike)."""
+    import torch
+
+    fe, model, vocab, device = phone_model()
+    id2tok = {i: t for t, i in vocab.items()}
 
     # 30 s chunks with 1 s of context either side keep memory bounded.
     chunk, ctx = 30 * SR, 1 * SR

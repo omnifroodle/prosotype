@@ -25,3 +25,8 @@ prototype/data/cmudict.dict
 
 # Resynthesised audio and its round-trip transcriptions (contain or derive from the owner's voice)
 prototype/samples/resynth/
+
+# Licensed corpora and per-phone timing detail derived from them (not redistributable)
+data/buckeye/
+data/timit/
+.timing-local/
