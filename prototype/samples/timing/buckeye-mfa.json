@@ -1,0 +1,82 @@
+{
+ "clips": 80,
+ "reference_phones": 3169,
+ "recognised_phones": 3224,
+ "aligned_share": 0.937,
+ "all": {
+  "pairs": 2968,
+  "onset_error_ms": {
+   "median_signed": 0.7,
+   "median_abs": 8.1,
+   "p90_abs": 44.3
+  },
+  "onsets_within_20ms": 0.777,
+  "duration_ms": {
+   "ref_median": 70.5,
+   "hyp_median": 70.0
+  },
+  "duration_ratio_median": 0.97,
+  "duration_log_correlation": 0.723,
+  "same_level_16a": 0.474,
+  "within_one_level_16a": 0.87
+ },
+ "vowel": {
+  "pairs": 1200,
+  "onset_error_ms": {
+   "median_signed": 3.0,
+   "median_abs": 7.3,
+   "p90_abs": 36.3
+  },
+  "onsets_within_20ms": 0.832,
+  "duration_ms": {
+   "ref_median": 81.0,
+   "hyp_median": 70.0
+  },
+  "duration_ratio_median": 0.92,
+  "duration_log_correlation": 0.789,
+  "same_level_16a": 0.502,
+  "within_one_level_16a": 0.882
+ },
+ "stop": {
+  "pairs": 565,
+  "onset_error_ms": {
+   "median_signed": 0.3,
+   "median_abs": 8.1,
+   "p90_abs": 52.1
+  },
+  "onsets_within_20ms": 0.743,
+  "duration_ms": {
+   "ref_median": 70.9,
+   "hyp_median": 70.0
+  },
+  "duration_ratio_median": 1.02,
+  "duration_log_correlation": 0.557,
+  "same_level_16a": 0.442,
+  "within_one_level_16a": 0.851
+ },
+ "other consonant": {
+  "pairs": 1203,
+  "onset_error_ms": {
+   "median_signed": -1.0,
+   "median_abs": 9.1,
+   "p90_abs": 48.3
+  },
+  "onsets_within_20ms": 0.737,
+  "duration_ms": {
+   "ref_median": 61.5,
+   "hyp_median": 60.0
+  },
+  "duration_ratio_median": 1.0,
+  "duration_log_correlation": 0.704,
+  "same_level_16a": 0.461,
+  "within_one_level_16a": 0.867
+ },
+ "source": "buckeye",
+ "boundaries": "mfa",
+ "phone_model": "MFA 3.4.2 english_us_arpa on mlx-community/whisper-large-v3-turbo@a4aaeec0636e6fef84abdcbe3544cb2bf7e9f6fb words",
+ "settings": {
+  "per_speaker": 10,
+  "seed": 1
+ },
+ "acknowledgement": "Buckeye Corpus of Conversational Speech, Pitt, M.A., Dilley, L., Johnson, K., Kiesling, S., Raymond, W., Hume, E. and Fosler-Lussier, E. (2007), Ohio State University"
+}

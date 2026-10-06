@@ -48,6 +48,7 @@ uv run redeliver.py samples/recorded_three_ways.json                  # recordin
 uv run synthesize.py samples/recorded_three_ways.json --profile 16a 8b # speak a stream with no original audio
 uv run timing_check.py synth                                         # phone timing vs known synthetic timing
 uv run timing_check.py buckeye ../data/buckeye --unpack              # vs Buckeye hand labels (register at buckeyecorpus.osu.edu)
+uv run timing_check.py buckeye ../data/buckeye --boundaries mfa      # the same, with forced-aligned boundaries
 uv run make_vectors.py        # regenerate ../vectors after a deliberate format change
 uv run site.py                # rebuild ../docs
 uv run logo.py                # rebuild the logo files in ../docs/img
@@ -69,6 +70,7 @@ The rendered pages are self-contained (with an embedded font subset) and have th
 | `bitrate.py` | Size report: packed profiles vs text vs audio (PCM, Opus 6k, Codec 2 700C) |
 | `redeliver.py` | Praat resynthesis: a stream's delivery imposed on the original recording (SPEC 9.4) |
 | `synthesize.py` | FastSpeech 2 + HiFi-GAN: speak a stream with no original audio; `data/synth_calibration.json` holds its pitch and energy calibration |
+| `mfa.py` | Montreal Forced Aligner wrapper for `transcribe.py --aligner mfa` and `timing_check.py --boundaries mfa`; setup steps in its docstring |
 | `timing_check.py` | Phone timing vs reference boundaries: synthesised speech now, Buckeye once downloaded; summaries in `samples/timing/` |
 | `site.py`, `logo.py` | Build the GitHub Pages site and logo in `../docs` |
 | `fetch.py` | Pinned external inputs and model revisions |

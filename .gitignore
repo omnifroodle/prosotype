@@ -30,3 +30,6 @@ prototype/samples/resynth/
 data/buckeye/
 data/timit/
 .timing-local/
+
+# Montreal Forced Aligner environment, package cache and models (about 2 GB)
+.mfa/

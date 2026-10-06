@@ -567,8 +567,17 @@ The proxy run on synthesised speech (`samples/timing/synth.json`) gave similar d
 Next steps, in order of cost:
 
 - **Done:** `transcribe.py` now moves each onset earlier by its class's lag (vowels 14 ms, stops 37 ms, other consonants 25 ms). On all 8 speakers, onsets within 20 ms rise from 42% to 65% (median absolute error 24 → 14 ms), and durations on the right 3-bit level from 32% to 36%. The uncorrected summary is kept as `samples/timing/buckeye-uncorrected.json`. All transcribed samples were regenerated; phones and sizes are unchanged.
-- Until boundaries improve, treat 3-bit durations from automatic transcription as accurate only to about ±1 level.
-- Then move to finer boundaries: a forced aligner run on the recognised words, such as the Montreal Forced Aligner (10 ms resolution, with acoustic models trained for alignment), re-checked with this harness.
+- **Done:** a forced aligner. `transcribe.py --aligner mfa` runs the Montreal Forced Aligner (3.4.2, `english_us_arpa` models; `prototype/mfa.py`) on Whisper's words, instead of using the recogniser's phones. Measured on the same 80 Buckeye clips, using Whisper's words rather than Buckeye's transcripts:
+
+| | Onsets within 20 ms | Median onset error | Same 3-bit duration level | Within one level | Duration correlation (log) | Phones identical to hand label |
+|---|---|---|---|---|---|---|
+| Recogniser, uncorrected | 42% | 24 ms | 32% | 76% | 0.58 | 74% |
+| Recogniser, corrected | 65% | 14 ms | 36% | 79% | 0.59 | 74% |
+| MFA on Whisper's words | **78%** | **8 ms** | **47%** | **87%** | **0.72** | **76%** |
+
+  MFA's phones are dictionary pronunciations, so they cannot show a pronunciation the dictionary lacks. Even so, they match the hand labels slightly more often than the recogniser's, perhaps partly because Buckeye's labels began as dictionary alignments before correction. On the owner's recordings, MFA writes "tonight" correctly in all three takes, where the recogniser misheard it each time (9.2). Two costs: MFA is English-only through its dictionary, and it needs a full utterance plus its words before it can align, which matters for streaming (§8).
+
+- Even with MFA, fewer than half of durations land on the exact 3-bit level. Treat 3-bit durations from automatic transcription as accurate to about ±1 level; 2-bit durations are within reach.
 
 ### 9.6 Go / adjust / stop (technical questions only)
 

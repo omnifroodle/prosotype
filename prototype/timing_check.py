@@ -47,6 +47,7 @@ from pathlib import Path
 
 import numpy as np
 
+import mfa
 import pack
 import transcribe as T
 
@@ -80,6 +81,21 @@ def recognise(audio: np.ndarray) -> list[dict]:
     ac = T.Acoustics(audio)
     T.spans(tokens, logp, ac.silent_frames(len(logp)))
     return [{"ipa": p["ipa"], "start": p["start"], "end": p["end"]} for p in T.expand(tokens)]
+
+
+def mfa_recognise(clips: list[tuple[str, np.ndarray, list[dict]]]) -> dict[str, list[dict]]:
+    """Phones from the Montreal Forced Aligner, given Whisper's words for each clip.
+    Clips are grouped by speaker so MFA can adapt to each voice."""
+    import soundfile as sf
+
+    items = []
+    with tempfile.TemporaryDirectory() as td:
+        for name, audio, _ in clips:
+            wav = Path(td) / "clip.wav"
+            sf.write(wav, audio, T.SR)
+            text = " ".join(w["text"] for seg in T.whisper_words(str(wav)) for w in seg["words"])
+            items.append((name, name[:3], audio, T.SR, text))
+    return {k: v["phones"] for k, v in mfa.align(items).items()}
 
 
 # --- alignment and scoring ------------------------------------------------------
@@ -133,10 +149,10 @@ def summarise(rows: list[dict]) -> dict:
     }
 
 
-def score(clips: list[tuple[str, np.ndarray, list[dict]]]) -> tuple[dict, list[dict]]:
+def score(clips: list[tuple[str, np.ndarray, list[dict]]], hyps: dict | None = None) -> tuple[dict, list[dict]]:
     rows, n_ref, n_hyp = [], 0, 0
     for name, audio, ref in clips:
-        hyp = recognise(audio)
+        hyp = hyps.get(name, []) if hyps is not None else recognise(audio)
         n_ref += len(ref)
         n_hyp += len(hyp)
         for r, h in align(ref, hyp):
@@ -271,6 +287,8 @@ def main() -> None:
     ap.add_argument("--per-speaker", type=int, default=10)
     ap.add_argument("--seed", type=int, default=1)
     ap.add_argument("--unpack", action="store_true")
+    ap.add_argument("--boundaries", choices=["recogniser", "mfa"], default="recogniser",
+                    help="recogniser: transcribe.py's phones; mfa: Montreal Forced Aligner on Whisper's words")
     a = ap.parse_args()
     if a.source == "buckeye":
         if not a.dir:
@@ -280,19 +298,22 @@ def main() -> None:
         clips = buckeye_clips(a.dir, a.per_speaker, a.seed)
     else:
         clips = synth_clips()
-    res, rows = score(clips)
+    res, rows = score(clips, mfa_recognise(clips) if a.boundaries == "mfa" else None)
     res["source"] = a.source
-    res["phone_model"] = f"{T.PHONE_MODEL}@{T.PHONE_MODEL_REV}"
+    res["boundaries"] = a.boundaries
+    res["phone_model"] = (f"{T.PHONE_MODEL}@{T.PHONE_MODEL_REV}" if a.boundaries == "recogniser"
+                          else f"MFA {mfa.VERSION} {mfa.MODEL} on {T.WORD_MODEL}@{T.WORD_MODEL_REV} words")
     if a.source == "buckeye":
         res["settings"] = {"per_speaker": a.per_speaker, "seed": a.seed}
         res["acknowledgement"] = ("Buckeye Corpus of Conversational Speech, Pitt, M.A., Dilley, L., Johnson, K., "
                                   "Kiesling, S., Raymond, W., Hume, E. and Fosler-Lussier, E. (2007), Ohio State University")
-    report(a.source, res)
+    tag = a.source + ("" if a.boundaries == "recogniser" else f"-{a.boundaries}")
+    report(tag, res)
     SUMMARY_DIR.mkdir(parents=True, exist_ok=True)
-    (SUMMARY_DIR / f"{a.source}.json").write_text(json.dumps(res, ensure_ascii=False, indent=1) + "\n")
+    (SUMMARY_DIR / f"{tag}.json").write_text(json.dumps(res, ensure_ascii=False, indent=1) + "\n")
     LOCAL_DIR.mkdir(exist_ok=True)
-    (LOCAL_DIR / f"{a.source}_pairs.json").write_text(json.dumps(rows, ensure_ascii=False) + "\n")
-    print(f"\nsummary -> {(SUMMARY_DIR / (a.source + '.json')).relative_to(HERE)}; detail -> {LOCAL_DIR}")
+    (LOCAL_DIR / f"{tag}_pairs.json").write_text(json.dumps(rows, ensure_ascii=False) + "\n")
+    print(f"\nsummary -> {(SUMMARY_DIR / (tag + '.json')).relative_to(HERE)}; detail -> {LOCAL_DIR}")
 
 
 if __name__ == "__main__":
