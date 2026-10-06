@@ -327,7 +327,7 @@ For a packed stream, the same information travels as a **text map** sidecar, wri
  "utterances": [[[0, 6], [7, 12], [13, 15], [16, 19], [20, 25], [26, 34]]]}
 ```
 
-`utterances[u][w]` is the character range of the *w*-th word that the stream contains in utterance *u*, in stream order. That means it follows 3.10's rules: profiles *b* drop words without phones, and profiles *a* drop a lone empty word. A text map is therefore specific to a profile. It may also carry `"labels"`, one optional caption per utterance (such as "question"); a label is left out where it would only repeat the utterance's words. A later container version may carry text maps as an optional block.
+`utterances[u][w]` is the character range of the *w*-th word that the stream contains in utterance *u*, in stream order. That means it follows 3.10's rules: profiles *b* drop words without phones, and profiles *a* drop a lone empty word. A text map is therefore specific to a profile. It may also carry `"labels"`, one optional caption per utterance (such as "question"); a label is left out where it would only repeat the utterance's words. Container version 2 is planned to carry text maps as an optional header block (§12, item 2).
 
 ## 5. Standard visual mapping
 
@@ -468,7 +468,7 @@ Several files of one speaker can be passed together. They share one set of basel
 7. **English only.** The phone table, CMUdict and the label clean-up are all English-specific. No out-of-table (ESC) phones occurred in any sample, but the table has seen fewer than 400 phones.
 8. **Option (b) drops words with no recognised phones,** and packed timestamps drift by accumulated quantisation error (3.7).
 9. **Rendering is only judged by the authors.** No reader has seen it. Prior work with deaf and hard-of-hearing readers suggests B-style captions are understood (Appendix A), but the IPA form is untested by design (see the readability note above).
-10. **Streaming is not specified.** The container header gives the symbol count and the speaker's median pitch and loudness up front, so a live stream cannot start before the speech ends. A streaming framing would need an open-ended count and a running or replaced baseline. Each symbol is complete once its phone ends, so the format itself adds about one phone of delay (median 70 ms in Buckeye). Measured on an Apple-silicon Mac for a 2.6 s utterance, after warm-up: phone recogniser 59 ms, pitch and loudness 2 ms, synthesis 185 ms (for 1.2 s of output), Whisper words 1.6 s, MFA alignment 34 s (mostly process start-up). The recogniser path can stream; Whisper and MFA need whole utterances. For an anonymity use, the header's absolute pitch and loudness reveal the speaker's voice and must not be sent.
+10. **Streaming is not specified.** The container header gives the symbol count and the speaker's median pitch and loudness up front, so a live stream cannot start before the speech ends. A streaming framing would need an open-ended count and a running or replaced baseline (§12, item 3). Each symbol is complete once its phone ends, so the format itself adds about one phone of delay (median 70 ms in Buckeye). Measured on an Apple-silicon Mac for a 2.6 s utterance, after warm-up: phone recogniser 59 ms, pitch and loudness 2 ms, synthesis 185 ms (for 1.2 s of output), Whisper words 1.6 s, MFA alignment 34 s (mostly process start-up). The recogniser path can stream; Whisper and MFA need whole utterances. For an anonymity use, the header's absolute pitch and loudness reveal the speaker's voice and must not be sent.
 
 ## 9. Findings
 
@@ -683,6 +683,46 @@ It sounds robotic by design. It is a reference for what a stream contains, not a
 - **Without JavaScript:** content placed inside the element shows until it upgrades, so a static rendering can sit inside as the fallback.
 
 On the site, the homepage hero is a `<prosotype-player>` with the static rendering inside it as the fallback. Each document on the render pages (mappings A and B side by side) has a controls-only player: its `prosotype-phone` events highlight the phone being spoken in both columns, and every line has its own play button. `render.py` adds these only when asked (`render(docs, player=…)`), so its standalone pages stay self-contained. The **reader** (`docs/play.html`, built by `prototype/player.py`) shows every sample as an element, with page-level menus that switch all of them between 16a, 12b and 8b and between voice profiles. A viewer can also load their own profile from disk; it never leaves the browser.
+
+## 12. Container version 2 (plan)
+
+Container version 1 (§3) is stable and has conformance vectors. Version 2 collects changes that v1 decoders cannot accept, because they use reserved codes or change the header or field meanings. A v2 stream starts `"PRS" 0x02`; v1 streams stay valid and decodable. Each item below has a status: *planned* (agreed, to be designed in detail), *proposed* (to be decided), or *pending evidence* (decided by measurement first, mostly from the owner's scripted recording, `profiles/RECORDING.md`).
+
+| # | Change | Status | Why |
+|---|---|---|---|
+| 1 | Forward-compatible events | planned | v1 decoders must reject codes 5–7. In v2, unknown event codes have a known payload width and are skipped, so later events do not break older decoders. |
+| 2 | Optional header blocks | planned | Typed, length-prefixed blocks after the fixed header: the text map (§4.1), a voice-profile reference (§10) and a duration baseline (item 4). Unknown block types are skipped. |
+| 3 | Streaming framing | planned | v1 states the symbol count and the speaker's median pitch up front (§8 item 10). v2 allows an open-ended count, a baseline from a profile or sent once measured, and resynchronisation points. |
+| 4 | Speaker-relative duration | planned | See 12.1. |
+| 5 | HOLD (continuation) event | proposed | A sound drawn out beyond the top duration level, and pitch movement inside a long phone. See 12.2. |
+| 6 | BREATH event | pending evidence | Audible in-breaths and sighs, now lost in pauses or misheard as `h`. Payload: duration and an in/out bit. Rendering after conversation analysis (`.hhh` in, `hhh` out). Needs breath detection in the transcriber first. |
+| 7 | Voice quality per phone | pending evidence | Creaky, breathy or whispered phonation as a delivery cue: creak at phrase ends, boredom, sarcasm. The 16-bit symbol has no spare bits, so this needs a field trade-off or an event. |
+| 8 | Phrase boundary marker | pending evidence | Phrase boundaries without pauses ("Let's eat, Grandpa"), as distinct from silence. Decide after the scripted phrasing pairs show whether boundaries without pauses carry meaning that the stream loses. |
+
+### 12.1 Speaker-relative duration
+
+v1 stores duration in absolute milliseconds, while pitch is relative to the speaker's median and loudness to their mean (§2). A fast talker's phones therefore sit in low levels and a slow talker's in high ones, and "drawn out" means different things for each. v2 makes duration relative too:
+
+- **Baseline:** the speaker's expected duration per phone class (vowel, stop, other consonant; finer classes such as tense versus lax vowels are a design option). It travels in a header block, like the median pitch, and comes from the stream itself or from a voice profile, which already measures `timing.median_phone_ms` (VOICE-PROFILE.md). A profile baseline is what makes streaming possible.
+- **Stored value:** log₂(duration / expected), quantised in fixed steps around 0. For example, with 3 bits, steps of half an octave (×1.41) give ×0.35 to ×4 of the expected duration. Beyond that, item 5 continues the sound.
+- **Decoding:** duration = expected × 2^(level × step). Absolute times are rebuilt as in §3.7.
+- **To measure before fixing the design:**
+  - Does relative duration make levels more consistent across speakers, and across read and free speech for one speaker? Buckeye's 8 speakers and the scripted recording's parts can show this.
+  - Which classes give the most stable baseline?
+  - Should absolute duration stay available as a profile option?
+
+### 12.2 Drawn-out sounds ("woh" against "woooooh")
+
+In v1, a phone held longer than about 370 ms takes the top 3-bit level and decodes as 450 ms. A 700 ms "ooh" and a 3 s "ooooooh" are stored the same, playback rushes the rest of the utterance forward by the difference, and mapping B shows both at the widest glyph. The JSON form keeps the true duration. The same limit flattens pitch inside a long phone: a drawn-out "woooh" that rises and falls gets one pitch value (§8 item 3).
+
+Proposal: a **HOLD** event, meaning "the previous phone continues", with its own delivery.
+
+- **Payload:** extra duration (on the pause scale) plus pitch and loudness for the continuation.
+- **Encoding:** when a phone exceeds the top duration level, or its pitch moves by more than a threshold inside it, the encoder emits the phone at the top level and then HOLD events, one per segment of the continuation. "woooooh" with a rise and fall becomes `w`, `oʊ` (450 ms, +2 st), HOLD (+500 ms, +6 st), HOLD (+600 ms, −1 st).
+- **Cost:** nothing for ordinary speech; one symbol per segment of an unusually long sound.
+- **Rendering:** each continuation is drawn as the length mark `ː`, at its own height and weight, after the glyph. A drawn-out sound shows its contour, the way conversation analysis writes elongation with colons ("wo::::h").
+- **Transcription:** the transcriber would split long phones at pitch movements, using the pitch track inside the phone rather than one median.
+- **Relation to 12.1:** with relative duration, "drawn out" is judged against the speaker's own expected duration, so HOLD starts at a point that suits each speaker.
 
 ## Appendix A. Verified background
 
