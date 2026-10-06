@@ -445,7 +445,7 @@ Several files of one speaker can be passed together. They share one set of basel
 **Readability (deferred).** Fluent human reading of IPA is unlikely for most readers, and this format as it stands does not address that. It is acknowledged and deliberately left to later work. This phase neither tests it nor designs around it.
 
 1. **Evidence base is small.** It consists of three short recorded utterances from one speaker, plus synthetic speech. The planned 30–60 s of natural recorded speech is still outstanding. All error rates below are indicative, not estimates.
-2. **Durations are unvalidated.** Phone boundaries come from CTC onset spikes and have not been compared with hand-labelled or forced-aligned boundaries.
+2. **Durations are too coarse for 3-bit levels.** Phone boundaries come from CTC onset spikes on a 20 ms grid. Against hand labels (9.5), only 32% of durations land on the correct 3-bit level, though 58% land on the correct 2-bit level. Onsets lag by a consistent 14–38 ms depending on the phone class.
 3. **Pitch inside a phone.** One value per phone flattens rises and falls within long vowels. Open question: is a 1–2 bit pitch-slope field worth more than a loudness bit? Prosogram's perceptual stylisation, which keeps a pitch movement only where a listener would hear it as one, is a candidate model (Appendix B).
 4. **Delivery per phone or per syllable.** Pitch and loudness mostly matter on syllable nuclei, and Hirata and Nakagawa's 1989 vocoder coded delivery once per syllable (Appendix B). Carrying delivery only on vowels would roughly halve the delivery bits, but it breaks the one-symbol-one-width rule. It is worth measuring before the format is frozen beyond container version 1.
 5. **Loudness is session-relative.** It is only meaningful within one recording setup. A stream should either declare its recording conditions or use per-session baselines.
@@ -544,12 +544,38 @@ What this shows:
 
 Human listening has not started. Every comparison above is a machine measurement.
 
-### 9.5 Go / adjust / stop (technical questions only)
+### 9.5 Phone timing against hand labels
+
+`prototype/timing_check.py` runs the transcriber's phone recogniser on 80 clips of conversational speech from the Buckeye Corpus (Pitt et al. 2007): 10 clips of 2–15 s from each of 8 speakers, two in each sex × age group. It aligns the recognised phones to Buckeye's hand-corrected phone labels and compares 3,018 matched pairs (95% of reference phones). The summary is in `prototype/samples/timing/buckeye.json`. The corpus itself is not redistributed.
+
+| | Pairs | Onset lag (median) | Onsets within 20 ms | Same 3-bit duration level | Within one level | Duration correlation (log) |
+|---|---|---|---|---|---|---|
+| All | 3018 | +22 ms | 42% | 32% | 76% | 0.58 |
+| Vowels | 1234 | +14 ms | 58% | 36% | 77% | 0.69 |
+| Stops | 570 | +37 ms | 18% | 25% | 70% | 0.36 |
+| Other consonants | 1214 | +25 ms | 38% | 32% | 77% | 0.53 |
+
+What this shows:
+
+1. **Onsets lag, consistently.** Every speaker shows an 18–26 ms lag, with no difference by age or sex. Stops lag most, because the recogniser fires near the release while Buckeye's label starts at the closure. A per-class correction, fitted on four speakers and tested on the other four, removes the lag and raises onsets within 20 ms from 44% to 67%.
+2. **Durations are noisy, not biased.** Duration errors are symmetric (19% one level short, 24% one level long), and the median duration ratio is 0.99. The onset correction barely helps (31% → 36% on the right level on the held-out speakers). The cause is resolution. The recogniser places boundaries on a 20 ms grid, the shortest 3-bit duration levels are 15–20 ms apart, and 21% of real phones are under 45 ms.
+3. **2-bit durations are within reach.** On the coarser levels of profiles 12a and 12b, 58% of durations land on the right level and 97% within one level.
+4. **This explains 9.4.** Per-phone durations are the least reliable part of a transcription, which is why the re-spoken audio with fixed 80 ms phones (8b) was the most intelligible.
+
+The proxy run on synthesised speech (`samples/timing/synth.json`) gave similar duration figures (43% on the right level), but its reference boundaries were themselves offset by about 40–50 ms, so it could not measure the lag.
+
+Next steps, in order of cost:
+
+- Apply the per-class onset correction in `transcribe.py`. This is cheap and validated on held-out speakers.
+- Until boundaries improve, treat 3-bit durations from automatic transcription as accurate only to about ±1 level.
+- Then move to finer boundaries: a forced aligner run on the recognised words, such as the Montreal Forced Aligner (10 ms resolution, with acoustic models trained for alignment), re-checked with this harness.
+
+### 9.6 Go / adjust / stop (technical questions only)
 
 | Question | Call | Reason |
 |---|---|---|
 | Encoding size | **Adjust** | Size alone is not a distinguishing claim: phonetic vocoders and neural codecs reach similar rates (Appendix B). The raw fixed-width claim holds at 12 and 8 bits with the start flag, but not at 16 bits, and not against compressed text. Make 12b or 16b the reference profile and option (b) the standard boundary. If "smaller than compressed text" matters, the next step is entropy coding (pitch as deltas, phone n-grams) rather than wider symbols. |
-| Transcription | **Adjust** | Words and pitch are dependable. Phones are good in clear speech but degrade at quiet utterance ends, and durations are unvalidated. Next steps: the 30–60 s natural recording, a hand-labelled check of boundaries on a few utterances, and either a stronger phone model or a dictionary-constrained decode for low-confidence spans. |
+| Transcription | **Adjust** | Words and pitch are dependable. Phones are good in clear speech but degrade at quiet utterance ends. Durations are now measured against hand labels (9.5): onsets lag about 22 ms, a lag a simple correction removes, and only 32% of durations are on the right 3-bit level, against 58% at 2 bits. Next steps: the 30–60 s natural recording, forced alignment for finer boundaries (9.5), and either a stronger phone model or a dictionary-constrained decode for low-confidence spans. |
 | Resynthesis | **Adjust** | A stream alone can be spoken back and keeps a question's rise at 16a. Durations from the recogniser hurt intelligibility more than quantisation does (9.4), so fix the timing before trusting duration levels. |
 | Rendering | **Go** | Mapping B separates all three deliveries in light, dark and greyscale, meets the contrast and size floors, and has precedent. |
 
@@ -558,6 +584,9 @@ Overall: **go, with the adjustments above.** Nothing found so far makes the idea
 ---
 
 ## Appendix A. Verified background
+
+Section 9.5 uses the Buckeye Corpus of Conversational Speech: Pitt, M.A., Dilley, L., Johnson, K., Kiesling, S., Raymond, W., Hume, E. and Fosler-Lussier, E. (2007), Department of Psychology, Ohio State University (distributor). It was used under its licence for non-commercial research; no corpus content is included in this repository.
+
 
 Status of the claims carried over from the planning notes, checked 2026-10-05.
 
