@@ -1,0 +1,35 @@
+# Who speaks each stretch of the "Bah! Humbug!" scene, A Christmas Carol, Stave 1
+# (Charles Dickens, 1843; public domain). Used only to label voices: every phone
+# in the transcription comes from the audio (SPEC 1).
+Fred: A merry Christmas, uncle! God save you!
+Fred: Christmas a humbug, uncle!
+narrator: said Scrooge's nephew.
+Fred: You don't mean that, I am sure?
+Scrooge: I do,
+narrator: said Scrooge.
+Scrooge: Merry Christmas! What right have you to be merry? What reason have you to be merry? You're poor enough.
+Fred: Come, then,
+narrator: returned the nephew gaily.
+Fred: What right have you to be dismal? What reason have you to be morose? You're rich enough.
+narrator: Scrooge having no better answer ready on the spur of the moment, said,
+Scrooge: Bah!
+narrator: again; and followed it up with
+Scrooge: Humbug.
+Fred: Don't be cross, uncle!
+narrator: said the nephew.
+Scrooge: What else can I be,
+narrator: returned the uncle,
+Scrooge: when I live in such a world of fools as this? Merry Christmas! Out upon merry Christmas! What's Christmas time to you but a time for paying bills without money; a time for finding yourself a year older, but not an hour richer; a time for balancing your books and having every item in 'em through a round dozen of months presented dead against you? If I could work my will,
+narrator: said Scrooge indignantly,
+Scrooge: every idiot who goes about with Merry Christmas on his lips, should be boiled with his own pudding, and buried with a stake of holly through his heart. He should!
+Fred: Uncle!
+narrator: pleaded the nephew.
+Scrooge: Nephew!
+narrator: returned the uncle sternly,
+Scrooge: keep Christmas in your own way, and let me keep it in mine.
+Fred: Keep it!
+narrator: repeated Scrooge's nephew.
+Fred: But you don't keep it.
+Scrooge: Let me leave it alone, then,
+narrator: said Scrooge.
+Scrooge: Much good may it do you! Much good it has ever done you!

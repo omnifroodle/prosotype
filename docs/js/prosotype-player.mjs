@@ -62,10 +62,10 @@ const STYLE = `
 :host{display:block;--ink:var(--prosotype-ink,#1b1b1f);--muted:var(--prosotype-muted,#5f5f68);
 --unvoiced:var(--prosotype-unvoiced,#6c6c74);--rule:var(--prosotype-rule,#e4e4df);--guide:var(--prosotype-guide,#c9c9c2);
 --hl:var(--prosotype-highlight,oklch(0.9 0.08 85));--hl-ink:var(--prosotype-highlight-ink,#1b1b1f);
---surface:var(--prosotype-surface,transparent);color:var(--ink)}
+--surface:var(--prosotype-surface,transparent);--spk-l:0.5;color:var(--ink)}
 @media (prefers-color-scheme:dark){:host{--ink:var(--prosotype-ink,#ececf0);--muted:var(--prosotype-muted,#a3a3ad);
 --unvoiced:var(--prosotype-unvoiced,#9a9aa3);--rule:var(--prosotype-rule,#2c2c33);--guide:var(--prosotype-guide,#4a4a53);
---hl:var(--prosotype-highlight,oklch(0.45 0.09 85));--hl-ink:var(--prosotype-highlight-ink,#fff)}}
+--hl:var(--prosotype-highlight,oklch(0.45 0.09 85));--hl-ink:var(--prosotype-highlight-ink,#fff);--spk-l:0.8}}
 .box{background:var(--surface);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
 .top{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:4px}
 button,select{font:inherit;font-size:14px;color:var(--ink);background:transparent;border:1px solid var(--rule);border-radius:8px;padding:5px 10px}
@@ -87,6 +87,8 @@ button.row{padding:0 7px;font-size:12px;line-height:20px;border-radius:999px}
 .foot a{color:inherit}
 :host([compact]) .foot{display:none}
 .err{color:var(--muted);font-size:13px}
+.s1:not(.unv){color:oklch(var(--spk-l) 0.13 300)}.s2:not(.unv){color:oklch(var(--spk-l) 0.13 80)}.s3:not(.unv){color:oklch(var(--spk-l) 0.13 160)}
+.cap b.s1{color:oklch(var(--spk-l) 0.13 300)}.cap b.s2{color:oklch(var(--spk-l) 0.13 80)}.cap b.s3{color:oklch(var(--spk-l) 0.13 160)}
 ${levelCss}`;
 
 let ctx = null, playing = null; // one shared AudioContext; one player sounds at a time
@@ -149,7 +151,11 @@ class ProsoTypePlayer extends HTMLElement {
     const doc = this.doc, tm = this._text;
     const multi = doc.utterances.length > 1;
     let pi = 0, wi = 0;
+    const speakerNames = Object.keys(doc.speakers || {});
     const rows = doc.utterances.map((u, ui) => {
+      // speakers after the first are coloured (mapping B leaves colour free for speaker, SPEC 5)
+      const si = Math.max(0, speakerNames.indexOf(u.speaker));
+      const sc = si ? ` s${Math.min(si, 3)}` : "";
       const phones = u.words.flatMap((w) => w.phones);
       // unvoiced glyphs sit at the height of the previous voiced phone (or the next one)
       const lv = phones.map(qPitch), h = [];
@@ -166,7 +172,7 @@ class ProsoTypePlayer extends HTMLElement {
         }
         const spans = w.phones.map((p) => {
           const pl = qPitch(p), dl = qDur(p), ll = qLoud(p);
-          const cls = pl ? `p pb${pl} w${dl} l${ll}` : `p pb${h[k]} unv w${dl} l${ll}`;
+          const cls = (pl ? `p pb${pl} w${dl} l${ll}` : `p pb${h[k]} unv w${dl} l${ll}`) + sc;
           const tip = `/${p.ipa}/ ${pl ? `${p.pitch_st >= 0 ? "+" : ""}${p.pitch_st.toFixed(1)} st` : "unvoiced"}, ${Math.round(p.dur_ms)} ms`;
           k++;
           return `<span class="${cls}" data-i="${pi++}" title="${tip}">${esc(p.ipa)}</span>`;
@@ -185,7 +191,7 @@ class ProsoTypePlayer extends HTMLElement {
           words = ranges.map(([a, b], j) => { const pre = esc(tm.text.slice(pos, a)); pos = b; return `${pre}<span data-tw="${base + j}">${esc(tm.text.slice(a, b))}</span>`; }).join("");
         }
         cap = `<div class="cap">${multi ? `<button class="row" data-u="${ui}" aria-label="Play this line">▶</button>` : ""}` +
-          `${label ? `<b>${esc(label)}</b>` : ""}<span class="t">${words}</span></div>`;
+          `${label ? `<b class="${sc.trim()}">${esc(label)}</b>` : ""}<span class="t">${words}</span></div>`;
       }
       return `<div class="utt">${cap}<div class="ipa" lang="und-fonipa">${glyphs}</div></div>`;
     }).join("");

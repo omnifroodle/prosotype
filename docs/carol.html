@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>One reader, many voices</title>
+<meta name="description" content="A Christmas Carol, read by one LibriVox reader, transcribed into ProsoType with each character as a voice.">
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<script type="module" src="js/prosotype-player.mjs"></script>
+<style>
+:root{--bg:#fbfbf9;--surface:#fff;--ink:#1b1b1f;--muted:#5f5f68;--rule:#e4e4df;--link:oklch(0.48 0.13 250);--spk-l:0.5;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#131316;--surface:#1b1b20;--ink:#ececf0;--muted:#a3a3ad;--rule:#2c2c33;--link:oklch(0.78 0.11 250);--spk-l:0.8;color-scheme:dark}}
+.v300{color:oklch(var(--spk-l) 0.13 300)} .v80{color:oklch(var(--spk-l) 0.13 80)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:1040px;margin:0 auto;padding:32px 16px 72px}
+a{color:var(--link)}
+header{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;margin-bottom:8px}
+header img{height:44px;width:auto}
+h1{font-size:26px;margin:0} h2{font-size:18px;margin:28px 0 8px}
+p{max-width:70ch;margin:0 0 12px}
+.note{font-size:14px;color:var(--muted)}
+.card{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:16px 20px;margin-top:14px}
+audio{width:100%;max-width:520px}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;font-size:15px;min-width:520px}
+th,td{padding:6px 12px;border-bottom:1px solid var(--rule);text-align:left}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+.swatch{display:inline-block;width:.8em;height:.8em;border-radius:2px;margin-right:6px;vertical-align:-.05em}
+</style></head>
+<body><main>
+<header><a href="./"><img src="img/logo.svg" alt="ProsoType" width="200" height="44"></a><h1>One reader, many voices</h1></header>
+<p>One person reads Scrooge, his nephew Fred and the narrator in the “Bah! Humbug!” scene from <em>A Christmas Carol</em>. The ProsoType transcription below was made automatically from the recording: phones as heard, with pitch, length and loudness measured from the audio. Only the voice labels were added by hand, from the text. Each voice is a speaker sharing the reader’s pitch baseline, so you can see the reader’s register move between characters: <span class="v300">Scrooge</span> and <span class="v80">Fred</span> are coloured, the narrator is in ink.</p>
+<section class="card"><h2 style="margin-top:0">The recording</h2>
+<audio controls preload="none" src="https://archive.org/download/christmascarol_1012_librivox/christmascarol_01_dickens_64kb.mp3#t=397.0,479.2"></audio>
+<p class="note" style="margin-top:8px">A Christmas Carol, Stave 1 (Charles Dickens, 1843), read by Jeff Robinson for <a href="https://librivox.org/a-christmas-carol-by-charles-dickens-3/">LibriVox</a>. LibriVox recordings are in the public domain. The excerpt plays from archive.org (6:37–7:59 of the stave).</p></section>
+<section class="card"><h2 style="margin-top:0">The ProsoType stream</h2>
+<prosotype-player src="demo/carol-humbug.16a.prs" text="demo/carol-humbug.16a.text.json" voices="play/voices/reference-low.json play/voices/reference-high.json play/voices/fastspeech2-ljspeech.json"></prosotype-player>
+<p class="note" style="margin-top:8px">Play speaks the stream with the robotic reference synthesiser; each line has its own play button.</p></section>
+<h2>How the reader voices them</h2>
+<div class="tablewrap card"><table>
+<thead><tr><th>Voice</th><th style="text-align:right">Median pitch</th><th style="text-align:right">vs narrator</th><th style="text-align:right">Pitch spread</th><th style="text-align:right">Median vowel</th><th style="text-align:right">Phones</th></tr></thead>
+<tbody><tr><td><span class=swatch style=background:var(--ink)></span>narrator</td><td class=num>97 Hz</td><td class=num>+0.0 st</td><td class=num>6.9 st</td><td class=num>70 ms</td><td class=num>203</td></tr><tr><td><span class=swatch style='background:oklch(var(--spk-l) 0.13 300)'></span>Scrooge</td><td class=num>107 Hz</td><td class=num>+1.8 st</td><td class=num>7.9 st</td><td class=num>60 ms</td><td class=num>510</td></tr><tr><td><span class=swatch style='background:oklch(var(--spk-l) 0.13 80)'></span>Fred</td><td class=num>117 Hz</td><td class=num>+3.2 st</td><td class=num>14.8 st</td><td class=num>60 ms</td><td class=num>131</td></tr></tbody></table></div>
+<p class="note" style="margin-top:8px">Spread is the 10th to 90th percentile of phone pitch, in semitones. In this scene the reader lifts both characters above the narration: Scrooge, ranting, about 2 semitones up; Fred about 3 up, with twice the pitch movement of either. Both get shorter vowels than the narrator. Voices switch inside sentences (“…,” said Scrooge, “…”), which is why the transcription splits utterances at every change of voice.</p>
+<h2>What this shows, and its limits</h2>
+<p>A voice switch is visible in the transcription without any text: the height of the glyphs moves with the reader’s register. The voice labels themselves came from the book, though. Detecting who is speaking from the delivery alone is an open problem (SPEC §12, item 10). The recording is compressed MP3 at 22 kHz, and the transcription has recogniser errors.</p>
+<p class="note">Transcription: <a href="https://github.com/omnifroodle/prosotype/blob/main/prototype/samples/carol_stave1_humbug.json">samples/carol_stave1_humbug.json</a>, voice attribution <a href="https://github.com/omnifroodle/prosotype/blob/main/prototype/samples/carol_stave1_humbug.voices.txt">.voices.txt</a>, built by <a href="https://github.com/omnifroodle/prosotype/blob/main/prototype/demo.py">demo.py</a>.</p>
+</main></body></html>

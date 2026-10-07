@@ -41,3 +41,4 @@ profiles/private/
 
 # Public-domain audio used for evaluation (LibriVox); kept local
 data/librivox/
+!docs/demo/*.prs

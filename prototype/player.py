@@ -74,7 +74,7 @@ select,input[type=file]{{font:inherit;font-size:15px;color:var(--ink);background
 pre{{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:12px 14px;overflow-x:auto;font-size:13px}}
 </style></head>
 <body><main>
-<header><a href="./"><img src="img/logo.svg" alt="ProsoType" width="200" height="44"></a><h1>Reader</h1><a href="compare.html" style="margin-left:auto;font-size:15px">Compare synthesiser versions</a></header>
+<header><a href="./"><img src="img/logo.svg" alt="ProsoType" width="200" height="44"></a><h1>Reader</h1><span style="margin-left:auto;font-size:15px"><a href="carol.html">Demo: one reader, many voices</a> · <a href="compare.html">Compare synthesiser versions</a></span></header>
 <p>Every sample on this site, decoded and drawn in your browser from its packed stream, and spoken by the <strong>reference synthesiser</strong>: a small formant synthesiser that gives every phone exactly the stream's duration, pitch and loudness. It sounds robotic on purpose. Each glyph and word lights while it sounds. A <strong>voice profile</strong> sets the voice's pitch level, vocal-tract length and voice quality. Nothing is sent anywhere.</p>
 <div class="controls">
 <label>Stream profile (all samples)<select id="profile">{profiles}</select></label>
